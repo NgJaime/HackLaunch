@@ -1,1 +1,1 @@
-from base import *
+from hackLaunch.settings.base import *
