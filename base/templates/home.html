@@ -1,34 +1,162 @@
-
 {% extends "base.html" %}
-
-{% block title %}Home{% endblock %}
+{% load staticfiles %}
+{% block title %}HackLaunch - Home{% endblock %}
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
-    </div>
+    <div class="container marketing">
 
-    <!-- Example row of columns -->
-    <div class="row">
-    <div class="col-lg-4">
-      <h2>Safari bug warning!</h2>
-      <p class="text-danger">As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    <div class="col-lg-4">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    <div class="col-lg-4">
-      <h2>Heading</h2>
-      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    </div>
+        {#        <hr class="featurette-divider">#}
+
+        {#        <h1 class="featurette-heading" class="text-center" >We run Hackathons. <span class="text-muted">At HackLaunch, we make a science out of running hackathons.</span></h1>#}
+        <div class="jumbotron">
+            <h2 class="text-center">At HackLaunch, we make a science out of running hackathons.</h2>
+
+            {#            <div>#}
+            {#                <p class="text-center">Sign up or sign in</p>#}
+            {##}
+            {#                <div class="row">#}
+            {#                    <div class="col-md-1"></div>#}
+            {#                    <div class="col-md-5">#}
+            {#                        <form class="form-signin" action="{% url 'social:complete' "email" %}" method="post">{% csrf_token %}#}
+            {#                            <label for="inputEmail" class="sr-only">Email address</label>#}
+            {#                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus style="padding: 10px;">#}
+            {##}
+            {#                            <label for="inputPassword" class="sr-only">Password</label>#}
+            {#                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required style="padding: 5px;">#}
+            {##}
+            {#                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>#}
+            {#                        </form>#}
+            {#                    </div>#}
+            {#                    <div class="col-md-5">.col-md-4</div>#}
+            {#                    <div class="col-md-1"></div>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="container">
+                <div id="loginbox" style="margin-top:50px;"
+                     class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign In or Sign up </div>
+                            <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot
+                                password?</a></div>
+                        </div>
+
+                        <div style="padding-top:30px" class="panel-body">
+
+                            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                            <form id="loginform" class="form-horizontal" role="form">
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="login-username" type="text" class="form-control" name="username" value=""
+                                           placeholder="username or email">
+                                </div>
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input id="login-password" type="password" class="form-control" name="password"
+                                           placeholder="password">
+                                </div>
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+                                        <a id="btn-login" href="#" class="btn btn-success">Login </a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                            Don't have an account!
+                                            <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                                Sign Up Here
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <img src="{% static "images/community.png" %}" alt="Community image"
+                     style="width: 140px; height: 140px; ">
+
+                <h2>Community Building</h2>
+
+                <p>Want to find like-minded developers? HackLaunch hackathons provide a community of like-minded
+                    developers to continue with their ideation and build.</p>
+            </div>
+            <!-- /.col-lg-3 -->
+            <div class="col-lg-3">
+                <img src="{% static "images/idea.png" %}" alt="GIdeation & Build image"
+                     style="width: 140px; height: 140px;">
+
+                <h2>Ideation & Build</h2>
+
+                <p>Always had a winning idea but never the chance to realize it? HackLaunch hackathons will be your
+                    first steps to ideation and creation.</p>
+            </div>
+            <!-- /.col-lg-3 -->
+            <div class="col-lg-3">
+                <img src="{% static "images/shake.png" %}" alt="Corporate Partnership image"
+                     style="width: 140px; height: 140px;">
+
+                <h2>Corporate Partnerships</h2>
+
+                <p>HackLaunch works with some of the top companies to run our hackathons. Together with our partners, we
+                    bring a world of possibility to the developers.</p>
+            </div>
+            <!-- /.col-lg-3 -->
+            <div class="col-lg-3">
+                <img src="{% static "images/growth.png" %}" alt="Growth Acceleration image"
+                     style="width: 140px; height: 140px; ">
+
+                <h2>Growth Acceleration</h2>
+
+                <p>HackLaunch don't just stop at the end of the hackathons, we continue to work with the participants on
+                    their continued growth after event and our corporate partners on the post event update.</p>
+            </div>
+            <!-- /.col-lg-3 -->
+        </div>
+        <!-- /.row -->
+
+        <hr class="featurette-divider">
+
+        <h1 class="text-center">Connect with us </h1>
+
+        <div class="text-center">
+            <a class="btn btn-social-icon btn-twitter fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-twitter']);"><i class="fa fa-twitter"
+                                                                                                   style="color: black; padding-left: 30px;"></i></a>
+            <a class="btn btn-social-icon btn-facebook fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-facebook']);"><i
+                    class="fa fa-facebook" style="color: black; padding-left: 30px;"></i></a>
+            <a class="btn btn-social-icon btn-google-plus fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-google-plus']);"><i
+                    class="fa fa-google-plus" style="color: black; padding-left: 30px;"></i></a>
+            <a class="btn btn-social-icon btn-linkedin fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-linkedin']);"><i
+                    class="fa fa-linkedin" style="color: black; padding-left: 30px;"></i></a>
+            <a class="btn btn-social-icon btn-instagram fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-instagram']);"><i
+                    class="fa fa-instagram" style="color: black; padding-left: 30px;"></i></a>
+            <a class="btn btn-social-icon btn-pinterest fa-4x"
+               onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-pinterest']);"><i
+                    class="fa fa-pinterest" style="color: black; padding-left: 30px;"></i></a>
+        </div>
+    </div><!-- /.container marketing -->
 
 {% endblock %}
