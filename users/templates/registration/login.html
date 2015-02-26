@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+<a href="{% url 'social:begin' "linkedin-oauth2" %}">LinkedIn OAuth2</a> <br />
+{#<a href="{% url 'social:begin' "github" %}">Github OAuth2</a> <br />#}
+<a href="{% url 'social:begin' "email" %}">Email Auth</a> <br />
+
+{% endblock %}
