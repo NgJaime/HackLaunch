@@ -35,12 +35,17 @@
             <li><a href="#">Page 3</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-              {{ user }}
               {% if user.is_anonymous %}
                   <li><a href="{% url 'users.views.register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                   <li><a href="{% url 'django.contrib.auth.views.login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
               {% else %}
-                  <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                  <p>{{ user.first_name }}</p>
+                  {% for assoc in backends.associated %}
+                      <form action="{% url 'social:disconnect_individual' assoc.provider assoc.id %}" method="post">{% csrf_token %}
+                            <button>Disconnect</button>
+                      </form>
+                  {% endfor %}
+{#                  <li><a href="{% url 'social:disconnect_individual' assoc.provider assoc.id %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>#}
               {% endif %}
           </ul>
         </div>
