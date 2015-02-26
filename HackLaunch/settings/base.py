@@ -181,8 +181,8 @@ SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 #############################
 
 # todo move this
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '75pho5slg98bas'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'j5M5Vpcw2tdMdvMv'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'xxx'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'xxx'
 
 # Add email to requested authorizations.
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
