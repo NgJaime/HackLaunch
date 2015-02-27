@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static "css/carousel.css" %}">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -20,75 +21,90 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body>
-      <div class="container">
-          <nav class="navbar navbar-inverse navbar-static-top">
-              <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
+<body>
+
+<div class="navbar-wrapper">
+    <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">HackLaunch</a>
-                  </div>
-                  <div id="navbar" class="navbar-collapse collapse">
+                    <a class="navbar-brand" href="#">HackLaunch</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                      <li class="active"><a href="#">Home</a></li>
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Contact</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li class="divider"></li>
-                          <li class="dropdown-header">Nav header</li>
-                          <li><a href="#">Separated link</a></li>
-                          <li><a href="#">One more separated link</a></li>
-                        </ul>
-                      </li>
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
                     </ul>
 
-                      <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
                         {% if user.is_anonymous %}
-                          <li><a href="{% url 'users.views.register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                          <li><a href="{% url 'django.contrib.auth.views.login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            <li><a href="{% url 'users.views.register' %}">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Sign Up</a>
+                            </li>
+                            <li><a href="{% url 'django.contrib.auth.views.login' %}"><span
+                                    class="glyphicon glyphicon-log-in"></span> Login</a></li>
                         {% else %}
-                          <p>{{ user.first_name }}</p>
-                          {% for assoc in backends.associated %}
-                              <form action="{% url 'social:disconnect_individual' assoc.provider assoc.id %}" method="post">{% csrf_token %}
+                            <p>{{ user.first_name }}</p>
+                            {% for assoc in backends.associated %}
+                                <form action="{% url 'social:disconnect_individual' assoc.provider assoc.id %}"
+                                      method="post">{% csrf_token %}
                                     <button>Disconnect</button>
-                              </form>
-                          {% endfor %}
-                          <li><a href="{% url 'social:disconnect_individual' assoc.provider assoc.id %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                                </form>
+                            {% endfor %}
+                            <li><a href="{% url 'social:disconnect_individual' assoc.provider assoc.id %}"><span
+                                    class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         {% endif %}
-                      </ul>
-                  </div><!--/.nav-collapse -->
-              </div><!--/.container-fluid -->
-          </nav>
-      </div><!--/.container -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-      {% block content %}
-      {% endblock %}
+    </div>
+</div>
+<!--/.Nav bar container -->
 
-      <div class="container">
-        <hr class="featurette-divider">
+{% block content %}
+{% endblock %}
 
-          <!-- FOOTER -->
-        <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-            <p>© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-        </footer>
-      </div><!--/.container -->
+<!-- FOOTER -->
+<div class="container">
+    <hr class="divider">
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  </body>
+        <p>© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+</div>
+<!--/.container -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</body>
 </html>
