@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from mongoengine import connect
 import os
+from hackLaunch.settings.keys import *
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -179,10 +181,6 @@ SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 #############################
 # Social auth providers
 #############################
-
-# todo move this
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'xxx'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'xxx'
 
 # Add email to requested authorizations.
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']

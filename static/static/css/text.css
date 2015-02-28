@@ -1,0 +1,12 @@
+.title-text {
+    font-family: lato, helvetica, sans-serif;
+    color: #353535;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.secondary-title-text {
+    font-family: lato, helvetica, sans-serif;
+    color: #049074;
+    font-style: italic;
+    text-shadow: 0 1px 0 #fff;
+}
