@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^register/$', 'users.views.register', name='register'),
+    url(r'^profile/$', 'users.views.profile', name='profile'),
     url(r'^admin/', include(admin.site.urls)),
 
     url('', include('social.apps.django_app.urls', namespace='social')),
