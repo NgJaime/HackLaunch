@@ -186,7 +186,7 @@ SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
 
 # Add the fields so they will be requested from linkedin.
-SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location', 'specialties', 'picture-url']
 
 # Arrange to add the fields to UserSocialAuth.extra_data
 SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
@@ -194,5 +194,9 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                                    ('lastName', 'last_name'),
                                    ('emailAddress', 'email_address'),
                                    ('headline', 'headline'),
-                                   ('industry', 'industry')]
+                                   ('industry', 'industry'),
+                                   ('location', 'location'),
+                                   ('specialties', 'specialties'),
+                                   ('picture-url', 'picture-url'),
+                                   ('public-profile-url', 'public-profile-url')]
 
