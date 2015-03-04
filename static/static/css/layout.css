@@ -42,3 +42,9 @@
 .content-divider {
     margin: 37px 0; /* Space out the Bootstrap <hr> more */
 }
+
+.social-button-gray {
+    background-color: #e5e5e5;
+    margin-right: 30px;
+    margin-top: 10px;
+}
