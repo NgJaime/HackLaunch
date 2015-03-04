@@ -154,26 +154,33 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_uid',
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
+    # 'social.pipeline.debug'
     'social.pipeline.user.get_username',
     # 'example.app.pipeline.require_email',
     # 'social.pipeline.mail.mail_validation',
     'social.pipeline.user.create_user',
+    'users.pipeline.user_password',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
 )
 
+SOCIAL_AUTH_FORCE_POST_DISCONNECT = True
 SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
 SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'users.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
 EMAIL_FROM = 'noreply@hacklaunch.com'
-SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
+SOCIAL_AUTH_EMAIL_FORM_HTML = 'home.html'
 # SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
-# SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
+SOCIAL_AUTH_EMAIL_FORM_URL = '/'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/'
 SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/profile/'
+
+SOCIAL_AUTH_BACKEND_ERROR_URL = '/new-error-url/'
+
 
 SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 
