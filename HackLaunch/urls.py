@@ -8,15 +8,15 @@ from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', include('base.urls')),
+    url(r'^$', 'base.views.home'),
 
-    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^register/$', 'users.views.register', name='register'),
     url(r'^profile/$', 'users.views.profile', name='profile'),
     url(r'^admin/', include(admin.site.urls)),
+    # url(r'^complete/email/', include('base.urls')),
 
-    url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'', include('social.apps.django_app.urls', namespace='social'))
 ]
 
 if settings.DEBUG:
