@@ -8,6 +8,8 @@ def send_validation(strategy, backend, code):
 
     url = strategy.request.build_absolute_uri(url)
 
-    send_mail('Validate your account', 'Validate your account {0}'.format(url),
-
-    settings.EMAIL_FROM, [code.email], fail_silently=False)
+    send_mail('Validate your account',
+              'Validate your account {0}'.format(url),
+              settings.EMAIL_FROM,
+              [code.email],
+              fail_silently=False)
