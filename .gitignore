@@ -5,3 +5,4 @@ hackLaunch/settings/keys.py
 *.pyc
 *.sqlite3
 bfg.jar
+hacklaunch.log
