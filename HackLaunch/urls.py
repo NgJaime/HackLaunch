@@ -10,11 +10,14 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', 'base.views.home'),
 
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
-    url(r'^register/$', 'users.views.register', name='register'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logged_out.html'}, name='logout'),
     url(r'^profile/$', 'users.views.profile', name='profile'),
     url(r'^admin/', include(admin.site.urls)),
-    # url(r'^complete/email/', include('base.urls')),
+    url(r'^email/$', 'users.views.require_email', name='require_email'),
+    url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
+    url(r'^email_complete/$', 'users.views.email_complete', name='email_complete'),
+
+
 
     url(r'', include('social.apps.django_app.urls', namespace='social'))
 ]

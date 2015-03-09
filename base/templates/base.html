@@ -46,7 +46,7 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             {%  if not user.is_anonymous  %}
-                                {%  if user.first_name != 'none'%}
+                                {%  if user.first_name %}
                                     <li><p style="margin-top: 15px; color: white">{{ user.first_name }}  </p></li>
                                 {% endif %}
                                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
