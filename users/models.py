@@ -1,3 +1,5 @@
-from django.db import models
+# Define a custom User class to work with django-social-auth
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
+class CustomUser(AbstractUser):
+    pass
