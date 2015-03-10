@@ -1,4 +1,5 @@
 hackLaunch/settings/keys.py
+/users/migrations/
 /data
 /venv
 /.idea
@@ -6,3 +7,4 @@ hackLaunch/settings/keys.py
 *.sqlite3
 bfg.jar
 hacklaunch.log
+hacklaunch.db

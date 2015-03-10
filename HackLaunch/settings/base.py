@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from mongoengine import connect
 import os
 from hackLaunch.settings.keys import *
 
@@ -41,8 +40,7 @@ PREREQ_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.me',
-    'mongoengine.django.mongo_auth',
+    'social.apps.django_app.default',
 ]
 
 PROJECT_APPS = [
@@ -64,10 +62,10 @@ MIDDLEWARE_CLASSES = [
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
-
 ROOT_URLCONF = 'hackLaunch.urls'
 
 LOGIN_REDIRECT_URL = '/'
+# todo
 LOGIN_URL = 'django.contrib.auth.views.login'
 
 TEMPLATES = [
@@ -107,10 +105,13 @@ WSGI_APPLICATION = 'hackLaunch.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.dummy'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hacklaunch',
+        'USER': 'hacklaunch',
+        'PASSWORD': 'password',
+        'HOST': 'localhost'
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
@@ -172,17 +173,13 @@ LOGGING = {
     }
 }
 
-#############################
-# Mongoengine
-#############################
-# MONGOENGINE_USER_DOCUMENT = 'example.app.models.User'
-SESSION_ENGINE = 'mongoengine.django.sessions'
 
 #############################
 # Python social auth settings
 #############################
-SOCIAL_AUTH_STORAGE = 'social.apps.django_app.me.models.DjangoStorage'
+AUTH_USER_MODEL = 'users.CustomUser'
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.bitbucket.BitbucketOAuth',
