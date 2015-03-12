@@ -5,10 +5,17 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.template import RequestContext
+from users.models import CustomUser
 
 @login_required
-def profile(request):
-    return render(request, 'profile.html')
+def profile_edit(request):
+    return render(request, 'profile_edit.html')
+
+
+def profile_view(request, slug):
+    user = CustomUser.objects.get(slug=slug);
+
+    return render(request, 'profile_view.html', {"profile": user})
 
 
 def require_email(request):

@@ -10,7 +10,9 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', 'base.views.home'),
 
-    url(r'^profile/$', 'users.views.profile', name='profile'),
+    url(r'^profile/$', 'users.views.profile_edit', name='profile_edit'),
+    url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^email/$', 'users.views.require_email', name='require_email'),
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
