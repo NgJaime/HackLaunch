@@ -1,3 +1,4 @@
-Django==1.8b1
+Django==1.7
 psycopg2==2.6
 python-social-auth==0.2.1
+django-autoslug==1.7.2
