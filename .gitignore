@@ -3,6 +3,8 @@ hackLaunch/settings/keys.py
 /data
 /venv
 /.idea
+/bower_components
+/node_modules
 *.pyc
 *.sqlite3
 bfg.jar
