@@ -188,6 +188,7 @@ SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 AUTHENTICATION_BACKENDS = (
     'social.backends.bitbucket.BitbucketOAuth',
     'social.backends.email.EmailAuth',
+    'social.backends.github.GithubOAuth2',
     'social.backends.linkedin.LinkedinOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
