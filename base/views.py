@@ -1,6 +1,9 @@
 from django.shortcuts import render
-
+from base.forms import InitialPassword
 
 def home(request):
-    """ Default view for the root """
-    return render(request, 'home.html')
+    context = {
+        'form': InitialPassword(),
+    }
+
+    return render(request, 'home.html', context)

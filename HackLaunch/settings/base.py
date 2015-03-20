@@ -41,6 +41,8 @@ PREREQ_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
+    'zxcvbn_password',
+    'widget_tweaks',
 ]
 
 PROJECT_APPS = [
@@ -177,6 +179,9 @@ LOGGING = {
     }
 }
 
+PASSWORD_MIN_LENGTH = 8
+PASSWORD_MAX_LENGTH = 128
+PASSWORD_MIN_ENTROPY = 25
 
 #############################
 # Python social auth settings

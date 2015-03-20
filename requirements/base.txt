@@ -2,4 +2,6 @@ Django==1.7
 psycopg2==2.6
 python-social-auth==0.2.1
 django-autoslug==1.7.2
-
+zxcvbn==1.0
+django-zxcvbn-password==1.0.4
+django-widget-tweaks==1.3
