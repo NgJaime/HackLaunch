@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 {% block title %}HackLaunch - Home{% endblock %}
 
 {% block content %}
@@ -16,29 +17,24 @@
                             consectetur adipisicing elit. Odit a ullam sequi nobis minima earum accusantium perspiciatis
                             placeat, reiciendis distinctio.</p>
                     </div>
-                    {#                <div id="subscribe-plan" class="animated bounceInLeft animation-delay-9">#}
-                    {#                    <p class="lead lead-lg">Subscribe to be notified of updates</p>#}
-                    {#                    <div class="input-group">#}
-                    {#                      <input type="email" class="form-control" placeholder="Subscribe email...">#}
-                    {#                      <span class="input-group-btn">#}
-                    {#                        <button class="btn btn-plan" type="button">Subscribe</button>#}
-                    {#                      </span>#}
-                    {#                    </div><!-- /input-group -->#}
-                    {#                </div>#}
+
                     <div class="animated bounceInLeft animation-delay-9">
                         <div class="content-box box-primary content-box-trans animated fadeInUp animation-delay-8">
                             <h4 style="text-align: center"><b>Sign-in or Sign-up</b></h4>
 
-                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a single click</p>
+                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a
+                                single click</p>
 
                             <div id="logincontainer" style="background-color: transparent; border-width: 0px;">
                                 <ul class="top-nav-social hidden-sm" style="background-color: transparent">
-                                    <li><a href="{% url 'social:begin' "github" %}" class="animated fadeIn animation-delay-7 git" style="color: transparent">
+                                    <li><a href="{% url 'social:begin' "github" %}"
+                                           class="animated fadeIn animation-delay-7 git" style="color: transparent">
                                         <i class="fa fa-github fa-2x" style="color: #2a2a2a;"></i>
                                     </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'social:begin' "linkedin-oauth2" %}" class="animated fadeIn animation-delay-7 twitter">
+                                        <a href="{% url 'social:begin' "linkedin-oauth2" %}"
+                                           class="animated fadeIn animation-delay-7 twitter">
                                             <i class="fa fa-linkedin fa-2x" style="color: #2a2a2a;"></i>
                                         </a>
                                     </li>
@@ -48,36 +44,65 @@
                             <div id="signin-divider" style="margin-bottom: 10px">
                                 <div class="col-sm-8 division">
                                     <div class="line l"></div>
-                                    <span><p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px"> or </p></span>
+                                    <span><p
+                                            style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">
+                                        or </p></span>
+
                                     <div class="line r"></div>
                                 </div>
                             </div>
 
-                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a username and password</p>
+                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a
+                                username and password</p>
 
-                            <form class="form-inline" role="form" _lpchecked="1" style="margin-top: 10px">
-                                <div class="form-group">
-                                    <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail2"
-                                           placeholder="Enter email" autocomplete="off"
-                                           style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                            <div class="form-group">
+                                <form class="form-inline" action="{% url 'social:complete' "email" %}" method="post"
+                                      lpchecked="1" role="form"
+                                      style="margin-top: 10px" name="email_login" onsubmit="return validateSignup()">
+                                    {% csrf_token %}
+                                    <div class="input-group login-input" id="signup_email_group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                        <input id="email" type="email" class="form-control" name="email"
+                                               placeholder="email address">
+                                    </div>
+
+                                    <div class="input-group login-input" id="signup_password_group">
+                                        <span class="input-group-addon"><i class="fa fa-lock"
+                                                                           style="padding-right: 4px"></i></span>
+                                        {% render_field form.password id="password" class="form-control" type="password" placeholder="password" onkeyup="password_strength(this.value)" %}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-ar btn-primary">Sign in</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
+                                    <div id="password_strength_background" class="progress" style="margin-bottom: 10px; background-color: transparent;">
+                                        <div id="password_strength_bar"
+                                             class="progress-bar progress-bar-warning password_strength_bar"
+                                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5"
+                                             style="width: 0">
+                                        </div>
+                                    </div>
+                                    <p id="password_strength_info" class="text-muted password_strength_info hidden">
+                                    <span class="label label-danger">
+                                         Warning
+                                    </span>
+                                        <span id="password_strength_message"
+                                              style="margin-left:5px; color: white"></span>
+                                    </p>
                                 </div>
-                                <div class="form-group">
-                                    <label class="sr-only" for="exampleInputPassword2">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword2"
-                                           placeholder="Password" autocomplete="off"
-                                           style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
-                                </div>
+                            </div>
 
-                                <button type="submit" class="btn btn-ar btn-primary">Sign in</button>
 
-                                <div style="margin: 10px">
-                                    <a href="/password_reset"
-                                       style="font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; margin: 9px; color: #82E01B">Forgotten
-                                        your password?</a>
-
-                                </div>
-                            </form>
+                            <div>
+                                <a href="/password_reset"
+                                   style="font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; margin: 9px; color: #82E01B">Forgotten
+                                    your password?</a>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -87,15 +112,18 @@
                                         class="fa fa-cubes"></i></span>
                                 <h5 class="content-box-title">COMMUNITY BUILDING</h5>
 
-                                <p>Want to find like-minded developers? HackLaunch hackathons provide a community of like-minded developers to continue with their ideation and build.</p>
+                                <p>Want to find like-minded developers? HackLaunch hackathons provide a community of
+                                    like-minded developers to continue with their ideation and build.</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <div class="content-box box-primary content-box-trans animated fadeInUp animation-delay-8">
-                                <span class="icon-ar icon-ar-lg icon-ar-white icon-ar-circle"><i class="fa fa-lightbulb-o"></i></span>
+                                <span class="icon-ar icon-ar-lg icon-ar-white icon-ar-circle"><i
+                                        class="fa fa-lightbulb-o"></i></span>
                                 <h5 class="content-box-title">IDEATION &amp; BUILD</h5>
 
-                                <p>Always had a winning idea but never the chance to realize it? HackLaunch hackathons will be your first steps to ideation and creation.</p>
+                                <p>Always had a winning idea but never the chance to realize it? HackLaunch hackathons
+                                    will be your first steps to ideation and creation.</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
@@ -104,7 +132,8 @@
                                         class="fa fa-briefcase"></i></span>
                                 <h5 class="content-box-title">CORPORATE PARTNERSHIPS</h5>
 
-                                <p>HackLaunch works with some of the top companies to run our hackathons. Together with our partners, we bring a world of possibility to the developers.</p>
+                                <p>HackLaunch works with some of the top companies to run our hackathons. Together with
+                                    our partners, we bring a world of possibility to the developers.</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
@@ -113,7 +142,9 @@
                                         class="fa fa-dashboard"></i></span>
                                 <h5 class="content-box-title">GROWTH ACCELERATION</h5>
 
-                                <p>HackLaunch don't just stop at the end of the hackathons, we continue to work with the participants on their continued growth after event and our corporate partners on the post event update.</p>
+                                <p>HackLaunch don't just stop at the end of the hackathons, we continue to work with the
+                                    participants on their continued growth after event and our corporate partners on the
+                                    post event update.</p>
                             </div>
                         </div>
                     </div>
