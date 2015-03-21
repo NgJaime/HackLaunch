@@ -52,24 +52,22 @@
                                 </div>
                             </div>
 
-                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a
-                                username and password</p>
+                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a username and password</p>
 
                             <div class="form-group">
-                                <form class="form-inline" action="{% url 'social:complete' "email" %}" method="post"
+                                <form id="main-login-form" class="form-inline" action="{% url 'social:complete' "email" %}" method="post"
                                       lpchecked="1" role="form"
-                                      style="margin-top: 10px" name="email_login" onsubmit="return validateSignup()">
+                                      style="margin-top: 10px" name="email_login" onsubmit="return validateSignup('main')">
                                     {% csrf_token %}
-                                    <div class="input-group login-input" id="signup_email_group">
+                                    <div class="input-group login-input" id="main_signup_email_group">
                                         <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                        <input id="email" type="email" class="form-control" name="email"
-                                               placeholder="email address">
+                                        {% render_field form.email id="main-email" class="form-control" type="email" name="email" placeholder="email address" %}
                                     </div>
 
-                                    <div class="input-group login-input" id="signup_password_group">
+                                    <div class="input-group login-input" id="main_signup_password_group">
                                         <span class="input-group-addon"><i class="fa fa-lock"
                                                                            style="padding-right: 4px"></i></span>
-                                        {% render_field form.password id="password" class="form-control" type="password" placeholder="password" onkeyup="password_strength(this.value)" %}
+                                        {% render_field form.password id="main-password" class="form-control" type="password" placeholder="password" onkeyup="mainLoginMessage.passwordStrength(this.value)" %}
                                     </div>
 
                                     <div class="form-group">
@@ -78,25 +76,7 @@
                                 </form>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
-                                    <div id="password_strength_background" class="progress" style="margin-bottom: 10px; background-color: transparent;">
-                                        <div id="password_strength_bar"
-                                             class="progress-bar progress-bar-warning password_strength_bar"
-                                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5"
-                                             style="width: 0">
-                                        </div>
-                                    </div>
-                                    <p id="password_strength_info" class="text-muted password_strength_info hidden">
-                                    <span class="label label-danger">
-                                         Warning
-                                    </span>
-                                        <span id="password_strength_message"
-                                              style="margin-left:5px; color: white"></span>
-                                    </p>
-                                </div>
-                            </div>
-
+                            <div id="main-login-message" class="row"></div>
 
                             <div>
                                 <a href="/password_reset"

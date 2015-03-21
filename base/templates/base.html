@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load url from future %}
+{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +39,7 @@
         <script src="{% static "js/html5shiv.min.js" %}"></script>
         <script src="{% static "js/respond.min.js" %}"></script>
     <![endif]-->
+
 </head>
 
 <!-- Preloader -->
@@ -149,28 +151,26 @@
                                 <p style="text-align: center">With a username and password</p>
 
                                 <div class="form-group">
-                                    <form action="{% url 'social:complete' "email" %}" method="post">
+                                    <form id="top-login-form" action="{% url 'social:complete' "email" %}" method="post" onsubmit="return validateSignup('top')">
                                         {% csrf_token %}
-                                        <div class="input-group login-input">
+                                        <div id="top_signup_email_group" class="input-group login-input">
                                             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                            <input id="email" type="email" class="form-control" name="email"
-                                                   placeholder="email address">
+                                            {% render_field form.email id="top-email" class="form-control" type="email" name="email" placeholder="email address" %}
+
                                         </div>
 
-                                        <span class="help-block"></span>
-
-                                        <div class="input-group login-input">
+                                        <div id="top_signup_password_group" class="input-group login-input" style="margin-top: 5px; margin-bottom: 8px;">
                                             <span class="input-group-addon"><i class="fa fa-lock"
                                                                                style="padding-right: 4px"></i></span>
-                                            <input id="password" type="password" name="password"
-                                                   class="form-control"
-                                                   placeholder="Password">
+
+                                            {% render_field form.password id="top-password" class="form-control" type="password" placeholder="password" onkeyup="topLoginMessage.passwordStrength(this.value)" %}
+
                                         </div>
 
-                                        <span class="help-block"></span>
+                                        <div id="top-login-message"></div>
 
                                         <a href="/password_reset"
-                                           style="background-color: #f4f4f4; font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; margin-top: 9px; color: #82E01B">Forgotten your password?</a>
+                                           style="background-color: #f4f4f4; font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; color: #82E01B">Forgotten your password?</a>
 
                                         <button type="submit" class="btn btn-ar btn-primary pull-right">
                                             Sign in
@@ -181,24 +181,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    <!-- dropdown -->
-
-                    <!-- NAV BAR SEARCH BUTTON -->
-                    {#                    <div class="dropdown animated fadeInDown animation-delay-13">#}
-                    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>#}
-                    {##}
-                    {#                        <div class="dropdown-menu dropdown-menu-right dropdown-search-box animated fadeInUp">#}
-                    {#                            <form role="form">#}
-                    {#                                <div class="input-group">#}
-                    {#                                    <input type="text" class="form-control" placeholder="Search...">#}
-                    {#                            <span class="input-group-btn">#}
-                    {#                                <button class="btn btn-ar btn-primary" type="button">Go!</button>#}
-                    {#                            </span>#}
-                    {#                                </div>#}
-                    {#                                <!-- /input-group -->#}
-                    {#                            </form>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
                     <!-- dropdown -->
                 </nav>
             </div>
@@ -356,24 +338,6 @@
 <!-- SLIDEBAR -->
 
 <div class="sb-slidebar sb-right">
-    <!-- SEARCH SIDE -->
-    {#    <div class="input-group">#}
-    {#        <input type="text" class="form-control" placeholder="Search...">#}
-    {#        <span class="input-group-btn">#}
-    {#            <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>#}
-    {#        </span>#}
-    {#    </div>#}
-    <!-- /input-group -->
-
-    {#    <h2 class="slidebar-header no-margin-bottom">Navigation</h2>#}
-    {#    <ul class="slidebar-menu">#}
-    {#        <li><a href="index.html">Home</a></li>#}
-    {#        <li><a href="portfolio_topbar.html">Portfolio</a></li>#}
-    {#        <li><a href="page_about3.html">About us</a></li>#}
-    {#        <li><a href="blog.html">Blog</a></li>#}
-    {#        <li><a href="page_contact.html">Contact</a></li>#}
-    {#    </ul>#}
-
     <h2 class="slidebar-header">Social Media</h2>
 
     <div class="slidebar-social-icons">
@@ -411,9 +375,7 @@
 <script src="{% static "js/syntaxhighlighter/shBrushJScript.js" %}"></script>
 
 <script src="{% static "js/app.js" %}"></script>
-
 <script src="{% static "js/home.js" %}"></script>
-
 <script src="{% static "js/password_strength.js" %}"></script>
 <script src="{% static "js/zxcvbn.js" %}"></script>
 <script src="{% static "js/zxcvbn-async.js" %}"></script>

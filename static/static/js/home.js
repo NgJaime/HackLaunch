@@ -14,18 +14,89 @@ function wrapResize() {
     wrap2.css('min-height', sizeWrap + "px");
 }
 
-validateSignup = function () {
-    var email = document.forms["email_login"]["email"].value,
-        password = document.forms["email_login"]["password"].value,
+LoginElements = function(location) {
+    var addedElements = false,
+        location = location,
+        password_strength_bar = null,
+        password_strength_info = null,
+        password_strength_message = null,
+
+        mainMessage = '<div class="col-sm-12 col-md-6 col-md-offset-3"> \
+                            <div id="password_strength_background" class="progress" style="margin-bottom: 10px;"> \
+                                <div id="main_password_strength_bar" \
+                                     class="progress-bar progress-bar-warning password_strength_bar" \
+                                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" \
+                                     style="width: 0"> \
+                                </div> \
+                            </div> \
+                            <p id="main_password_strength_info" class="text-muted password_strength_info"> \
+                            <span id="login-warning" class="label label-danger"> \
+                                 Warning \
+                            </span> \
+                                <span id="main_password_strength_message" \
+                                      style="margin-left:5px; color: white"></span> \
+                            </p> \
+                        </div>',
+
+        topMessage = '<div> \
+                            <div id="password_strength_background" class="progress" style="margin-bottom: 5px;"> \
+                                <div id="top_password_strength_bar" \
+                                     class="progress-bar progress-bar-warning password_strength_bar" \
+                                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" \
+                                     style="width: 0"> \
+                                </div> \
+                            </div> \
+                            <p id="top_password_strength_info" style="margin: 0px 0px 0px"> \
+                                <span id="login-warning" class="label label-danger"> \
+                                    Warning \
+                                </span> \
+                                <span id="top_password_strength_message" \
+                                      style="margin-left:5px; color: #666"></span> \
+                            </p> \
+                        </div>',
+
+        addElements = function() {
+            if (addedElements === false) {
+                var element = $("#" + location + "-login-message");
+
+                if (location === "main") {
+                    element.append(mainMessage);
+                }
+                else if (location === "top") {
+                    element.append(topMessage);
+                }
+
+                this.password_strength_bar = $("#" + location + "_password_strength_bar");
+                this.password_strength_info = $("#" + location + "_password_strength_info");
+                this.password_strength_message = $("#" + location + "_password_strength_message")
+
+                addedElements = true;
+            }
+        };
+
+    return {
+        addElements: addElements,
+        password_strength_bar: password_strength_bar,
+        password_strength_info: password_strength_info,
+        password_strength_message: password_strength_message
+    }
+};
+
+mainLoginElements = new LoginElements("main");
+topLoginElements = new LoginElements("top");
+
+validateSignup = function (location) {
+    var email = document.getElementById(location + "-login-form")["email"].value,
+        password = document.getElementById(location + "-login-form")["password"].value,
         result = true,
         message = "Please";
 
-    if (!validatePassword(password)) {
+    if (!validatePassword(password, location)) {
         result = false;
         message += " choose a more complex password"
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(email, location)) {
         result =  false;
 
         if (message !== "Please") {
@@ -36,29 +107,34 @@ validateSignup = function () {
     }
 
     if (message !== "Please") {
-        var password_strength_info = $("#password_strength_info");
-
-        password_strength_info.find('.label').removeClass('hidden');
-        password_strength_info.find('#password_strength_message').html(message);
-        password_strength_info.removeClass('hidden');
+        if (location === 'main') {
+            mainLoginElements.addElements();
+            mainLoginElements.password_strength_message.html(message);
+            mainLoginElements.password_strength_info.removeClass('hidden');
+        }
+        else if (location === 'top') {
+            topLoginElements.addElements();
+            topLoginElements.password_strength_message.html(message);
+            topLoginElements.password_strength_info.removeClass('hidden');
+        }
     }
 
     return result;
-}
+};
 
-validatePassword = function(password) {
+validatePassword = function(password, location) {
     var result = zxcvbn(password);
 
     if (result.score < 3) {
-        $("#signup_password_group").addClass("has-feedback has-error")
+        $("#" + location + "_signup_password_group").addClass("has-feedback has-error")
         return false;
     }
 
-    $("#signup_password_group").removeClass("has-feedback has-error")
+    $("#" + location + "_signup_password_group").removeClass("has-feedback has-error")
     return true;
-}
+};
 
-validateEmail = function (email) {
+validateEmail = function (email, location) {
     function validateEmail(sEmail) {
         var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
         if (filter.test(sEmail)) {
@@ -79,11 +155,11 @@ validateEmail = function (email) {
     }
 
     if (result === false) {
-        $("#signup_email_group").addClass("has-feedback has-error")
+        $("#" + location + "_signup_email_group").addClass("has-feedback has-error")
     }
     else {
-        $("#signup_email_group").removeClass("has-feedback has-error")
+        $("#" + location + "_signup_email_group").removeClass("has-feedback has-error")
     }
 
     return result;
-}
+};
