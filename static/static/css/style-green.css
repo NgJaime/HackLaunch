@@ -509,7 +509,7 @@ a.social:active {
     content: "G";
 }
 
-.social-youtube {
+.social-bitbucket {
     /*General*/
     display: block;
     text-decoration: none;
@@ -537,7 +537,7 @@ a.social:active {
     background-image: linear-gradient(to top, #c9322b, #dc3f38);
 }
 
-.social-youtube:after {
+.social-bitbucket:after {
     content: "H";
 }
 
@@ -1980,13 +1980,13 @@ hr.double {
     background-color: #dd4b39;
 }
 
-.btn-social.youtube {
+.btn-social.bitbucket {
     color: #bb0000;
     border-color: #bb0000;
 }
 
-.btn-social.youtube:hover,
-.btn-social.youtube.solid {
+.btn-social.bitbucket:hover,
+.btn-social.bitbucket.solid {
     color: #fff;
     background-color: #bb0000;
 }
@@ -2220,7 +2220,7 @@ hr.double {
     background-image: linear-gradient(to top, #dd4b39, #e47365);
 }
 
-.social-icon-ar.youtube {
+.social-icon-ar.bitbucket {
     background-color: #bb0000;
     background-image: -webkit-linear-gradient(bottom, #bb0000, #ee0000);
     background-image: -moz-linear-gradient(bottom, #bb0000, #ee0000);
@@ -7276,7 +7276,7 @@ a.feature-icon:hover {
     color: #fff;
 }
 
-.top-nav-social a.youtube:hover {
+.top-nav-social a.bitbucket:hover {
     background-color: #bb0000;
     color: #fff;
 }
@@ -8370,13 +8370,18 @@ input[type="date"]:focus {
     background-color: #fafafa;
 }
 
-#logincontainer ul li > a.twitter:hover {
-    background-color: #00aced;
+#logincontainer ul li > a.linkedin:hover {
+    background-color: #007bb6;
     color: #fff;
 }
 
 #logincontainer ul li a.git:hover {
     background-color: #666666;
+    color: #fff;
+}
+
+#logincontainer ul li a.bitbucket:hover {
+    background-color: #205081;
     color: #fff;
 }
 

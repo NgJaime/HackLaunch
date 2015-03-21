@@ -22,20 +22,24 @@
                         <div class="content-box box-primary content-box-trans animated fadeInUp animation-delay-8">
                             <h4 style="text-align: center"><b>Sign-in or Sign-up</b></h4>
 
-                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a
-                                single click</p>
+                            <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a single click</p>
 
                             <div id="logincontainer" style="background-color: transparent; border-width: 0px;">
-                                <ul class="top-nav-social hidden-sm" style="background-color: transparent">
-                                    <li><a href="{% url 'social:begin' "github" %}"
-                                           class="animated fadeIn animation-delay-7 git" style="color: transparent">
-                                        <i class="fa fa-github fa-2x" style="color: #2a2a2a;"></i>
-                                    </a>
+                                <ul style="background-color: transparent; font-size: 25px; margin-top: 0px; margin-bottom: 10px;">
+                                    <li><a href="{% url 'social:begin' 'bitbucket' %}"
+                                           class="animated fadeIn animation-delay-7 bitbucket" style="color: transparent; padding-top: 20px">
+                                            <i class="fa fa-bitbucket fa-2x" style="color: #2a2a2a; padding-top: 20px;"></i>
+                                        </a>
+                                    </li>
+                                    <li><a href="{% url 'social:begin' 'github' %}"
+                                           class="animated fadeIn animation-delay-7 git" style="color: transparent; padding-top: 20px">
+                                            <i class="fa fa-github fa-2x" style="color: #2a2a2a;"></i>
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'social:begin' "linkedin-oauth2" %}"
-                                           class="animated fadeIn animation-delay-7 twitter">
-                                            <i class="fa fa-linkedin fa-2x" style="color: #2a2a2a;"></i>
+                                        <a href="{% url 'social:begin' 'linkedin-oauth2' %}"
+                                           class="animated fadeIn animation-delay-7 linkedin" style="color: transparent; padding-top: 20px">
+                                            <i class="fa fa-linkedin fa-2x" style="color: #2a2a2a; padding-top: 20px;"></i>
                                         </a>
                                     </li>
                                 </ul>
