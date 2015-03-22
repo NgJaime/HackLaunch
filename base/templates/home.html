@@ -20,7 +20,7 @@
 
                     <div class="animated bounceInLeft animation-delay-9">
                         <div class="content-box box-primary content-box-trans animated fadeInUp animation-delay-8">
-                            <h4 style="text-align: center"><b>Sign-in or Sign-up</b></h4>
+                            <h3 style="text-align: center"><b>Sign-in or Sign-up</b></h3>
 
                             <p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">With a single click</p>
 
@@ -48,9 +48,7 @@
                             <div id="signin-divider" style="margin-bottom: 10px">
                                 <div class="col-sm-8 division">
                                     <div class="line l"></div>
-                                    <span><p
-                                            style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">
-                                        or </p></span>
+                                    <span><p style="text-align: center; margin-bottom: 0px; color: #ffffff; font-size: 16px">or</p></span>
 
                                     <div class="line r"></div>
                                 </div>
@@ -80,12 +78,29 @@
                                 </form>
                             </div>
 
-                            <div id="main-login-message" class="row"></div>
+                            <div id="main-login-message" class="row">
+                                {% if form.errors %}
+                                    <div id="returned_errors">
+                                        {% for error in form.password.errors %}
+                                            <p class="text-muted">
+                                                <span id="login-warning" class="label label-danger"> Warning</span>
+                                                <span style="margin-left:5px; color: white">{{ error }}</span>
+                                            </p>
+                                        {% endfor %}
+
+                                        {% for error in form.email.errors %}
+                                            <p class="text-muted">
+                                                <span id="login-warning" class="label label-danger"> Warning</span>
+                                                <span style="margin-left:5px; color: white">{{ error }}</span>
+                                            </p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
 
                             <div>
                                 <a href="/password_reset"
-                                   style="font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; margin: 9px; color: #82E01B">Forgotten
-                                    your password?</a>
+                                   style="font-family: 'Open Sans', sans-serif; font-size: 14px; border-width: 0px; margin: 9px; color: #82E01B">Forgotten your password?</a>
                             </div>
                         </div>
                     </div>

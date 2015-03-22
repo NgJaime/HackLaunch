@@ -10,6 +10,8 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', 'base.views.home'),
 
+    url(r'^complete/(?P<backend>[^/]+)/$', 'users.views.complete', name='complete'),
+
     url(r'^profile/$', 'users.views.profile_edit', name='profile_edit'),
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
 

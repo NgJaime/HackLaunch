@@ -57,6 +57,8 @@ LoginElements = function(location) {
 
         addElements = function() {
             if (addedElements === false) {
+                $("#" + location + "-login-message").empty();
+
                 var element = $("#" + location + "-login-message");
 
                 if (location === "main") {
