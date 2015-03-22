@@ -28,7 +28,7 @@ def require_email(request):
 
 
 def validation_sent(request):
-    return render(request, 'validation_sent.html')
+    return render(request, 'validation_sent.html', {'email': request.session['email_validation_address']})
 
 
 def email_complete(request):
