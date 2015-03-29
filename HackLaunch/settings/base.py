@@ -186,7 +186,7 @@ PASSWORD_MIN_ENTROPY = 25
 #############################
 # Python social auth settings
 #############################
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
@@ -210,10 +210,9 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.create_user',
     'users.pipeline.user_password',
     'social.pipeline.social_auth.associate_user',
-    'social.pipeline.social_auth.load_extra_data',
+    'users.pipeline.load_extra_data',
     'social.pipeline.user.user_details'
 )
-
 
 SOCIAL_AUTH_FORCE_POST_DISCONNECT = True
 SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True

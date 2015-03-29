@@ -27,40 +27,28 @@ PasswordStrength = function(loginElements)
         return 'centuries'
     },
 
-    match_passwords = function (password_field, confirmation_fields) {
+    matchPasswords = function (password, confirmation_fields) {
         // Optional parameter: if no specific confirmation field is given, check all
         if (confirmation_fields === undefined) {
-            confirmation_fields = $('.password_confirmation')
+            confirmation_fields = $('#password_confirmation')
         }
-        if (confirmation_fields === undefined) {
+        if (confirmation_fields === undefined
+            || confirmation_fields.length !== 1) {
             return;
         }
 
-        var password = password_field.val();
+        var confirm_value = confirmation_fields[0].value;
 
-        confirmation_fields.each(function (index, confirm_field) {
-            var confirm_value = $(confirm_field).val();
-            var confirm_with = $(confirm_field).data('confirm-with');
-
-            if (confirm_with && confirm_with == password_field.attr('id')) {
-                if (confirm_value && password) {
-                    if (confirm_value === password) {
-                        $(confirm_field).parent().find('.password_strength_info').addClass('hidden');
-                    } else {
-                        $(confirm_field).parent().find('.password_strength_info').removeClass('hidden');
-                    }
-                } else {
-                    $(confirm_field).parent().find('.password_strength_info').addClass('hidden');
-                }
+        if (confirm_value && password) {
+            if (confirm_value === password) {
+                this.passwordStrength(password)
+            } else {
+                elements.password_strength_info.removeClass('hidden');
+                elements.password_strength_bar.removeClass('progress-bar-warning').removeClass('progress-bar-success').addClass('progress-bar-danger');
+                elements.password_strength_info.find('.label').removeClass('hidden');
+                elements.password_strength_bar.width(100 + '%');
+                elements.password_strength_message.html("Passwords do not match");
             }
-        });
-
-        // If a password field other than our own has been used, add the listener here
-        if (!password_field.hasClass('password_strength') && !password_field.data('password-listener')) {
-            password_field.on('keyup', function () {
-                match_passwords($(this));
-            });
-            password_field.data('password-listener', true);
         }
     },
 
@@ -91,9 +79,11 @@ PasswordStrength = function(loginElements)
     };
 
     return {
-        passwordStrength: passwordStrength
+        passwordStrength: passwordStrength,
+        matchPasswords: matchPasswords
     }
 }
 
 var mainLoginMessage = new PasswordStrength(mainLoginElements),
-    topLoginMessage = new PasswordStrength(topLoginElements);
+    topLoginMessage = new PasswordStrength(topLoginElements),
+    profileLoginMessage = new PasswordStrength(profileLoginElements);
