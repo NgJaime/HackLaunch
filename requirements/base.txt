@@ -5,3 +5,7 @@ django-autoslug==1.7.2
 zxcvbn==1.0
 django-zxcvbn-password==1.0.4
 django-widget-tweaks==1.3
+django-storages==1.1.8
+boto==2.36.0
+Pillow==2.7.0
+django-resized==0.3.5

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from autoslug import AutoSlugField
+from s3 import upload_image
+from django_resized import ResizedImageField
 
 
 class Skill(models.Model):
@@ -16,8 +18,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     skills = models.ManyToManyField(Skill)
 
-    imageURL = models.URLField()
-    thumbnailURL = models.URLField()
+    image = ResizedImageField(size=[200, 200], crop=['middle', 'center'], upload_to=upload_image, blank=True)
+    thumbnail = models.URLField()
 
     slug = AutoSlugField(unique=True)
 
