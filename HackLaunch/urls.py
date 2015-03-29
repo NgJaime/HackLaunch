@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from users.views import ProfileEditView
 
 # todo remove debug
 from django.conf import settings
@@ -12,7 +13,7 @@ urlpatterns = [
 
     url(r'^complete/(?P<backend>[^/]+)/$', 'users.views.complete', name='complete'),
 
-    url(r'^profile/$', 'users.views.profile_edit', name='profile_edit'),
+    url(r'^profile/$', ProfileEditView.as_view()),
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
 
     url(r'^admin/', include(admin.site.urls)),

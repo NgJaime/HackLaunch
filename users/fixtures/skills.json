@@ -1,0 +1,23 @@
+[
+  {
+    "model": "users.skill",
+    "pk": 1,
+    "fields": {
+      "name": "Python"
+    }
+  },
+  {
+    "model": "users.skill",
+    "pk": 2,
+    "fields": {
+      "name": "Javascript"
+    }
+  },
+  {
+    "model": "users.skill",
+    "pk": 3,
+    "fields": {
+      "name": "SQL"
+    }
+  }
+]
