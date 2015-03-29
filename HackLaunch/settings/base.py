@@ -43,6 +43,7 @@ PREREQ_APPS = [
     'social.apps.django_app.default',
     'zxcvbn_password',
     'widget_tweaks',
+    'storages',
 ]
 
 PROJECT_APPS = [
@@ -255,4 +256,18 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                                    ('specialties', 'specialties'),
                                    ('picture-url', 'picture-url'),
                                    ('public-profile-url', 'public-profile-url')]
+
+
+#############################
+# S3 base
+#############################
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+
+#############################
+# Image resizing
+#############################
+DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
+DJANGORESIZED_DEFAULT_QUALITY = 99
+DJANGORESIZED_DEFAULT_KEEP_META = True
 

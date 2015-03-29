@@ -12,9 +12,19 @@ class UserProfileForm(forms.Form):
                                             coerce=int,
                                             choices=[(skill.pk, skill.name) for skill in Skill.objects.all()],
                                             required=False)
-    image = forms.ImageField()
+    image = forms.ImageField(widget=forms.FileInput)
     password = PasswordField(widget=None)
     password_confirmation = PasswordConfirmationField(widget=None)
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+
+        if image:
+            if image._size > 5*1024*1024:
+                raise forms.ValidationError("Max image size 5Mb.")
+            return image
+        else:
+            raise forms.ValidationError("Could not read uploaded image.")
 
     def clean(self):
         cleaned_data = super(UserProfileForm, self).clean()
