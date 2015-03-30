@@ -8501,3 +8501,19 @@ input[type="date"]:focus {
 .btn-file input:hover {
     background: #CBF29F;
 }
+
+.checkbox-horizontal {
+
+}
+
+.checkbox-horizontal ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.checkbox-horizontal li {
+    float: left;
+    width: 50%;
+    padding: 2px;
+}
+

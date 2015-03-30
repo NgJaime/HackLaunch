@@ -27,6 +27,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         initial['summary'] = self.profile.summary
         initial['location'] = self.profile.location
         initial['skills'] = [skill.id for skill in self.profile.skills.all()]
+        initial['maker_type'] = [maker_type.id for maker_type in self.profile.maker_type.all()]
         initial['image'] = self.profile.image
 
         return initial

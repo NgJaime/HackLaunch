@@ -1,0 +1,51 @@
+[
+  {
+    "model": "users.MakerTypes",
+    "pk": 1,
+    "fields": {
+      "name": "Full-stack Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 2,
+    "fields": {
+      "name": "Frontend Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 3,
+    "fields": {
+      "name": "Backend Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 4,
+    "fields": {
+      "name": "Mobile Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 5,
+    "fields": {
+      "name": "Games Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 6,
+    "fields": {
+      "name": "Designer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 7,
+    "fields": {
+      "name": "Other"
+    }
+  }
+]

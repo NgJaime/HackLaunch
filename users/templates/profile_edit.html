@@ -15,8 +15,8 @@
                 <!-- left column -->
                 <div class="col-md-3">
                     <div class="text-center">
-                        {%  if form.initial.image.url %}
-                            <img src="{{ form.initial.image.url }}" class="avatar img-circle" alt="avatar" />
+                        {%  if form.initial.image %}
+                            <img src="{{ form.initial.image.url }}" class="avatar" alt="avatar" />
                         {% else %}
                             <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
                         {% endif %}
@@ -162,6 +162,36 @@
                                  style="padding-top: 7px; padding-left: 5px;"></div>
                         {% endif %}
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Maker type:</label>
+
+                        {% if form.errors.maker_type %}
+                            <div id='maker-type-input' class="col-lg-6 checkbox-horizontal has-error has-feedback checkbox checkbox-success checkbox-inline">
+                                {% render_field form.maker_type name='maker_type' class="form-control checkbox-inline" id="maker-type" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
+                                <span id='maker-type-icon' class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                            <div id="maker-type-errors" class="col-lg-3"
+                                 style="padding-top: 7px; padding-left: 5px;">
+                                {% for error in form.errors.maker_type %}
+                                    <p class="text-muted">
+                                        <span style="color: red">{{ error }}</span>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="col-lg-6 checkbox-horizontal">
+                                {% render_field form.maker_type %}
+
+                                <span id='maker-type-icon'
+                                      class="glyphicon glyphicon-remove form-control-feedback hidden"></span>
+                            </div>
+                            <div id="maker-type-errors" class="col-lg-3 hidden"
+                                 style="padding-top: 7px; padding-left: 5px;"></div>
+                        {% endif %}
+                    </div>
+
+
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Summary:</label>
 
