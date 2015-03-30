@@ -27,6 +27,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         initial['summary'] = self.profile.summary
         initial['location'] = self.profile.location
         initial['skills'] = [skill.id for skill in self.profile.skills.all()]
+        initial['image'] = self.profile.image
 
         return initial
 
@@ -80,9 +81,9 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
 
 def profile_view(request, slug):
-    user = get_object_or_404(User, slug=slug)
+    profile = get_object_or_404(UserProfile, slug=slug)
 
-    return render(request, 'profile_view.html', {"profile": user})
+    return render(request, 'profile_view.html', {"profile": profile})
 
 
 def require_email(request):
