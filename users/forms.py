@@ -1,6 +1,8 @@
 from django import forms
-from models import Skill
+from models import Skill, MakerTypes
 from zxcvbn_password.fields import PasswordField, PasswordConfirmationField
+from django.conf import settings
+from base.widgets.ColumnCheckboxSelectMultiple import HorizontalCheckboxRenderer
 
 
 class UserProfileForm(forms.Form):
@@ -8,10 +10,14 @@ class UserProfileForm(forms.Form):
     last_name = forms.CharField(label='Last name', max_length=30, min_length=1)
     location = forms.CharField(label='Location', max_length=128)
     summary = forms.CharField(label='summary', max_length=256, required=False)
+    # todo the skil marker types queries could be cached
     skills = forms.TypedMultipleChoiceField(label='Skills',
                                             coerce=int,
-                                            choices=[(skill.pk, skill.name) for skill in Skill.objects.all()],
+                                            choices=[(skill.id, skill.name) for skill in Skill.objects.all()],
                                             required=False)
+    maker_type = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                           choices=[(maker_type.id, maker_type.name) for maker_type in MakerTypes.objects.all()],
+                                           required=False)
     image = forms.ImageField(widget=forms.FileInput)
     password = PasswordField(widget=None)
     password_confirmation = PasswordConfirmationField(widget=None)
@@ -21,7 +27,7 @@ class UserProfileForm(forms.Form):
 
         if 'image' in self.changed_data:
             if image:
-                if image._size > 5*1024*1024:
+                if image._size > settings.MAX_IMAGE_SIZE:
                     raise forms.ValidationError("Max image size 5Mb.")
                 return image
             else:

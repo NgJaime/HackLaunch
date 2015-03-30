@@ -27,7 +27,7 @@ class User(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     skills = models.ManyToManyField(Skill)
-    makerType = models.ManyToManyField(MakerTypes)
+    maker_type = models.ManyToManyField(MakerTypes)
 
     image = ResizedImageField(size=[230, 230], crop=['middle', 'center'], upload_to=upload_image, blank=True)
     thumbnail = ResizedImageField(size=[20, 20], crop=['middle', 'center'], upload_to=upload_image, blank=True)
