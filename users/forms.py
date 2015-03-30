@@ -19,12 +19,13 @@ class UserProfileForm(forms.Form):
     def clean_image(self):
         image = self.cleaned_data.get('image', False)
 
-        if image:
-            if image._size > 5*1024*1024:
-                raise forms.ValidationError("Max image size 5Mb.")
-            return image
-        else:
-            raise forms.ValidationError("Could not read uploaded image.")
+        if 'image' in self.changed_data:
+            if image:
+                if image._size > 5*1024*1024:
+                    raise forms.ValidationError("Max image size 5Mb.")
+                return image
+            else:
+                raise forms.ValidationError("Could not read uploaded image.")
 
     def clean(self):
         cleaned_data = super(UserProfileForm, self).clean()
