@@ -2,7 +2,6 @@ from django import forms
 from models import Skill, MakerTypes
 from zxcvbn_password.fields import PasswordField, PasswordConfirmationField
 from django.conf import settings
-from base.widgets.ColumnCheckboxSelectMultiple import HorizontalCheckboxRenderer
 
 
 class UserProfileForm(forms.Form):
