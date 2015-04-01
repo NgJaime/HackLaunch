@@ -1,3 +1,3 @@
-from hackLaunch.settings.base import *
+from hacklaunch.settings.base import *
 
 DEBUG=False
