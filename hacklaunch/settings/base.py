@@ -28,7 +28,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'ec2-52-74-130-171.ap-southeast-1.compute.amazonaws.com']
 
 
 # Application definition
