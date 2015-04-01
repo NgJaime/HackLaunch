@@ -8468,12 +8468,12 @@ input[type="date"]:focus {
 }
 
 #top-dropdown-link {
-    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     border-width: 0px;
     margin: 1px;
     background-color: transparent;
     border-width: 0px;
+    color: #666;
 }
 
 .btn-file {
