@@ -17,7 +17,7 @@ class UserProfileForm(forms.Form):
     maker_type = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                            choices=[(maker_type.id, maker_type.name) for maker_type in MakerTypes.objects.all()],
                                            required=False)
-    image = forms.ImageField(widget=forms.FileInput)
+    image = forms.ImageField(widget=forms.FileInput, required=False)
     password = PasswordField(widget=None)
     password_confirmation = PasswordConfirmationField(widget=None)
 
