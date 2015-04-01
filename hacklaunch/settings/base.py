@@ -28,7 +28,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = [u'ec2-52-74-130-171.ap-southeast-1.compute.amazonaws.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -153,7 +153,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': 'hacklaunch.log',
             'formatter': 'verbose'
@@ -163,19 +163,19 @@ LOGGING = {
         'django': {
             'handlers':['file'],
             'propagate': True,
-            'level':'DEBUG',
+            'level':'WARNING',
         },
         'base': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'WARNING',
         },
         'hacklaunch': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'WARNING',
         },
         'users': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'WARNING',
         },
     }
 }

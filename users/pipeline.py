@@ -37,7 +37,7 @@ def load_extra_data(backend, details, response, uid, user, *args, **kwargs):
 
 
 def set_extra_data(user, extra_data=None):
-    if extra_data:
+    if user is not None and extra_data:
         try:
             profile = UserProfile.objects.get(user_id=user.id)
         except UserProfile.DoesNotExist:
@@ -52,8 +52,11 @@ def set_extra_data(user, extra_data=None):
                 profile, created = UserProfile.objects.update_or_create({'user_id': user.id, 'location': extra_data['location']['name']})
                 profile.save()
 
-        if user.minimalProfile is False and profile.location is not None \
-                and user.first_name is not None and user.last_name is not None:
+        if profile is not None \
+                and user.minimalProfile is False \
+                and profile.location is not None \
+                and user.first_name is not None \
+                and user.last_name is not None:
                     user.minimalProfile = True
                     user.save()
 

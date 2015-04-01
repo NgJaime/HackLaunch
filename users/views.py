@@ -32,7 +32,6 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
         return initial
 
-
     def form_valid(self, form):
         # todo allow email change once account link with different emails setup
         for change in form.changed_data:
@@ -46,7 +45,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                     throughModel.objects.bulk_create([throughModel(skill_id=current_skill_id, userprofile_id=self.profile.user_id)
                                                       for current_skill_id in form.cleaned_data['skills']])
                 else:
-                   setattr(self.profile, change, form.cleaned_data[change])
+                    setattr(self.profile, change, form.cleaned_data[change])
 
             elif hasattr(self.profile.user, change):
                 if change == 'password':
@@ -61,7 +60,6 @@ class ProfileEditView(LoginRequiredMixin, FormView):
             self.profile.user.save()
 
         return render(self.request, 'home.html')
-
 
     def form_invalid(self, form):
         if self.request.user.nonSocialAuth is False \
@@ -105,7 +103,7 @@ def email_complete(request):
 
 def complete(request, backend, *args, **kwargs):
 
-    if backend == u'email':
+    if request.method == 'POST' and backend == u'email':
         form = InitialPassword(request.POST)
 
         if not form.is_valid():
