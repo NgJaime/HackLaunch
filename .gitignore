@@ -1,10 +1,11 @@
-hackLaunch/settings/keys.py
+hacklaunch/settings/keys.py
 /users/migrations/
 /data
 /venv
 /.idea
 /bower_components
 /node_modules
+/logs
 *.pyc
 *.sqlite3
 bfg.jar
