@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from hackLaunch.settings.keys import *
+from hacklaunch.settings.keys import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = [
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
-ROOT_URLCONF = 'hackLaunch.urls'
+ROOT_URLCONF = 'hacklaunch.urls'
 
 LOGIN_REDIRECT_URL = '/'
 # todo
@@ -104,7 +104,7 @@ if DEBUG:
     # TEMPLATES['OPTIONS']['context_processors']  'django.core.context_processors.static'
 
 
-WSGI_APPLICATION = 'hackLaunch.wsgi.application'
+WSGI_APPLICATION = 'hacklaunch.wsgi.application'
 
 
 # Database

@@ -1,4 +1,4 @@
-from hackLaunch.settings.base import *
+from hacklaunch.settings.base import *
 
 AWS_S3_SECURE_URLS = False
 AWS_QUERYSTRING_AUTH = False     
