@@ -7,6 +7,10 @@ def home(request):
     return render(request, 'home.html', {'form': InitialPassword()})
 
 
+def terms(request):
+    return render(request, 'terms.html')
+
+
 class LoginRequiredMixin(object):
     @classmethod
     def as_view(cls, **initkwargs):
