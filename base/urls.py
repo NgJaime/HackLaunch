@@ -1,8 +1,8 @@
 """urlconf for the base application"""
 
 from django.conf.urls import url, patterns
+from . import views
 
 
-urlpatterns = patterns('base.views',
-    url(r'^$', 'home', name='home'),
-)
+urlpatterns = [url(r'^terms/$', views.terms),
+               url(r'^$', views.home)]

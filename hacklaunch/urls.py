@@ -9,7 +9,8 @@ from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', 'base.views.home'),
+    url(r'^$', include('base.urls')),
+    url(r'^terms/$', 'base.views.terms', name='terms'),
 
     url(r'^complete/(?P<backend>[^/]+)/$', 'users.views.complete', name='complete'),
 
