@@ -6699,7 +6699,7 @@ a.feature-icon:hover {
 /* ---------------------------------------------------- */
 .services-header {
     min-height: 350px;
-    background-image: url("../images/back_services.jpg");
+    background-image: url("../images/profile-banner-min.jpg");
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -8060,6 +8060,10 @@ input[type="date"]:focus {
 }
 
 .wrap-pointers {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAE0lEQVQIW2NkYGD4D8SMjEACDAAOKQEDKKNmJgAAAABJRU5ErkJggg==) repeat;
+}
+
+.wrap-pointers-profile {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAE0lEQVQIW2NkYGD4D8SMjEACDAAOKQEDKKNmJgAAAABJRU5ErkJggg==) repeat;
 }
 
