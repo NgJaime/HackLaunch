@@ -3,18 +3,24 @@
 {% block title %}HackLaunch - profile{% endblock %}
 
 {% block content %}
-    <header class="services-header no-margin-bottom">
-        <div class="primary-dark-div">
-            <div class="container">
+    <header class="services-header no-margin-bottom ">
+        <div class="primary-dark-div wrap-pointers-profile">
+            <div class="container ">
                 <div class="row">
                     <div class="col-lg-8 col-lg-push-4 col-md-7 col-md-push-5 col-sm-6 col-sm-push-6">
                         <div class="profile-header-text">
-                            <h1>{{  profile.user.get_full_name }}</h1>
+                            <h1><strong>{{  profile.user.get_full_name }}</strong></h1>
                             <h2>
                                 {% for maker_type in profile.maker_type.all %}
                                     {% if maker_type.name != 'Other' %}
-                                        <span>{{ maker_type.name }} .</span>
+                                        <span> <strong>{{ maker_type.name }}</strong>
                                     {% endif %}
+                                    {% if not forloop.last %}
+                                         - </span>
+                                    {%  else %}
+                                        </span>
+                                    {% endif %}
+
                                 {% endfor %}
 
                             </h2>
@@ -22,7 +28,7 @@
                     </div>
                 </div>
                 <div class="profile-avatar-container">
-                    {% if profile.image.url %}
+                    {% if profile.image %}
                         <img src="{{ profile.image.url }}" class="profile-avatar" alt="avatar"/>
                     {% endif %}
                 </div>
