@@ -190,8 +190,8 @@ SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.bitbucket.BitbucketOAuth',
     'social.backends.email.EmailAuth',
+    'social.backends.facebook.FacebookOAuth2',
     'social.backends.github.GithubOAuth2',
     'social.backends.linkedin.LinkedinOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -237,6 +237,7 @@ SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 # Social auth providers
 #############################
 
+#LINKED-IN
 # Add email to requested authorizations.
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
 
@@ -254,6 +255,9 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                                    ('specialties', 'specialties'),
                                    ('picture-url', 'picture-url'),
                                    ('public-profile-url', 'public-profile-url')]
+
+#FACEBOOK
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 
 #############################
