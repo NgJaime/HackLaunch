@@ -8384,8 +8384,8 @@ input[type="date"]:focus {
     color: #fff;
 }
 
-#logincontainer ul li a.bitbucket:hover {
-    background-color: #205081;
+#logincontainer ul li a.facebook:hover {
+    background-color: #3b5998;
     color: #fff;
 }
 
