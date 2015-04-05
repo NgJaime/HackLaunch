@@ -32,7 +32,14 @@ class UserProfile(models.Model):
     image = ResizedImageField(size=[230, 230], crop=['middle', 'center'], upload_to=upload_image, blank=True)
     thumbnail = ResizedImageField(size=[20, 20], crop=['middle', 'center'], upload_to=upload_image, blank=True)
 
-    slug = AutoSlugField(unique=True)
+    slug = AutoSlugField(populate_from='get_slug_name', unique=True, always_update=True)
 
     location = models.CharField(max_length=128, blank=True, null=True)
     summary = models.CharField(max_length=256, blank=True, null=True)
+
+    def get_slug_name(self):
+        name = self.user.get_full_name() if self.user.get_full_name() != u'' else 'anonymous'
+
+        return name
+
+
