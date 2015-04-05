@@ -9,7 +9,8 @@ function wrapResize() {
 
     //var sizeTop = nav.offset().top + nav.height();
     var sizeTop = 50;
-    var sizeWrap = $(window).height() - sizeTop;
+    var sizeWrap = $(window).height() - sizeTop > 600 ? 600 : $(window).height() - sizeTop;
+    
     wrap.css('min-height', sizeWrap + "px");
     wrap2.css('min-height', sizeWrap + "px");
 }
