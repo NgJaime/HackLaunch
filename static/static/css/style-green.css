@@ -6551,7 +6551,8 @@ a.feature-icon:hover {
 }
 
 .title-logo {
-    background-image: url("../images/logos/logo_50.png");
+    background-image: url("../images/favicon.gif");
+    background-size: 50px 50px;
     background-repeat: no-repeat;
     background-position: center top;
     font-size: 2.3em;
@@ -6992,7 +6993,8 @@ a.feature-icon:hover {
     display: block;
     margin: 0 0 20px 0;
     padding-left: 70px;
-    background-image: url("../images/logos/logo_50.png");
+    background-image: url("../images/favicon.gif");
+    background-size: 50px 50px;
     background-repeat: no-repeat;
     background-position: left center;
 }
@@ -7119,7 +7121,8 @@ a.feature-icon:hover {
     float: left;
     overflow: hidden;
     padding-left: 75px;
-    background-image: url("../images/logos/logo_50.png");
+    background-image: url("../images/favicon.gif");
+    background-size: 50px 50px;
     background-repeat: no-repeat;
     background-position: left center;
 }
