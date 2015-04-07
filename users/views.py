@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView
-from users.models import User
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.conf import settings
 from base.forms import InitialPassword
 from social.apps.django_app.views import complete as social_complete
 from forms import UserProfileForm
@@ -50,6 +53,8 @@ class ProfileEditView(LoginRequiredMixin, FormView):
             elif hasattr(self.profile.user, change):
                 if change == 'password':
                     self.profile.user.set_password(form.cleaned_data['password'])
+                    send_password_changed_email(self.profile.user)
+
                 else:
                     setattr(self.profile.user, change, form.cleaned_data[change])
 
@@ -77,6 +82,18 @@ class ProfileEditView(LoginRequiredMixin, FormView):
             return self.form_valid(form)
 
         return render(self.request, 'profile_edit.html', {'form': form})
+
+
+def send_password_changed_email(user):
+    context = {
+        'first_name': user.first_name,
+        'email': user.email
+    }
+
+    html_message = get_template('password_changed_email.html').render(Context(context))
+    email = EmailMessage('Your password at HackLaunch has been changed', html_message, to=[user.email], from_email=settings.EMAIL_FROM)
+    email.content_subtype = 'html'
+    email.send()
 
 
 def profile_view(request, slug):
