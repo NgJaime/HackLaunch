@@ -42,12 +42,16 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                 if change == 'skills':
                     throughModel = self.profile.skills.through
 
-                    # todo probably a better way to do this
+                    # todo - probably a better way to do this
                     throughModel.objects.filter(userprofile_id=self.profile.user_id).delete()
 
                     throughModel.objects.bulk_create([throughModel(skill_id=current_skill_id, userprofile_id=self.profile.user_id)
                                                       for current_skill_id in form.cleaned_data['skills']])
                 else:
+                    # remove old image form s3
+                    if change == 'image' and 'image' in form.initial:
+                        form.initial['image'].delete()
+
                     setattr(self.profile, change, form.cleaned_data[change])
 
             elif hasattr(self.profile.user, change):
