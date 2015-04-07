@@ -192,6 +192,13 @@
                                                     <span style="margin-left:5px; color: #666">{{ error }}</span>
                                                 </p>
                                             {% endfor %}
+
+                                            {% if form.non_field_errors %}
+                                                <p class="text-muted">
+                                                    <span id="login-warning" class="label label-danger"> Warning</span>
+                                                    <span style="margin-left:5px; color: #666;">{{ form.non_field_errors | striptags}}</span>
+                                                </p>
+                                            {% endif %}
                                         </div>
 
                                         <a href="/password_reset"
