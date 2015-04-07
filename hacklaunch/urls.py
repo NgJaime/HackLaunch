@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from users.views import ProfileEditView
+from base.forms import InitialPassword
 
 # todo remove debug
 from django.conf import settings
@@ -24,7 +25,7 @@ urlpatterns = [
 
     url(r'^login/$', 'base.views.home'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
-        {'template_name': 'logged_out.html'}, name='logout'),
+        {'template_name': 'home.html', 'extra_context': {'form': InitialPassword()}}, name='logout'),
     url(r'^password_change/$', 'django.contrib.auth.views.password_change',
         {'template_name': 'registration/password_change_form.html'}, name='password_change'),
     url(r'^password_change/done/$', 'django.contrib.auth.views.password_change_done',
