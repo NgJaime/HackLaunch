@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^password_change/done/$', 'django.contrib.auth.views.password_change_done',
         {'template_name': 'registration/password_change_done.html'}, name='password_change_done'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
-        {'template_name': 'registration/password_reset_form.html'}, name='password_reset'),
+        {'template_name': 'registration/password_reset_form.html', 'html_email_template_name': 'password_reset_email.html'}, name='password_reset'),
     url(r'^password_reset/done/$', 'django.contrib.auth.views.password_reset_complete',
         {'template_name': 'registration/password_reset_done.html'}, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
