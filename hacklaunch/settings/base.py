@@ -68,30 +68,23 @@ LOGIN_REDIRECT_URL = '/'
 # todo
 LOGIN_URL = 'django.contrib.auth.views.login'
 
-TEMPLATE_DIRS = (
-    'templates',
-    'base/templates',
-    'users/templates'
-)
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': ['templates', 'base/templates', 'users/templates'],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#                 'social.apps.django_app.context_processors.backends',
-#                 'social.apps.django_app.context_processors.login_redirect',
-#
-#             ],
-#         },
-#     },
-# ]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates', 'base/templates', 'users/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
+            ],
+        },
+    },
+]
 
 
 if DEBUG:
