@@ -10,13 +10,14 @@
 
         <hr class="">
         <div class="row">
-            <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" onsubmit="return profileValidation.validate()">
+            <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
+                  onsubmit="return profileValidation.validate()">
                 {% csrf_token %}
                 <!-- left column -->
-                <div class="col-md-3">
+                <div class="col-md-3 equal small">
                     <div class="text-center">
-                        {%  if form.initial.image %}
-                            <img src="{{ form.initial.image.url }}" class="avatar" alt="avatar" />
+                        {% if form.initial.image %}
+                            <img src="{{ form.initial.image.url }}" class="avatar" alt="avatar"/>
                         {% else %}
                             <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
                         {% endif %}
@@ -24,7 +25,7 @@
                         <h6 class="">Upload a different image</h6>
 
                         <span class="btn btn-default btn-file">
-                            Browse {% render_field form.image  %}
+                            Browse {% render_field form.image %}
                         </span>
 
                         {% if form.errors.image %}
@@ -35,10 +36,13 @@
                             {% endfor %}
                         {% endif %}
                     </div>
+                    <div class="delete">
+                        <a href="#" onclick="return confirm_delete(this);">Delete account</a>
+                    </div>
                 </div>
 
                 <!-- edit form column -->
-                <div class="col-md-9 personal-info">
+                <div class="col-md-9 personal-info equal">
 
                     <h3 class="">Personal</h3>
 
@@ -167,9 +171,11 @@
                         <label class="col-lg-3 control-label">Maker type:</label>
 
                         {% if form.errors.maker_type %}
-                            <div id='maker-type-input' class="col-lg-6 checkbox-horizontal has-error has-feedback checkbox checkbox-success checkbox-inline">
+                            <div id='maker-type-input'
+                                 class="col-lg-6 checkbox-horizontal has-error has-feedback checkbox checkbox-success checkbox-inline">
                                 {% render_field form.maker_type name='maker_type' class="form-control checkbox-inline" id="maker-type" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
-                                <span id='maker-type-icon' class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                <span id='maker-type-icon'
+                                      class="glyphicon glyphicon-remove form-control-feedback"></span>
                             </div>
                             <div id="maker-type-errors" class="col-lg-3"
                                  style="padding-top: 7px; padding-left: 5px;">
@@ -308,5 +314,55 @@
             </form>
         </div>
     </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script type="text/javascript">
+        {# todo review reactive #}
+        var small = $(".equal").height();
+
+        var equalHeight = function () {
+            if ($(document).width() >= 992) {
+                var heights = $(".equal").map(function () {
+                            return $(this).height();
+                        }).get(),
+
+                        maxHeight = Math.max.apply(null, heights);
+
+                $(".equal").height(maxHeight);
+            } else {
+                $(".small").height(small);
+            }
+        };
+
+        var positionDelete = function() {
+            var del = $(".delete");
+            del.removeAttr('style');
+
+            if ($(document).width() >= 992) {
+                $(".delete").css({'position': 'absolute', 'bottom': '65px', 'left': '80px'});
+            } else {
+                $(".delete").css({'text-align': 'right'});
+            }
+        }
+
+        $(document).ready(function () {
+            equalHeight();
+            positionDelete();
+        });
+
+        window.onresize = function (event) {
+            equalHeight();
+            positionDelete();
+        };
+
+        function confirm_delete(node) {
+             if (confirm("Warning your account is about to be deleted. Do you wish to continue?")) {
+                 window.location = '/delete_user';
+             }
+        }
+
+    </script>
 
 {% endblock %}

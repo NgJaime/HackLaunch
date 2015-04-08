@@ -6,11 +6,15 @@ from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
 from django.conf import settings
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from base.forms import InitialPassword
 from social.apps.django_app.views import complete as social_complete
 from forms import UserProfileForm
-from models import UserProfile
+from models import UserProfile, User
+from social.apps.django_app.default.models import UserSocialAuth
 from base.views import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 class ProfileEditView(LoginRequiredMixin, FormView):
@@ -131,5 +135,19 @@ def complete(request, backend, *args, **kwargs):
             return render(request, 'home.html', {'form': form})
 
     return social_complete(request, backend, *args, **kwargs)
+
+@login_required(redirect_field_name='/')
+def delete_user(request):
+    profile = get_object_or_404(UserProfile, user_id=request.user.id)
+    # could use pre_delete signal here
+    profile.image.delete();
+    profile.delete();
+
+    UserSocialAuth.objects.filter(user=request.user).delete()
+    # don't delete in case there are some outstanding foreign keys linking to the user but set the email
+    # just in case the user wants to rejoin later
+    User.objects.filter(id=request.user.id).update(is_active=False, email='gone@hacklaaunch.com')
+
+    return HttpResponseRedirect(reverse('django.contrib.auth.views.logout'))
 
 
