@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^login/$', 'base.views.home'),
     url(r'^logout/$', 'django.contrib.auth.views.logout',
         {'template_name': 'home.html', 'extra_context': {'form': InitialPassword()}}, name='logout'),
+    url(r'^delete_user/$', 'users.views.delete_user'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
         {'template_name': 'registration/password_reset_form.html', 'html_email_template_name': 'password_reset_email.html'}, name='password_reset'),
     url(r'^password_reset/done/$', 'django.contrib.auth.views.password_reset_complete',
