@@ -1,6 +1,9 @@
+import logging
 from django import forms
-from django.contrib.auth import authenticate
+from users.models import User
 from zxcvbn_password.fields import PasswordField
+
+logger = logging.getLogger(__name__)
 
 
 class InitialPassword(forms.Form):
@@ -10,10 +13,17 @@ class InitialPassword(forms.Form):
     def clean(self):
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
-        user = authenticate(email=email, password=password)
 
-        if not user or not user.is_active:
-                raise forms.ValidationError("An account for " + email +
-                                            " already exists but your password was invalid")
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            # this user does not exist yet
+            pass
+        except User.MultipleObjectsReturned:
+            logger.error("Multiple user for email: " + email)
+            pass
+        else:
+            if not user.check_password(password):
+                raise forms.ValidationError("An account for " + email + " already exists but your password was invalid")
 
         return self.cleaned_data
