@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from users.views import ProfileEditView
-from base.forms import InitialPassword
 
 # todo remove debug
 from django.conf import settings
@@ -24,8 +23,7 @@ urlpatterns = [
     url(r'^email_complete/$', 'users.views.email_complete', name='email_complete'),
 
     url(r'^login/$', 'base.views.home'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout',
-        {'template_name': 'home.html', 'extra_context': {'form': InitialPassword()}}, name='logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'home.html'}, name='logout'),
     url(r'^delete_user/$', 'users.views.delete_user'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
         {'template_name': 'registration/password_reset_form.html', 'html_email_template_name': 'password_reset_email.html'}, name='password_reset'),

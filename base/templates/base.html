@@ -165,7 +165,7 @@
                                         {% csrf_token %}
                                         <div id="top_signup_email_group" class="input-group login-input">
                                             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                            {% render_field form.email id="top-email" class="form-control" type="email" name="email" placeholder="email address" %}
+                                            {% render_field login_form.email id="top-email" class="form-control" type="email" name="email" placeholder="email address" %}
 
                                         </div>
 
@@ -174,7 +174,7 @@
                                             <span class="input-group-addon"><i class="fa fa-lock"
                                                                                style="padding-right: 4px"></i></span>
 
-                                            {% render_field form.password id="top-password" class="form-control" type="password" placeholder="password" onkeyup="topLoginMessage.passwordStrength(this.value)" %}
+                                            {% render_field login_form.password id="top-password" class="form-control" type="password" placeholder="password" onkeyup="topLoginMessage.passwordStrength(this.value)" %}
 
                                         </div>
 
