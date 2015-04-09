@@ -38,21 +38,48 @@ class UserProfileForm(forms.Form):
                 raise forms.ValidationError("Could not read uploaded image.")
 
     def clean_username(self):
-        new_username = self.cleaned_data.get('username', False)
+        username = self.cleaned_data.get('username', False)
 
         if 'username' in self.changed_data:
             try:
-                user = User.objects.get(username=new_username)
+                user = User.objects.get(username=username)
             except User.DoesNotExist:
                 # this username does not exist yet
                 pass
             except User.MultipleObjectsReturned:
-                logger.error("Multiple user for username: " + new_username)
+                logger.error("Multiple user for username: " + username)
                 pass
             else:
-                raise forms.ValidationError("The username " + new_username + " is not available.")
+                raise forms.ValidationError("The username " + username + " is not available.")
 
-        return new_username
+        return username
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name', False)
+
+        if 'first_name' in self.changed_data:
+            new_first_name = first_name.title()
+            return new_first_name
+
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name', False)
+
+        if 'last_name' in self.changed_data:
+            new_last_name = last_name.title()
+            return new_last_name
+
+        return last_name
+
+    def clean_location(self):
+        location = self.cleaned_data.get('location', False)
+
+        if 'location' in self.changed_data:
+            new_location = location.title()
+            return new_location
+
+        return location
 
     def clean(self):
         cleaned_data = super(UserProfileForm, self).clean()
