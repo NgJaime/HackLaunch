@@ -36,6 +36,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         initial['skills'] = [skill.id for skill in self.profile.skills.all()]
         initial['maker_type'] = [maker_type.id for maker_type in self.profile.maker_type.all()]
         initial['image'] = self.profile.image
+        initial['username'] = self.profile.user.username
 
         return initial
 
@@ -55,6 +56,12 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                     # remove old image form s3
                     if change == 'image' and 'image' in form.initial:
                         form.initial['image'].delete()
+
+                        # now for the thumbnail
+                        if self.profile.thumbnail:
+                            self.profile.thumbnail.delete()
+
+                        setattr(self.profile, 'thumbnail', form.cleaned_data[change])
 
                     setattr(self.profile, change, form.cleaned_data[change])
 
@@ -129,12 +136,14 @@ def email_complete(request):
 def complete(request, backend, *args, **kwargs):
 
     if request.method == 'POST' and backend == u'email':
+        request.session.flush()
         form = InitialPassword(request.POST)
 
         if not form.is_valid():
             return render(request, 'home.html', {'form': form})
 
     return social_complete(request, backend, *args, **kwargs)
+
 
 @login_required(redirect_field_name='/')
 def delete_user(request):

@@ -10,20 +10,7 @@
                     <div class="col-lg-8 col-lg-push-4 col-md-7 col-md-push-5 col-sm-6 col-sm-push-6">
                         <div class="profile-header-text">
                             <h1><strong>{{  profile.user.get_full_name }}</strong></h1>
-                            <h2>
-                                {% for maker_type in profile.maker_type.all %}
-                                    {% if maker_type.name != 'Other' %}
-                                        <span> <strong>{{ maker_type.name }}</strong>
-                                    {% endif %}
-                                    {% if not forloop.last %}
-                                         - </span>
-                                    {%  else %}
-                                        </span>
-                                    {% endif %}
-
-                                {% endfor %}
-
-                            </h2>
+                            <h2><strong>@{{ profile.user.username }}</strong></h2>
                         </div>
                     </div>
                 </div>
@@ -75,7 +62,21 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Summary</div>
                         <div class="panel-body">
-                            <p>{{ profile.summary }}</p>
+                            {% for maker_type in profile.maker_type.all %}
+                                {% if maker_type.name != 'Other' %}
+                                    <span> <strong>{{ maker_type.name }}</strong>
+                                {% endif %}
+                                {% if not forloop.last %}
+                                     - </span>
+                                {%  else %}
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                            {% if profile.summary %}
+                                <br>
+                                <br>
+                                <p>{{ profile.summary }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </section>

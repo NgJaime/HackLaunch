@@ -3,8 +3,7 @@ from social.pipeline.partial import partial
 from models import UserProfile
 
 def user_password(strategy, user, is_new=False, *args, **kwargs):
-    if 'backend' not in kwargs or \
-                    kwargs['backend'].name != 'email':
+    if 'backend' not in kwargs or kwargs['backend'].name != 'email':
         return
 
     password = kwargs['response']['password']

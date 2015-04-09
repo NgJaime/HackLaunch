@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from base.forms import InitialPassword
 
 
 def home(request):
-    return render(request, 'home.html', {'form': InitialPassword()})
+    return render(request, 'home.html')
 
 
 def terms(request):

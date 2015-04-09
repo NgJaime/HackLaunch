@@ -94,15 +94,21 @@
 
                     {% if not user.is_anonymous %}
                         <div class="dropdown animated fadeInDown animation-delay-11">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-user">
-                                    {% if user.first_name %}
-                                        {{ user.first_name }}
-                                    {% else %}
-                                        Anonymous user
-                                    {% endif %}
-                                </i>
-                            </a>
+                            {% if user.userprofile.thumbnail %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="border: 0px; padding: 5px 0px 0px 0px;">
+                                    <img src="{{ user.userprofile.thumbnail.url }}" alt="user.get_full_name" class="img-circle">
+                                </a>
+                            {%  else %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-user">
+                                        {% if user.first_name %}
+                                            {{ user.first_name }}
+                                        {% else %}
+                                            Anonymous user
+                                        {% endif %}
+                                    </i>
+                                </a>
+                            {%  endif %}
 
                             <div class="dropdown-menu dropdown-menu-right animated fadeInUp">
                                 <div style="margin-left: 10px">
@@ -165,7 +171,7 @@
                                         {% csrf_token %}
                                         <div id="top_signup_email_group" class="input-group login-input">
                                             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                            {% render_field form.email id="top-email" class="form-control" type="email" name="email" placeholder="email address" %}
+                                            {% render_field login_form.email id="top-email" class="form-control" type="email" name="email" placeholder="email address" %}
 
                                         </div>
 
@@ -174,7 +180,7 @@
                                             <span class="input-group-addon"><i class="fa fa-lock"
                                                                                style="padding-right: 4px"></i></span>
 
-                                            {% render_field form.password id="top-password" class="form-control" type="password" placeholder="password" onkeyup="topLoginMessage.passwordStrength(this.value)" %}
+                                            {% render_field login_form.password id="top-password" class="form-control" type="password" placeholder="password" onkeyup="topLoginMessage.passwordStrength(this.value)" %}
 
                                         </div>
 
@@ -272,11 +278,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <h3 class="footer-widget-title">Sitemap</h3>
+                        <h3 class="footer-widget-title">Site Map</h3>
                         <ul class="list-unstyled three_cols">
                             <li><a href="/">Home</a></li>
                             {% if not user.is_anonymous %}
-                                <li><a href="/profile">Profile</a></li>
+                                <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
                             {% endif %}
                         </ul>
 
@@ -327,14 +333,19 @@
 <!-- SLIDEBAR -->
 
 <div class="sb-slidebar sb-right">
+    <h2 class="slidebar-header">Navigation</h2>
+    <ul class="slidebar-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
+        <li><a href="/profile">Edit Profile</a></li>
+    </ul>
     <h2 class="slidebar-header">Social Media</h2>
-
     <div class="slidebar-social-icons">
-        <a href="#" class="social-icon-ar instagram"><i class="fa fa-instagram"></i></a>
-        <a href="#" class="social-icon-ar google-plus"><i class="fa fa-google-plus"></i></a>
-        <a href="#" class="social-icon-ar facebook"><i class="fa fa-facebook"></i></a>
-        <a href="#" class="social-icon-ar pinterest"><i class="fa fa-pinterest"></i></a>
-        <a href="#" class="social-icon-ar twitter"><i class="fa fa-twitter"></i></a>
+        <a href="http://www.instagram.com/hacklaunch" class="social-icon-ar instagram"><i class="fa fa-instagram"></i></a>
+        <a href="http://plus.google.com/+Hacklaunch" class="social-icon-ar google-plus"><i class="fa fa-google-plus"></i></a>
+        <a href="http://www.facebook.com/hacklaunch" class="social-icon-ar facebook"><i class="fa fa-facebook"></i></a>
+        <a href="http://www.pinterest.com/hacklaunch" class="social-icon-ar pinterest"><i class="fa fa-pinterest"></i></a>
+        <a href="http://www.twitter.com/hacklaunch" class="social-icon-ar twitter"><i class="fa fa-twitter"></i></a>
     </div>
 </div>
 <!-- sb-slidebar sb-right -->

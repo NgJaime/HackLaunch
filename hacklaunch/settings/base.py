@@ -68,30 +68,24 @@ LOGIN_REDIRECT_URL = '/'
 # todo
 LOGIN_URL = 'django.contrib.auth.views.login'
 
-TEMPLATE_DIRS = (
-    'templates',
-    'base/templates',
-    'users/templates'
-)
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': ['templates', 'base/templates', 'users/templates'],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#                 'social.apps.django_app.context_processors.backends',
-#                 'social.apps.django_app.context_processors.login_redirect',
-#
-#             ],
-#         },
-#     },
-# ]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates', 'base/templates', 'users/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
+                'base.context_processor.login_input',
+            ],
+        },
+    },
+]
 
 
 if DEBUG:
@@ -219,7 +213,6 @@ SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'users.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/validation_sent/'
 EMAIL_FROM = 'noreply@hacklaunch.com'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'home.html'
-USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_EMAIL_FORM_URL = '/'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
