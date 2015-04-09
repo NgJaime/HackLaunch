@@ -57,6 +57,12 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                     if change == 'image' and 'image' in form.initial:
                         form.initial['image'].delete()
 
+                        # now for the thumbnail
+                        if self.profile.thumbnail:
+                            self.profile.thumbnail.delete()
+
+                        setattr(self.profile, 'thumbnail', form.cleaned_data[change])
+
                     setattr(self.profile, change, form.cleaned_data[change])
 
             elif hasattr(self.profile.user, change):

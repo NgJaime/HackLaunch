@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from autoslug import AutoSlugField
-from s3 import upload_image
+from s3 import upload_profile_image, upload_profile_thumbnail
 from django_resized import ResizedImageField
 
 
@@ -29,8 +29,8 @@ class UserProfile(models.Model):
     skills = models.ManyToManyField(Skill)
     maker_type = models.ManyToManyField(MakerTypes)
 
-    image = ResizedImageField(size=[230, 230], crop=['middle', 'center'], upload_to=upload_image, blank=True)
-    thumbnail = ResizedImageField(size=[20, 20], crop=['middle', 'center'], upload_to=upload_image, blank=True)
+    image = ResizedImageField(size=[230, 230], crop=['middle', 'center'], upload_to=upload_profile_image, blank=True)
+    thumbnail = ResizedImageField(size=[50, 50], crop=['middle', 'center'], upload_to=upload_profile_thumbnail, blank=True)
 
     slug = AutoSlugField(populate_from='get_slug_name', unique=True, always_update=True)
 
