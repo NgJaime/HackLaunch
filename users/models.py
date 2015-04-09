@@ -38,8 +38,7 @@ class UserProfile(models.Model):
     summary = models.CharField(max_length=256, blank=True, null=True)
 
     def get_slug_name(self):
-        name = self.user.get_full_name() if self.user.get_full_name() != u'' else 'anonymous'
-
+        name = self.user.username
         return name
 
 
