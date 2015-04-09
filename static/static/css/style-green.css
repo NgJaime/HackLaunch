@@ -3982,6 +3982,7 @@ a.thumbnail.active {
     word-spacing: -6px;
     -webkit-text-stroke: 0.01em;
     background-image: url("../images/favicon.gif");
+    background-size: 50px 50px;
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 45px;
@@ -7621,7 +7622,8 @@ a.feature-icon:hover {
 }
 
 .navbar-inverse .navbar-brand {
-    background-image: url("../images/logos/logo_50.png");
+    background-image: url("../images/favicon.gif");
+    background-size: 50px 50px;
 }
 
 .navbar-inverse .navbar-brand {

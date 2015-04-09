@@ -278,11 +278,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <h3 class="footer-widget-title">Sitemap</h3>
+                        <h3 class="footer-widget-title">Site Map</h3>
                         <ul class="list-unstyled three_cols">
                             <li><a href="/">Home</a></li>
                             {% if not user.is_anonymous %}
-                                <li><a href="/profile">Profile</a></li>
+                                <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
                             {% endif %}
                         </ul>
 
@@ -333,8 +333,13 @@
 <!-- SLIDEBAR -->
 
 <div class="sb-slidebar sb-right">
+    <h2 class="slidebar-header">Navigation</h2>
+    <ul class="slidebar-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
+        <li><a href="/profile">Edit Profile</a></li>
+    </ul>
     <h2 class="slidebar-header">Social Media</h2>
-
     <div class="slidebar-social-icons">
         <a href="http://www.instagram.com/hacklaunch" class="social-icon-ar instagram"><i class="fa fa-instagram"></i></a>
         <a href="http://plus.google.com/+Hacklaunch" class="social-icon-ar google-plus"><i class="fa fa-google-plus"></i></a>
