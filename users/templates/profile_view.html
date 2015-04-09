@@ -10,6 +10,7 @@
                     <div class="col-lg-8 col-lg-push-4 col-md-7 col-md-push-5 col-sm-6 col-sm-push-6">
                         <div class="profile-header-text">
                             <h1><strong>{{  profile.user.get_full_name }}</strong></h1>
+                            <h2>@{{ profile.user.username }}</h2>
                             <h2>
                                 {% for maker_type in profile.maker_type.all %}
                                     {% if maker_type.name != 'Other' %}
@@ -22,7 +23,6 @@
                                     {% endif %}
 
                                 {% endfor %}
-
                             </h2>
                         </div>
                     </div>

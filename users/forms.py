@@ -1,7 +1,11 @@
+import logging
 from django import forms
 from models import Skill, MakerTypes
 from zxcvbn_password.fields import PasswordField, PasswordConfirmationField
 from django.conf import settings
+from users.models import User
+
+logger = logging.getLogger(__name__)
 
 
 class UserProfileForm(forms.Form):
@@ -20,6 +24,7 @@ class UserProfileForm(forms.Form):
     image = forms.ImageField(widget=forms.FileInput, required=False)
     password = PasswordField(widget=None, required=False)
     password_confirmation = PasswordConfirmationField(widget=None, required=False)
+    username = forms.CharField(label='Username', max_length=30, min_length=1)
 
     def clean_image(self):
         image = self.cleaned_data.get('image', False)
@@ -31,6 +36,23 @@ class UserProfileForm(forms.Form):
                 return image
             else:
                 raise forms.ValidationError("Could not read uploaded image.")
+
+    def clean_username(self):
+        new_username = self.cleaned_data.get('username', False)
+
+        if 'username' in self.changed_data:
+            try:
+                user = User.objects.get(username=new_username)
+            except User.DoesNotExist:
+                # this username does not exist yet
+                pass
+            except User.MultipleObjectsReturned:
+                logger.error("Multiple user for username: " + new_username)
+                pass
+            else:
+                raise forms.ValidationError("The username " + new_username + " is not available.")
+
+        return new_username
 
     def clean(self):
         cleaned_data = super(UserProfileForm, self).clean()

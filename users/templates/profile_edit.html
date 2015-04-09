@@ -74,6 +74,7 @@
                         {% endif %}
 
                     </div>
+
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Last name:</label>
 
@@ -102,6 +103,7 @@
                         {% endif %}
 
                     </div>
+
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Email:</label>
 
@@ -109,6 +111,35 @@
                             {% render_field user.email %}
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Username:</label>
+
+                        {% if form.errors.username %}
+                            <div id="username-input" class="col-lg-6 has-error has-feedback">
+                                {% render_field form.username name='username' class="form-control" id="username" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
+                                <span id="username-icon"
+                                      class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                            <div id="username-errors" class="col-lg-3"
+                                 style="padding-top: 7px; padding-left: 5px;">
+                                {% for error in form.errors.username %}
+                                    <p class="text-muted">
+                                        <span style="color: red">{{ error }}</span>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="col-lg-6">
+                                {% render_field form.username class="form-control" %}
+                                <span id="username-icon"
+                                      class="glyphicon glyphicon-remove form-control-feedback hidden"></span>
+                            </div>
+                            <div id="username-errors" class="col-lg-3 hidden"
+                                 style="padding-top: 7px; padding-left: 5px;"></div>
+                        {% endif %}
+                    </div>
+
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Location:</label>
 
