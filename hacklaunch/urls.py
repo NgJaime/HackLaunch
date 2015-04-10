@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', include('base.urls')),
     url(r'^terms/$', 'base.views.terms', name='terms'),
+    url(r'^credits/$', 'base.views.credits', name='credits'),
 
     url(r'^complete/(?P<backend>[^/]+)/$', 'users.views.complete', name='complete'),
 

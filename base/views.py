@@ -9,6 +9,10 @@ def home(request):
 def terms(request):
     return render(request, 'terms.html')
 
+def credits(request):
+    return render(request, 'credits.html')
+
+
 
 class LoginRequiredMixin(object):
     @classmethod
