@@ -333,12 +333,15 @@
 <!-- SLIDEBAR -->
 
 <div class="sb-slidebar sb-right">
-    <h2 class="slidebar-header">Navigation</h2>
+    <h2 class="slidebar-header" style="margin-bottom: 0px;">Navigation</h2>
     <ul class="slidebar-menu">
         <li><a href="/">Home</a></li>
-        <li><a href="/profile/{{ user.userprofile.slug }}">View profile</a></li>
-        <li><a href="/profile">Edit profile</a></li>
-        <li><a href="/logout">Logout</a></li>
+
+        {% if not user.is_anonymous %}
+            <li><a href="/profile/{{ user.userprofile.slug }}">View profile</a></li>
+            <li><a href="/profile">Edit profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        {% endif %}
     </ul>
     <h2 class="slidebar-header">Social Media</h2>
     <div class="slidebar-social-icons">
