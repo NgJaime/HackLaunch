@@ -234,7 +234,7 @@
 
                         {% if form.errors.summary %}
                             <div id='summary-input' class="col-lg-6 has-error has-feedback">
-                                {% render_field form.summary name='summary' class="form-control" id="summary" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
+                                {% render_field form.summary name='summary' class="form-control" id="summary" style="height: 150px;" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
                                 <span id='summary-icon' class="glyphicon glyphicon-remove form-control-feedback"></span>
                             </div>
                             <div id="summary-errors" class="col-lg-3" style="padding-top: 7px; padding-left: 5px;">
@@ -246,7 +246,7 @@
                             </div>
                         {% else %}
                             <div class="col-lg-6">
-                                {% render_field form.summary class="form-control" %}
+                                {% render_field form.summary class="form-control" style="height: 150px;" %}
                                 <span id='summary-icon'
                                       class="glyphicon glyphicon-remove form-control-feedback hidden"></span>
                             </div>

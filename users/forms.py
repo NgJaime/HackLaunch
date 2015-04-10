@@ -12,7 +12,7 @@ class UserProfileForm(forms.Form):
     first_name = forms.CharField(label='First name', max_length=30, min_length=1)
     last_name = forms.CharField(label='Last name', max_length=30, min_length=1)
     location = forms.CharField(label='Location', max_length=128)
-    summary = forms.CharField(label='summary', max_length=256, required=False)
+    summary = forms.CharField(label='summary', max_length=256, required=False, widget=forms.Textarea)
     # todo the skil marker types queries could be cached
     skills = forms.TypedMultipleChoiceField(label='Skills',
                                             coerce=int,
