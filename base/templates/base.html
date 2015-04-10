@@ -230,7 +230,7 @@
              id="header">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
+                <div class="navbar-header hidden-xs">
                     <button type="button" class="navbar-toggle" data-toggle="collapse"
                             data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
@@ -336,8 +336,9 @@
     <h2 class="slidebar-header">Navigation</h2>
     <ul class="slidebar-menu">
         <li><a href="/">Home</a></li>
-        <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
-        <li><a href="/profile">Edit Profile</a></li>
+        <li><a href="/profile/{{ user.userprofile.slug }}">View profile</a></li>
+        <li><a href="/profile">Edit profile</a></li>
+        <li><a href="/logout">Logout</a></li>
     </ul>
     <h2 class="slidebar-header">Social Media</h2>
     <div class="slidebar-social-icons">
