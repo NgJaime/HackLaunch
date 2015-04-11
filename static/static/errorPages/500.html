@@ -4,42 +4,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>HackLaunch - 500</title>
+    <title>HackLaunch - 404</title>
 
     <link rel="shortcut icon" href="img/favicon.png">
 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
     <meta name="description" content="">
 
-    <!-- CSS -->
-    <link href="css/preload.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/yamm.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap-switch.min.css" rel="stylesheet" media="screen">
-    <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-    <link href="css/animate.min.css" rel="stylesheet" media="screen">
-    <link href="css/slidebars.css" rel="stylesheet" media="screen">
-    <link href="css/lightbox.css" rel="stylesheet" media="screen">
-    <link href="css/jquery.bxslider.css" rel="stylesheet">
-    <link href="css/syntaxhighlighter/shCore.css" rel="stylesheet" media="screen">
+    <style>
+        body {
+            overflow: hidden;
+        }
 
-    <link href="css/style-blue.css" rel="stylesheet" media="screen" title="default">
-    <link href="css/width-full.css" rel="stylesheet" media="screen" title="default">
+        /* Preloader */
 
-    <link href="css/buttons.css" rel="stylesheet" media="screen">
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff; /* change if the mask should have another color then white */
+            z-index: 99; /* makes sure it stays on top */
+        }
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-    <![endif]-->
+        #status {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            left: 50%; /* centers the loading animation horizontally one the screen */
+            top: 50%; /* centers the loading animation vertically one the screen */
+            background-image: url(../images/bx_loader.gif); /* path to your loading animation */
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: -100px 0 0 -100px; /* is width and height divided by two */
+        }
+
+        .paper-back {
+            background-image: url("../images/back.png");
+            background-repeat: repeat;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        .absolute-center {
+            height: 700px;
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .transparent-div {
+            -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+            border: solid 1px #c3c3c3;
+            background-color: rgba(255, 255, 255, 0.4);
+            padding: 20px;
+            color: #7e8488;
+        }
+
+        .transparent-div h1,
+        .transparent-div h2,
+        .transparent-div h3 {
+            color: #7e8488;
+        }
+
+        .transparent-div h1 {
+            font-size: 3.5em;
+        }
+
+        .transparent-div p {
+            font-size: 1.2em;
+            font-family: "Lato", sans-serif;
+            font-weight: 300;
+            margin-bottom: 25px;
+        }
+
+        .transparent-div .btn-ar.btn-primary {
+            border: solid 1px #15795e;
+            background-image: -webkit-linear-gradient(top, #83E11C, #1c9c79);
+            background-image: -moz-linear-gradient(top, #83E11C, #1c9c79);
+            background-image: -o-linear-gradient(top, #83E11C, #1c9c79);
+            background-image: linear-gradient(to bottom, #83E11C, #1c9c79);
+            font-size: 14px;
+            padding-left: 30px;
+            padding-right: 30px;
+            border-radius: 0;
+        }
+
+        .title-text {
+            box-sizing: border-box;
+            color: rgb(68, 80, 93);
+            text-decoration: none;
+            word-spacing: -7px;
+            border: 0px none rgb(68, 80, 93);
+            font: normal normal 300 normal 32px virgo;
+            outline: rgb(68, 80, 93) none 0px;
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+
+        /*#A_1*/
+
+        .title-span {
+            box-sizing: border-box;
+            color: rgb(132, 226, 29);
+            word-spacing: -7px;
+            border: 0px none rgb(132, 226, 29);
+            font: normal normal 300 normal 32px/38.4000015258789px virgo;
+            outline: rgb(132, 226, 29) none 0px;
+        }
+
+        @font-face {
+            font-family: 'virgo';
+            src: url('../fonts/virgo-webfont.eot');
+            src: url('../fonts/virgo-webfont.eot?#iefix') format('embedded-opentype'),
+            url('../fonts/virgo-webfont.woff2') format('woff2'),
+            url('../fonts/virgo-webfont.woff') format('woff'),
+            url('../fonts/virgo-webfont.ttf') format('truetype'),
+            url('../fonts/virgo-webfont.svg#virgo_01regular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+    </style>
 </head>
 
-<!-- Preloader -->
-<div id="preloader">
-    <div id="status">&nbsp;</div>
-</div>
 
 <body>
 
@@ -47,40 +153,26 @@
 <div class="paper-back">
     <div class="absolute-center">
         <div class="text-center">
-            <div class="animated fadeInDown animation-delay-5">style="font-family: virgo; color: #44505D">
-                            H<span style="color: #84E21D">a</span>ckl<span style="color: #84E21D">a</span>unch
-                </div>
+            <div class="animated fadeInUp animation-delay-8 title-text" style="font-family: virgo; color: #44505D">
+                <img src="../images/favicon.gif" alt="HackLaunch logo" style="width: 40px; height: 40px;"/>
+                H<span class="title-span" style="color: #84E21D">a</span>ckl<span class="title-span"
+                                                                                  style="color: #84E21D">a</span>unch
+            </div>
             <div class="transparent-div animated fadeInUp animation-delay-8">
                 <h1>Error 500</h1>
+
                 <h2>Internal Server Error</h2>
-                <p>Something has gone wrong we are trying to fix it. <br> Meanwhile you can go back to the homepage.</p>
-                <a href="index.html" class="btn btn-ar btn-primary btn-lg">Go Home</a>
+
+                <p>Something has gone wrong we are trying to fix it. <br>
+                    Please check back later.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Scripts -->
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-switch.min.js"></script>
-<script src="js/wow.min.js"></script>
-<script src="js/slidebars.js"></script>
-<script src="js/jquery.bxslider.min.js"></script>
-<script src="js/holder.js"></script>
-<script src="js/buttons.js"></script>
-<script src="js/styleswitcher.js"></script>
-<script src="js/jquery.mixitup.min.js"></script>
-<script src="js/circles.min.js"></script>
-
-<!-- Syntaxhighlighter -->
-<script src="js/syntaxhighlighter/shCore.js"></script>
-<script src="js/syntaxhighlighter/shBrushXml.js"></script>
-<script src="js/syntaxhighlighter/shBrushJScript.js"></script>
-
-<script src="js/app.js"></script>
 
 </body>
 
 </html>
+
+
