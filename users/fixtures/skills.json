@@ -258,5 +258,10 @@
     "model": "users.skill",
     "pk": 52,
     "fields": {"name": "WebDNA"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 53,
+    "fields": {"name": "HTML"}
   }
 ]

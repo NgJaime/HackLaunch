@@ -16,7 +16,7 @@ class UserProfileForm(forms.Form):
     # todo the skil marker types queries could be cached
     skills = forms.TypedMultipleChoiceField(label='Skills',
                                             coerce=int,
-                                            choices=[(skill.id, skill.name) for skill in Skill.objects.all()],
+                                            choices=[(skill.id, skill.name) for skill in Skill.objects.extra(select={'name_lower': 'lower(name)'}).order_by('name_lower')],
                                             required=False)
     maker_type = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                            choices=[(maker_type.id, maker_type.name) for maker_type in MakerTypes.objects.all()],

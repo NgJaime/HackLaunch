@@ -19,7 +19,7 @@
                         {% if form.initial.image %}
                             <img src="{{ form.initial.image.url }}" class="avatar" alt="avatar"/>
                         {% else %}
-                            <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+                            <img src="//placehold.it/230" class="avatar img-circle" alt="avatar">
                         {% endif %}
 
                         <h6 class="">Upload a different image</h6>
@@ -176,7 +176,7 @@
 
                         {% if form.errors.skills %}
                             <div id='skills-input' class="col-lg-6 has-error has-feedback">
-                                {% render_field form.skills name='skills' class="form-control" id="skills" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
+                                {% render_field form.skills name='skills' class="form-control" id="skills" data-placeholder="Start typing to select your skills..." onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
                                 <span id='skills-icon' class="glyphicon glyphicon-remove form-control-feedback"></span>
                             </div>
                             <div id="skills-errors" class="col-lg-3"
@@ -189,7 +189,7 @@
                             </div>
                         {% else %}
                             <div class="col-lg-6">
-                                {% render_field form.skills class="form-control" %}
+                                {% render_field form.skills class="form-control" data-placeholder="Start typing to select your skills..." %}
                                 <span id='skills-icon'
                                       class="glyphicon glyphicon-remove form-control-feedback hidden"></span>
                             </div>
@@ -394,6 +394,10 @@
              }
         }
 
+        {# chosen.js for multiselect #}
+        $("#id_skills").chosen();
+
     </script>
 
 {% endblock %}
+
