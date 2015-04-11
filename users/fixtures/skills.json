@@ -2,22 +2,261 @@
   {
     "model": "users.skill",
     "pk": 1,
-    "fields": {
-      "name": "Python"
-    }
+    "fields": {"name": "Action Script"}
   },
   {
     "model": "users.skill",
     "pk": 2,
-    "fields": {
-      "name": "Javascript"
-    }
+    "fields": {"name": "ActiveVFP"}
   },
   {
     "model": "users.skill",
     "pk": 3,
-    "fields": {
-      "name": "SQL"
-    }
+    "fields": {"name": "Ada"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 4,
+    "fields": {"name": "ASP"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 5,
+    "fields": {"name": "Assembly"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 6,
+    "fields": {"name": "C"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 7,
+    "fields": {"name": "C#"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 8,
+    "fields": {"name": "C++"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 9,
+    "fields": {"name": "CSS"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 10,
+    "fields": {"name": "Clojure"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 11,
+    "fields": {"name": "Cobol"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 12,
+    "fields": {"name": "ColdFusion"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 13,
+    "fields": {"name": "D"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 14,
+    "fields": {"name": "Delphi"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 15,
+    "fields": {"name": "Erlang"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 16,
+    "fields": {"name": "F#"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 17,
+    "fields": {"name": "Forth"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 18,
+    "fields": {"name": "Fortran"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 19,
+    "fields": {"name": "Go"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 20,
+    "fields": {"name": "Graphic design"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 21,
+    "fields": {"name": "Groovy"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 22,
+    "fields": {"name": "Haskell"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 23,
+    "fields": {"name": "Java"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 24,
+    "fields": {"name": "JavaScript"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 25,
+    "fields": {"name": "Lasso"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 26,
+    "fields": {"name": "Lisp"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 27,
+    "fields": {"name": "Lua"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 28,
+    "fields": {"name": "Matlab"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 29,
+    "fields": {"name": "Objective C"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 30,
+    "fields": {"name": "OCaml"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 31,
+    "fields": {"name": "OpenEdge ABL"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 32,
+    "fields": {"name": "Pascal"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 33,
+    "fields": {"name": "Perl"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 34,
+    "fields": {"name": "PHP"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 35,
+    "fields": {"name": "Prolog"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 36,
+    "fields": {"name": "Python"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 37,
+    "fields": {"name": "R"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 38,
+    "fields": {"name": "Rexx"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 39,
+    "fields": {"name": "Ruby"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 40,
+    "fields": {"name": "SAS"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 41,
+    "fields": {"name": "Scala"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 42,
+    "fields": {"name": "Scheme"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 43,
+    "fields": {"name": "Shell Script"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 44,
+    "fields": {"name": "Smalltalk"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 45,
+    "fields": {"name": "SMX"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 46,
+    "fields": {"name": "SQL"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 47,
+    "fields": {"name": "Swift"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 48,
+    "fields": {"name": "Synergy"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 49,
+    "fields": {"name": "TCL"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 50,
+    "fields": {"name": "UI/UX"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 51,
+    "fields": {"name": "Visual Basic"}
+  },
+  {
+    "model": "users.skill",
+    "pk": 52,
+    "fields": {"name": "WebDNA"}
   }
 ]

@@ -45,6 +45,13 @@
     "model": "users.MakerTypes",
     "pk": 7,
     "fields": {
+      "name": "Hardware Developer"
+    }
+  },
+  {
+    "model": "users.MakerTypes",
+    "pk": 8,
+    "fields": {
       "name": "Other"
     }
   }
