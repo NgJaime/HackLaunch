@@ -1,5 +1,5 @@
 hacklaunch/settings/keys.py
-/users/migrations/
+/config/nginx/.htpasswd
 /data
 /venv
 /.idea
