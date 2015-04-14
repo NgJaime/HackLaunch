@@ -2,7 +2,9 @@ from hacklaunch.settings.base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = [u'ec2-52-74-130-171.ap-southeast-1.compute.amazonaws.com']
+ALLOWED_HOSTS = [u'ec2-52-74-130-171.ap-southeast-1.compute.amazonaws.com',
+		 u'52.74.32.193',
+		 u'staging.hacklaunch.com']
 
 AWS_S3_SECURE_URLS = False
 AWS_QUERYSTRING_AUTH = False
