@@ -122,7 +122,7 @@ def require_email(request):
         request.session['saved_email'] = request.POST.get('email')
         backend = request.session['partial_pipeline']['backend']
         return redirect('social:complete', backend=backend)
-    return render_to_response('email.html', RequestContext(request))
+    return render_to_response('require_email.html', RequestContext(request))
 
 
 def validation_sent(request):

@@ -20,6 +20,8 @@ def user_password(strategy, user, is_new=False, *args, **kwargs):
 def require_email(strategy, details, user=None, is_new=False, *args, **kwargs):
     if user and user.email:
         return
+    elif is_new and 'email' in kwargs['request']:
+        details['email'] = kwargs['request']['email']
     elif is_new and not details.get('email'):
         if strategy.session_get('saved_email'):
             details['email'] = strategy.session_pop('saved_email')

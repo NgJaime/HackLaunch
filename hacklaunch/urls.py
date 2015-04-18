@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^email/$', 'users.views.require_email', name='require_email'),
+    url(r'^email_required/$', 'users.views.require_email', name='require_email'),
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
     url(r'^email_complete/$', 'users.views.email_complete', name='email_complete'),
 
