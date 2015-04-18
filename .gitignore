@@ -6,6 +6,7 @@ hacklaunch/settings/keys.py
 /bower_components
 /node_modules
 /logs
+/config/keys/
 *.pyc
 *.sqlite3
 bfg.jar
