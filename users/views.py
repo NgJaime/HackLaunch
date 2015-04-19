@@ -79,7 +79,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
             self.profile.save()
             self.profile.user.save()
 
-        return render(self.request, 'home.html')
+        return HttpResponseRedirect("/")
 
     def form_invalid(self, form):
         if self.request.user.nonSocialAuth is False \
