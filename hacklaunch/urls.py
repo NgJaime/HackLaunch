@@ -13,8 +13,6 @@ urlpatterns = [
     url(r'^terms/$', 'base.views.terms', name='terms'),
     url(r'^credits/$', 'base.views.credits', name='credits'),
 
-    url(r'^complete/(?P<backend>[^/]+)/$', 'users.views.complete', name='complete'),
-
     url(r'^profile/$', ProfileEditView.as_view()),
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
 
@@ -23,8 +21,7 @@ urlpatterns = [
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
     url(r'^email_complete/$', 'users.views.email_complete', name='email_complete'),
 
-    url(r'^login/$', 'base.views.home'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'home.html'}, name='logout'),
+    url(r'^logout/$', 'users.views.logout', name='logout'),
     url(r'^delete_user/$', 'users.views.delete_user'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
         {'template_name': 'registration/password_reset_form.html', 'html_email_template_name': 'password_reset_email.html'}, name='password_reset'),

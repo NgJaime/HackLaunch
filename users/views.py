@@ -8,8 +8,8 @@ from django.template import Context
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth import logout as auth_logout
 from base.forms import InitialPassword
-from social.apps.django_app.views import complete as social_complete
 from forms import UserProfileForm
 from models import UserProfile, User
 from social.apps.django_app.default.models import UserSocialAuth
@@ -99,6 +99,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         return render(self.request, 'profile_edit.html', {'form': form})
 
 
+@login_required(redirect_field_name='/')
 def send_password_changed_email(user):
     context = {
         'first_name': user.first_name,
@@ -133,18 +134,6 @@ def email_complete(request):
     return render(request, 'email_complete.html')
 
 
-def complete(request, backend, *args, **kwargs):
-
-    if request.method == 'POST' and backend == u'email':
-        request.session.flush()
-        form = InitialPassword(request.POST)
-
-        if not form.is_valid():
-            return render(request, 'home.html', {'form': form})
-
-    return social_complete(request, backend, *args, **kwargs)
-
-
 @login_required(redirect_field_name='/')
 def delete_user(request):
     profile = get_object_or_404(UserProfile, user_id=request.user.id)
@@ -160,3 +149,7 @@ def delete_user(request):
     return HttpResponseRedirect(reverse('django.contrib.auth.views.logout'))
 
 
+@login_required(redirect_field_name='/')
+def logout(request):
+    auth_logout(request)
+    return HttpResponseRedirect('/')

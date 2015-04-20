@@ -65,9 +65,10 @@
 
                                 <div class="form-group">
                                     <form id="main-login-form" class="form-inline"
-                                          action="{% url 'social:complete' "email" %}" method="post"
+                                          method="post"
                                           lpchecked="1" role="form"
-                                          style="margin-top: 10px" name="email_login"
+                                          style="margin-top: 10px"
+                                          name="email_login"
                                           onsubmit="return validateSignup('main')">
                                         {% csrf_token %}
                                         <div class="input-group login-input" id="main_signup_email_group">
@@ -129,10 +130,10 @@
         </div>
     </header>
 
+    {# new members slider #}
     <section class="wrap-dark-color margin-bottom">
         <div class="container">
             <div class="row">
-               {# new members slider #}
                 <div class="container">
                     <section class="margin-bottom">
                         <div class="row">
@@ -187,6 +188,7 @@
         </div>
     </section>
 
+    {# Marketing material #}
     <div class="container">
         <section class="margin-bottom-small">
             <div class="row">
