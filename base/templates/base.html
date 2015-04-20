@@ -167,7 +167,7 @@
                                 <p style="text-align: center">With a username and password</p>
 
                                 <div class="form-group">
-                                    <form id="top-login-form" action="{% url 'social:complete' "email" %}" method="post"
+                                    <form id="top-login-form" method="post"
                                           onsubmit="return validateSignup('top')">
                                         {% csrf_token %}
                                         <div id="top_signup_email_group" class="input-group login-input">
