@@ -5,6 +5,7 @@ from social.apps.django_app.views import complete as social_complete
 from users.models import User
 from base.forms import InitialPassword
 
+
 class HomeView(FormView):
     form_class = InitialPassword
     template_name = "home.html"
@@ -14,13 +15,12 @@ class HomeView(FormView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['new_users'] = self.new_users
+        context['form'] = self.form_class
         return self.render_to_response(context)
 
     def form_invalid(self, form):
         self.request.session.flush()
-
         return render(self.request, 'home.html', {'form': form, 'new_users': self.new_users})
-
 
     def form_valid(self, form):
         return social_complete(self.request, 'email')
