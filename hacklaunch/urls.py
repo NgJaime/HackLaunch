@@ -19,7 +19,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^email_required/$', 'users.views.require_email', name='require_email'),
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
-    url(r'^email_complete/$', 'users.views.email_complete', name='email_complete'),
 
     url(r'^logout/$', 'users.views.logout', name='logout'),
     url(r'^delete_user/$', 'users.views.delete_user'),

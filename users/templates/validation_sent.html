@@ -1,6 +1,10 @@
-{% extends "base.html" %}
+{% extends "message_no_footer.html" %}
 {% load url from future %}
 
-{% block content %}
-A email validation was sent to {{ email }}.
+{% block title %}
+    Validation sent
+{% endblock %}
+
+{% block body %}
+    <p>A email validation was sent to {{ email }}.</p>
 {% endblock %}

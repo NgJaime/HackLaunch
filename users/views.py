@@ -129,10 +129,6 @@ def validation_sent(request):
     return render(request, 'validation_sent.html', {'email': request.session['email_validation_address']})
 
 
-def email_complete(request):
-    return render(request, 'email_complete.html')
-
-
 @login_required(redirect_field_name='/')
 def delete_user(request):
     profile = get_object_or_404(UserProfile, user_id=request.user.id)
