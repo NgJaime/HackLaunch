@@ -1,37 +1,46 @@
-{% extends "base.html" %}
+{% extends "message.html" %}
+{% load staticfiles %}
 {% load url from future %}
 
-{% block content %}
+{% block title %}
+    Email address required
+{% endblock %}
+
+{% block body %}
     <form action="{% url "social:complete" backend=request.session.partial_pipeline.backend %}" method="post"
-          role="form">{% csrf_token %}
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Email address required</h3>
-                </div>
+          role="form" id="emailRequiredForm" onsubmit="return emailFeedBack('emailRequiredForm', 'message-container')">
+    {% csrf_token %}
 
-                <div class="modal-body">
-                    <p>No email address was provided by {{ request.session.partial_pipeline.backend }} please provide
-                        your email.</p>
+    <div class="modal-body">
+        <p>No email address was provided by {{ request.session.partial_pipeline.backend }} please provide
+            your email.</p>
 
-                    <div class="form-group" style="width: 100%; margin: 0 auto;">
+        <div class="form-group" style="width: 100%; margin: 0 auto;">
 
-                        <div  style="display: inline-block ">
-                            <label class="control-label" style="font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: normal;">Email address:</label>
-                        </div>
-                        <div  style="display: inline-block; width: 50%">
-                            <input class="form-control" id="email" type="email" name="email" value="">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <input class="btn btn-primary" value="Submit" type="submit" style="background-color: #8ADE24; border-width: 0px;">
-                </div>
+            <div style="display: inline-block ">
+                <label class="control-label"
+                       style="font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: normal;">Email
+                    address:</label>
+            </div>
+            <div style="display: inline-block; width: 50%">
+                <input class="form-control" id="email" name="email" value="">
             </div>
         </div>
+
+        <div id="message-container" class="hidden"></div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+
+    <input class="btn btn-primary" value="Submit" type="submit"
+           style="background-color: #8ADE24; border-width: 0px;" >
+
     </form>
+{% endblock %}
 
 
-
+{% block extra_scripts %}
+   <script src="{% static "js/validation/email.js" %}"></script>
 {% endblock %}
