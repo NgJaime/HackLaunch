@@ -20,7 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
-
 # Application definition
 
 PREREQ_APPS = [
@@ -57,13 +56,13 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 ROOT_URLCONF = 'hacklaunch.urls'
 
 LOGIN_REDIRECT_URL = '/'
-# todo
-LOGIN_URL = 'django.contrib.auth.views.login'
+
+LOGIN_URL = '/'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', 'base/templates', 'users/templates'],
+        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,16 +79,7 @@ TEMPLATES = [
 ]
 
 
-if DEBUG:
-    MEDIA_URL = '/media/'
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
-    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
-    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), "static", "static")),
-    # TEMPLATES['OPTIONS']['context_processors']  'django.core.context_processors.static'
-
-
 WSGI_APPLICATION = 'hacklaunch.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
