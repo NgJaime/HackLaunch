@@ -9,7 +9,6 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout as auth_logout
-from base.forms import InitialPassword
 from forms import UserProfileForm
 from models import UserProfile, User
 from social.apps.django_app.default.models import UserSocialAuth
