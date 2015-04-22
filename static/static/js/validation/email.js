@@ -1,6 +1,6 @@
 
 var emailFeedBack = function (formLocation, messageContainer) {
-     function validateEmail(email, location) {
+     function validateEmail(email) {
         function validateEmail(sEmail) {
             var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
             if (filter.test(sEmail)) {
@@ -24,8 +24,6 @@ var emailFeedBack = function (formLocation, messageContainer) {
     };
 
     var email = document.getElementById(formLocation)["email"].value,
-        container = $("#" + messageContainer),
-
         errorElements = '<p id="error-message" style="margin: 10px 0px 0px"> \
                                 <span id="login-warning" class="label label-danger"> Warning </span> \
                                 <span id="message" style="margin-left:5px; color: #666"> \
@@ -33,10 +31,14 @@ var emailFeedBack = function (formLocation, messageContainer) {
                                 </span> \
                         </p>';
 
-    if (!validateEmail(email, formLocation)) {
+    if (!validateEmail(email)) {
         $("#" + formLocation).addClass("has-feedback has-error");
-        container.append(errorElements);
+        $("#form-errors").addClass("hidden");
+
+        var container = $("#" + messageContainer);
+        container.html(errorElements);
         container.removeClass('hidden');
+
         return false;
     }
 

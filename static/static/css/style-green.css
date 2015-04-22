@@ -8735,3 +8735,10 @@ input[type="date"]:focus {
 .hand-list li {
   margin-bottom: 40px;
 }
+
+
+.message-label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}

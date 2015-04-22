@@ -3,6 +3,10 @@
 {% load url from future %}
 
 {% block title %}
+    Hacklaunch - Email Required
+{% endblock %}
+
+{% block form_title %}
     Email address required
 {% endblock %}
 
@@ -18,12 +22,10 @@
         <div class="form-group" style="width: 100%; margin: 0 auto;">
 
             <div style="display: inline-block ">
-                <label class="control-label"
-                       style="font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: normal;">Email
-                    address:</label>
+                <label class="control-label message-label">Email address:</label>
             </div>
             <div style="display: inline-block; width: 50%">
-                <input class="form-control" id="email" name="email" value="">
+                <input class="form-control" id="email" name="email" type="email" value="">
             </div>
         </div>
 

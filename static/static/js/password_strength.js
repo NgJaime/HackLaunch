@@ -48,8 +48,12 @@ PasswordStrength = function(loginElements)
                 elements.password_strength_info.find('.label').removeClass('hidden');
                 elements.password_strength_bar.width(100 + '%');
                 elements.password_strength_message.html("Passwords do not match");
+
+                return false;
             }
         }
+
+        return true;
     },
 
     passwordStrength = function (value) {
@@ -76,6 +80,12 @@ PasswordStrength = function(loginElements)
             elements.password_strength_bar.removeClass('progress-bar-success').addClass('progress-bar-warning');
             elements.password_strength_bar.width('0%').attr('aria-valuenow', 0);
         }
+
+        if (result.score < 3) {
+            return false;
+        } else {
+            return true;
+        }
     };
 
     return {
@@ -86,4 +96,5 @@ PasswordStrength = function(loginElements)
 
 var mainLoginMessage = new PasswordStrength(mainLoginElements),
     topLoginMessage = new PasswordStrength(topLoginElements),
+    resetPasswordMessage = new PasswordStrength(new LoginElements("reset")),
     profileLoginMessage = new PasswordStrength(profileLoginElements);

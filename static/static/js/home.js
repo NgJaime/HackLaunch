@@ -56,6 +56,23 @@ LoginElements = function(location) {
                             </p> \
                         </div>',
 
+        resetMessage = '<div> \
+                            <div id="password_strength_background" class="progress" style="margin-bottom: 10px;"> \
+                                <div id="reset_password_strength_bar" \
+                                     class="progress-bar progress-bar-warning password_strength_bar" \
+                                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" \
+                                     style="width: 0"> \
+                                </div> \
+                            </div> \
+                            <p id="reset_password_strength_info" class="text-muted password_strength_info"> \
+                            <span id="login-warning" class="label label-danger"> \
+                                 Warning \
+                            </span> \
+                                <span id="reset_password_strength_message" \
+                                      style="margin-left:5px; color: #666"></span> \
+                            </p> \
+                        </div>',
+
         topMessage = '<div> \
                             <div id="password_strength_background" class="progress" style="margin-bottom: 5px;"> \
                                 <div id="top_password_strength_bar" \
@@ -87,6 +104,9 @@ LoginElements = function(location) {
                 }
                 else if (location === "profile") {
                     element.append(profileMessage);
+                }
+                else if (location === "reset") {
+                    element.append(resetMessage);
                 }
 
                 this.password_strength_bar = $("#" + location + "_password_strength_bar");
