@@ -8742,3 +8742,24 @@ input[type="date"]:focus {
     font-size: 14px;
     font-weight: normal;
 }
+
+
+.nav-links {
+    margin-top: 10px;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    font-family: 'Lato', 'Open Sans', sans-serif;
+    font-size: 21px;
+    color: white;
+    margin-right: 10px;
+}
+
+.nav-links a:hover {
+    color: #8ADE24;
+    text-decoration: none;
+}
