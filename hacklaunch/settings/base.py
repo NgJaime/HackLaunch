@@ -62,7 +62,7 @@ LOGIN_URL = '/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates'],
+        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates', 'events/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

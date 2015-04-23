@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Innovate or Die{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title animated fadeInDown animation-delay-5">Innovate or Die? <span>Driving Innovation in business</span></div>
+        </div>
+        <div class="col-xs-12">
+            <p class="slogan text-center animated bounceInLeft animation-delay-12" >
+            Join our inaugural meet-up to hear from <span>leading figures</span> on how their organistions are
+                <span>driving innovation</span> and take some time to <span>network</span> with fellow <span>thought leaders</span>.
+            </p>
+        </div>
+        <div class="col-md-8 wow fadeInUp">
+            <h2 class="right-line">Event</h2>
+            <p class="p-lg" align="justify">Driving innovations is critical in today’s business and an ever growing concern for businesses.
+                To be competitive in the global marketplace, organizations need to be driving more innovation in their products and services.
+                They need to innovate rapidly and they need to do it cost-effectively. Even the best technology can’t deliver
+                success without focus on business strategy and goals.
+                The first HackLaunch event will focus on addressing how to drive innovation, create an entrepreneurial and
+                innovative culture that is for sustainable growth.
+            </p>
+
+            </p>
+            <hr class="dotted">
+            <blockquote class="blockquote-color-bg-primary">
+                <p>Innovation has nothing to do with how many R&D dollars you have. When Apple came up with the Mac, IBM was
+                    spending at least 100 times more on R&D than Apple. It's not about money. It's about the people you have, how you're led,
+                    and how much you get it.
+                </p>
+                <footer>Steve Jobs - Apple CEO</footer>
+            </blockquote>
+
+            <div >
+            <h2 class="right-line">Speakers</h2>
+            </div>
+            <div >
+                <section>
+                    <div class="panel panel-default  animated fadeInDown animation-delay-8">
+                        <div class="panel-body">
+                            <h3 class="section-title no-margin-top">Damien Cummings<small class="pull-right">CMO at Philips ASEAN & Pacific </small><div class="clearfix"></div></h3>
+                            <div class="clearfix"></div>
+                            <img src="{% static "images/events/damien-cummings.png" %}" alt="Damien Cummings"
+                                 class="alignleft imageborder" style="width: 111px; height: 111px">
+                            <p class="no-margin-top">Damien is instrumental in driving Philips new brand promise “Innovation and you”. With over 20
+                                years of experience in the marketing space, Damien prolific career spans across Samsung, Dell, Ogilvy, Citibank and more.</p>
+
+                            <a href="#" class="social-icon-ar sm twitter animated fadeInDown"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="social-icon-ar sm google-plus animated fadeInDown"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="social-icon-ar sm facebook animated fadeInDown"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="social-icon-ar sm instagram animated fadeInDown"><i class="fa fa-instagram"></i></a>
+                            <a href="#" class="social-icon-ar sm pinterest animated fadeInDown"><i class="fa fa-pinterest"></i></a>
+                            <a href="#" class="social-icon-ar sm linkedin animated fadeInDown"><i class="fa fa-linkedin"></i></a>
+                            <a href="#" class="social-icon-ar sm git animated fadeInDown"><i class="fa fa-github"></i></a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 wow fadeInUp">
+            <h2 class="right-line">Venue</h2>
+            <div class="row">
+                <div style="margin-left: 20px;">
+                    <address>
+                        <p><strong>Springboard</strong>, #04-01 The Quadrant,</p>
+                        <p>19 Cecil Street, Singapore, 049704</p>
+                    </address>
+
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3988.818867555219!2d103.85054099999999!3d1.282482!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190c28347c4d%3A0xfaa0b93f0272eb14!2sSpringboard.Sg+-+Coworking+Space!5e0!3m2!1sen!2ssg!4v1429782576157" width="360" height="300" frameborder="0" style="border:0"></iframe>
+
+                </div>
+            </div>
+
+
+            <h2 class="right-line">Schedule</h2>
+            <div class="row">
+                <div style="margin-left: 20px;">
+                    <p class="p-lg"><strong>1800</strong> - Registration, Networking & Refreshments</p>
+                    <p class="p-lg"><strong>1830</strong> - Introduction by Jaime Ng</p>
+                    <p class="p-lg"><strong>1900</strong> - Guest Speaker: Damien Cummings</p>
+                    <p class="p-lg"><strong>1945</strong> - Guest Speaker: TBC</p>
+                    <p class="p-lg"><strong>2030</strong> - Networking</p>
+                </div>
+            </div>
+
+            <h2 class="right-line">Event sponsors</h2>
+            <div class="row">
+                <div class="col-md-6 col-sm-3 col-xs-6"><img src="{% static "images/events/springboard.png" %}" alt="" class="img-responsive"></div>
+            </div>
+        </div>
+    </div> <!-- row -->
+
+</div> <!-- container -->
+
+{% endblock %}

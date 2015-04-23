@@ -6,6 +6,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', include('base.urls')),
+    url(r'^events/', include('events.urls')),
     url(r'^terms/$', 'base.views.terms', name='terms'),
     url(r'^credits/$', 'base.views.credits', name='credits'),
 

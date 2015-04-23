@@ -6565,6 +6565,20 @@ a.feature-icon:hover {
     color: #83E11C;
 }
 
+.title span {
+    color: #83E11C;
+}
+
+.title {
+    font-size: 3.0em;
+    font-weight: 300;
+    font-family: "Muli", "Lato", sans-serif;
+    color: #000;
+    padding-top: 70px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .transparent-div {
     -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
     -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
