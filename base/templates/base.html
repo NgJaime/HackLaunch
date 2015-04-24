@@ -245,21 +245,15 @@
                     <a href="javascript:void(0);" class="sb-icon-navbar sb-toggle-right"><i class="fa fa-bars"></i></a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                    <ul class="nav-links">
-                        <li>
-                            <a href="/">Home</a>
-                        </li>
-                        <li>
-                            <a href="/events/innovate-or-die">Events</a>
-                        </li>
-                        </li>
-                            {% if not user.is_anonymous %}
+                    <ul class="nav navbar-nav">
+                        <li class="{% block home-nav %}{% endblock %}"><a href="/">Home</a></li>
+                        <li class="{% block events-nav %}{% endblock %}"><a href="/events/innovate-or-die">Events</a></li>
+                        {% if not user.is_anonymous %}
+                            <li class="{% block profile-nav %}{% endblock %}">
                                 <a href="/profile/{{ user.userprofile.slug }}">Profile</a>
-                            {% endif %}
-                         </li>
+                            </li>
+                        {% endif %}
                     </ul>
-
                 </div>
                 <!-- navbar-collapse -->
             </div>
@@ -282,6 +276,7 @@
                         <h3 class="footer-widget-title">Site Map</h3>
                         <ul class="list-unstyled three_cols">
                             <li><a href="/">Home</a></li>
+                            <li><a href="/events/innovate-or-die">Events</a></li>
                             {% if not user.is_anonymous %}
                                 <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
                             {% endif %}
@@ -341,6 +336,7 @@
     <h2 class="slidebar-header" style="margin-bottom: 0px;">Navigation</h2>
     <ul class="slidebar-menu">
         <li><a href="/">Home</a></li>
+        <li><a href="/events/innovate-or-die">Events</a></li>
 
         {% if not user.is_anonymous %}
             <li><a href="/profile/{{ user.userprofile.slug }}">View profile</a></li>
