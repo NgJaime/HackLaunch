@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from users.views import ProfileEditView
+from auth.views import Login
 
 admin.autodiscover()
 
@@ -18,6 +19,8 @@ urlpatterns = [
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
 
     url(r'^logout/$', 'users.views.logout', name='logout'),
+    url(r'^login/$', Login.as_view(), name='login'),
+
     url(r'^delete_user/$', 'users.views.delete_user'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
         {'template_name': 'password_reset_form.html', 'html_email_template_name': 'password_reset_email.html'}, name='password_reset'),

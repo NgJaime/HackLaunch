@@ -5,7 +5,7 @@ from zxcvbn_password.fields import PasswordField
 
 logger = logging.getLogger(__name__)
 
-
+# todo move to auth
 class InitialPassword(forms.Form):
     email = forms.EmailField(label="email", required=True, max_length=255)
     password = PasswordField(widget=None)

@@ -1,4 +1,5 @@
 hacklaunch/settings/keys.py
+/events/migrations/
 /config/nginx/.htpasswd
 /data
 /venv

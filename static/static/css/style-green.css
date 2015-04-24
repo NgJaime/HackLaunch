@@ -8058,6 +8058,14 @@ input[type="date"]:focus {
     color: #fff;
 }
 
+.wrap-primary-plan2 {
+    background-image: url("../images/home-splash.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    color: #fff;
+}
+
 #primary-plan {
     font-family: "Muli";
     text-align: center;
@@ -8776,4 +8784,8 @@ input[type="date"]:focus {
 .nav-links a:hover {
     color: #8ADE24;
     text-decoration: none;
+}
+
+.center {
+    text-align: center;
 }

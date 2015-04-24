@@ -33,7 +33,7 @@ def terms(request):
 def credits(request):
     return render(request, 'credits.html')
 
-
+# todo move to auth
 class LoginRequiredMixin(object):
     @classmethod
     def as_view(cls, **initkwargs):
