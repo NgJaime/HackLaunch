@@ -8058,7 +8058,7 @@ input[type="date"]:focus {
     color: #fff;
 }
 
-.wrap-primary-plan2 {
+.wrap-primary-plan {
     background-image: url("../images/home-splash.jpeg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -8786,6 +8786,13 @@ input[type="date"]:focus {
     text-decoration: none;
 }
 
-.center {
-    text-align: center;
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+.white-border {
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
 }

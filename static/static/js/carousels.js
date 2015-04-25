@@ -1,12 +1,27 @@
 $(document).ready(function () {
-    $('.bxslider').bxSlider({
+    $('.bx-vertical').bxSlider({
         minSlides: 2,
-        maxSlides: 4,
-        slideWidth: 400,
+        maxSlides: 2,
+        slideWidth: 360,
         slideMargin: 10,
+        slideHeight: 175,
+        pager: true,
+        ticker: true,
+        speed: 35000,
+        tickerHover: true,
+        useCSS: false,
+        mode: 'vertical'
+    });
+
+    $('.bx-horizontal').bxSlider({
+        minSlides: 2,
+        maxSlides: 2,
+        slideWidth: 360,
+        slideMargin: 10,
+        slideHeight: 175,
         pager: false,
         ticker: true,
-        speed: 30000,
+        speed: 35000,
         tickerHover: true,
         useCSS: false
     });

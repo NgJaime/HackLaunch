@@ -13,13 +13,15 @@
         <div class="col-xs-12">
             <div class="title animated fadeInDown animation-delay-5">Innovate or Die? <span>Driving Innovation in business</span></div>
         </div>
-        <div class="col-xs-12 center">
+        <div class="col-xs-12 text-center">
             <p class="slogan text-center animated bounceInLeft animation-delay-12" style="margin-bottom: 30px;">
             Join our inaugural meet-up to hear from <span>leading figures</span> on how their organisations are
                 <span>driving innovation</span> and take some time to <span>network</span> with fellow <span>thought leaders</span>.
             </p>
 
-            <a href="/events/innovate-or-die/register" class="button button-highlight button-pill" style="margin-bottom: 10px;"><strong>Register</strong></a>
+            {% if not attending %}
+                <a href="/events/innovate-or-die/register" class="button button-highlight button-pill" style="margin-bottom: 10px;"><strong>Register</strong></a>
+            {% endif %}
         </div>
         <div class="col-md-8 wow fadeInUp">
             <h2 class="right-line">Event</h2>
@@ -52,7 +54,7 @@
                             <div class="clearfix"></div>
                             <img src="{% static "images/events/damien-cummings.jpg" %}" alt="Damien Cummings"
                                  class="alignleft imageborder" style="width: 111px; height: 111px">
-                            <p class="no-margin-top">Damien is instrumental in driving Philips new brand promise “Innovation and you”. With over 20
+                            <p class="no-margin-top align="justify"">Damien is instrumental in driving Philips new brand promise “Innovation and you”. With over 20
                                 years of experience in the marketing space, Damien prolific career spans across Samsung, Dell, Ogilvy, Citibank and more.</p>
 
                             <a href="https://www.twitter.com/DamienCummings" class="social-icon-ar sm twitter animated fadeInDown"><i class="fa fa-twitter"></i></a>
@@ -65,11 +67,32 @@
                 <section>
                     <div class="panel panel-default  animated fadeInDown animation-delay-8">
                         <div class="panel-body">
+                            <h3 class="section-title no-margin-top">Julien de Salaberry
+                                <small class="pull-right">Founder & CIO – The Propell Group</small><div class="clearfix"></div></h3>
+                            <div class="clearfix"></div>
+                            <img src="{% static "images/events/julien-de-salaberry.jpg" %}" alt="Jaime Ng"
+                                 class="alignleft imageborder" style="width: 111px; height: 111px">
+                            <p class="no-margin-top align="justify"">Julien founded The Propell Group, a boutique venture investor and advisory firm focused on
+                                startups and growth companies, based in Singapore. He is an advisor to startups and incubators in healthcare
+                                and technology in high growth markets as well as investing in early stage and promising SMEs.</p>
+
+                            <a href="https://twitter.com/enquirepropell" class="social-icon-ar sm twitter animated fadeInDown"><i class="fa fa-twitter"></i>
+                            <a href="https://www.linkedin.com/company/2824212?trk=tyah&trkInfo=tarId%3A1403491692571%2Ctas%3Athe%20propell%20group%2Cidx%3A1-1-1"
+                               class="social-icon-ar sm linkedin animated fadeInDown"><i class="fa fa-linkedin"></i>
+                            <a href="http://www.propellgroup.biz/" >www.propellgroup.biz/</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="panel panel-default  animated fadeInDown animation-delay-8">
+                        <div class="panel-body">
                             <h3 class="section-title no-margin-top">Jaime Ng<small class="pull-right">Founder at HackLaunch</small><div class="clearfix"></div></h3>
                             <div class="clearfix"></div>
                             <img src="{% static "images/events/jaime-ng.jpg" %}" alt="Jaime Ng"
                                  class="alignleft imageborder" style="width: 111px; height: 111px">
-                            <p class="no-margin-top">Jaime is a serial entrepreneur focused on driving HackLaunch as a platform for hackathons that helps innovator participate,
+                            <p class="no-margin-top align="justify"">Jaime is a serial entrepreneur focused on driving HackLaunch as a platform for hackathons that helps innovator participate,
                                 build and showcase their profile & projects.</p>
 
                             <a href="https://www.twitter.com/jaime_ng" class="social-icon-ar sm twitter animated fadeInDown"><i class="fa fa-twitter"></i>
@@ -111,9 +134,54 @@
                     <p class="p-lg"><strong>2030</strong> - Networking</p>
                 </div>
             </div>
+
+            <h2 class="right-line">Attendees</h2>
+            <div class="row">
+                <ul class="bx-vertical" style="padding: 0px;">
+                    {% for user in event.users.all %}
+                        <li style="padding-right: 0px; margin-bottom: 0px; margin-right: 0px; background-color: transparent;">
+                            <div style="background-color: rgba(131, 225, 28, 1); cursor:pointer; height: 140px;"
+                                 onclick="location.href='/profile/{{ user.userprofile.slug }}'";>
+                                <div class="row" style="margin: 0px;">
+                                    <div class="col-md-4 vertical-center white-border" style=" height: 140px;">
+                                            <img class="img-responsive img-circle card-head center-block text-center white-border"
+                                                 style="border-width: 3px;"
+                                                 {% if user.userprofile.thumbnail %}
+                                                    src="{{ user.userprofile.thumbnail.url }}" alt="{{ user.get_full_name }}"
+                                                 {% else %}
+                                                    src="//placehold.it/70" class="avatar img-circle" alt="avatar"
+                                                 {% endif %} >
+                                    </div>
+                                    <div class="col-md-8 text-center vertical-center white-border" style="height: 140px; margin-bottom: 0px;">
+                                        <div>
+                                            <h4 style="color: white; margin-bottom: 10px; margin-top: 15px">
+                                                <strong> @{{ user.username }}</strong>
+                                            </h4>
+
+                                            <ul style="padding-left: 0px;">
+                                                {% for maker_type in user.userprofile.maker_type.all %}
+                                                    {% if maker_type.name != 'Other' %}
+                                                        <li style="display: inline-block; padding-left: 3px; padding-right: 3px; margin-right: 5px; color: white;   ">
+                                                            <strong>{{ maker_type.name }}</strong>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div> <!-- row -->
 
 </div> <!-- container -->
 
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static "js/carousels.js" %}"></script>
 {% endblock %}
