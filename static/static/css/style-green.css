@@ -8792,7 +8792,11 @@ input[type="date"]:focus {
 }
 
 .white-border {
-    border-width: 2px;
-    border-style: solid;
+    border-width: 2px solid;
     border-color: white;
+}
+
+.white-border-right {
+    border-right: 3px solid;
+    border-right-color: white;
 }

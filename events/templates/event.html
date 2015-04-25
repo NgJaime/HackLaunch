@@ -143,7 +143,7 @@
                             <div style="background-color: rgba(131, 225, 28, 1); cursor:pointer; height: 140px;"
                                  onclick="location.href='/profile/{{ user.userprofile.slug }}'";>
                                 <div class="row" style="margin: 0px;">
-                                    <div class="col-md-4 vertical-center white-border" style=" height: 140px;">
+                                    <div class="col-md-4 vertical-center white-border-right" style=" height: 140px;">
                                             <img class="img-responsive img-circle card-head center-block text-center white-border"
                                                  style="border-width: 3px;"
                                                  {% if user.userprofile.thumbnail %}
@@ -152,8 +152,8 @@
                                                     src="//placehold.it/70" class="avatar img-circle" alt="avatar"
                                                  {% endif %} >
                                     </div>
-                                    <div class="col-md-8 text-center vertical-center white-border" style="height: 140px; margin-bottom: 0px;">
-                                        <div>
+                                    <div class="col-md-8 text-center vertical-center" style="height: 140px; margin-bottom: 0px;">
+                                        <div style="width: 100%">
                                             <h4 style="color: white; margin-bottom: 10px; margin-top: 15px">
                                                 <strong> @{{ user.username }}</strong>
                                             </h4>
