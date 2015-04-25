@@ -82,18 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hacklaunch.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hacklaunch',
-        'USER': 'hacklaunch',
-        'PASSWORD': 'password',
-        'HOST': 'localhost'
-    }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
