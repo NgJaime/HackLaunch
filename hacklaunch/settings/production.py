@@ -10,10 +10,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'hacklaunch',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 
@@ -22,3 +25,5 @@ AWS_QUERYSTRING_AUTH = False
 AWS_STORAGE_BUCKET_NAME = 'hacklaunch-images-production'
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+CSRF_COOKIE_SECURE = True
