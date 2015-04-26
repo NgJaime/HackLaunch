@@ -16,6 +16,7 @@ DATABASES = {
         'PORT': '5432',
         'OPTIONS': {
             'sslmode': 'require',
+            'sslrootcert': '/home/ubuntu/.ssh/rds-ssl-ca-cert.pem'
         },
     }
 }
