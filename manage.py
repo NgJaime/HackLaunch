@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 import os
 import sys
+from django.conf import settings
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hacklaunch.settings.development")
+    if settings.DEBUG:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hacklaunch.settings.development")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hacklaunch.settings.production")
 
     from django.core.management import execute_from_command_line
 
