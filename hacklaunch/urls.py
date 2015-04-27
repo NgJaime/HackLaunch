@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^email_required/$', 'users.views.require_email', name='require_email'),
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
+    url(r'^complete/(?P<backend>[^/]+)/$', 'auth.views.complete', name='complete'),
 
     url(r'^logout/$', 'users.views.logout', name='logout'),
     url(r'^login/$', Login.as_view(), name='login'),

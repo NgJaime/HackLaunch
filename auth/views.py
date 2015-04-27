@@ -18,3 +18,15 @@ class Login(FormView):
 
     def get_success_url(self):
         return redirect(self.request.POST.get('next','home'))
+
+
+def complete(request, backend, *args, **kwargs):
+
+    if request.method == 'POST' and backend == u'email':
+        request.session.flush()
+        form = InitialPassword(request.POST)
+
+        if not form.is_valid():
+            return render(request, 'home.html', {'form': form})
+
+    return social_complete(request, backend, *args, **kwargs)
