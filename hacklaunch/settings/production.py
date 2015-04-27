@@ -2,7 +2,9 @@ from hacklaunch.settings.base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'ec2-52-74-151-51.ap-southeast-1.compute.amazonaws.com',
+                 u'52.74.151.51',
+                 u'www.hacklaunch.com']
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
@@ -28,3 +30,6 @@ AWS_STORAGE_BUCKET_NAME = 'hacklaunch-images-production'
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True

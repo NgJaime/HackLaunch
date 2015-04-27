@@ -58,7 +58,7 @@ ROOT_URLCONF = 'hacklaunch.urls'
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGIN_URL = '/'
+LOGIN_URL = '/login'
 
 TEMPLATES = [
     {
