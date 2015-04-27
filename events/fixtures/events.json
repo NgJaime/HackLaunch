@@ -1,0 +1,10 @@
+[
+  {
+    "model": "users.MakerTypes",
+    "pk": 1,
+    "fields": {
+      "name": "innovate-or-die",
+      "slug": "innovate-or-die"
+    }
+  }
+]
