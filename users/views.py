@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import logout as auth_logout, authenticate, login
 from forms import UserProfileForm
 from models import UserProfile, User
 from social.apps.django_app.default.models import UserSocialAuth
@@ -36,6 +36,8 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         return initial
 
     def form_valid(self, form):
+        password_changed = False;
+
         # todo allow email change once account link with different emails setup
         for change in form.changed_data:
             if hasattr(self.profile, change):
@@ -63,6 +65,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
             elif hasattr(self.profile.user, change):
                 if change == 'password':
                     self.profile.user.set_password(form.cleaned_data['password'])
+                    password_changed = True
                 else:
                     setattr(self.profile.user, change, form.cleaned_data[change])
 
@@ -71,6 +74,9 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
         self.profile.save()
         self.profile.user.save()
+
+        if password_changed:
+            return HttpResponseRedirect("/password_changed_login")
 
         return HttpResponseRedirect("/")
 

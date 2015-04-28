@@ -24,9 +24,26 @@ def complete(request, backend, *args, **kwargs):
 
     if request.method == 'POST' and backend == u'email':
         form = InitialPassword(request.POST)
+        request.session.flush()
 
         if not form.is_valid():
-            request.session.flush()
             return render(request, 'home.html', {'form': form})
 
     return social_complete(request, backend, *args, **kwargs)
+
+
+# todo refactor with login above
+class PasswordChangedLogin(FormView):
+    form_class = InitialPassword
+    template_name = "password_changed_login.html"
+    success_url = 'home'
+
+    def form_invalid(self, form):
+        self.request.session.flush()
+        return render(self.request, 'password_changed_login.html', {'form': form, 'new_users': self.new_users})
+
+    def form_valid(self, form):
+        return social_complete(self.request, 'email')
+
+    def get_success_url(self):
+        return redirect(self.request.POST.get('next','home'))

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
 from social.apps.django_app.views import complete as social_complete
 from users.models import User
 from base.forms import InitialPassword
@@ -35,7 +36,6 @@ def credits(request):
 
 # todo move to auth
 class LoginRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
-        return login_required(view)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)

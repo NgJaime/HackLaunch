@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from users.views import ProfileEditView
-from auth.views import Login
+from auth.views import Login, PasswordChangedLogin
 
 admin.autodiscover()
 
@@ -21,6 +21,7 @@ urlpatterns = [
 
     url(r'^logout/$', 'users.views.logout', name='logout'),
     url(r'^login/$', Login.as_view(), name='login'),
+    url(r'^password_changed_login/$', PasswordChangedLogin.as_view(), name='password_changed_login'),
 
     url(r'^delete_user/$', 'users.views.delete_user'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',
