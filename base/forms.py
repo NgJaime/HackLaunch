@@ -23,7 +23,7 @@ class InitialPassword(forms.Form):
             logger.error("Multiple user for email: " + email)
             pass
         else:
-            if not user.check_password(password):
+            if user.nonSocialAuth and not user.check_password(password):
                 raise forms.ValidationError("An account for " + email + " already exists but your password was invalid")
 
         return self.cleaned_data
