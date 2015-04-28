@@ -1,6 +1,6 @@
 [
   {
-    "model": "users.MakerTypes",
+    "model": "events.event",
     "pk": 1,
     "fields": {
       "name": "innovate-or-die",
