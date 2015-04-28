@@ -30,7 +30,7 @@ class User(AbstractUser):
     def save(self, *args, **kw):
         if self.pk is not None:
             original = User.objects.get(pk=self.pk)
-            if original.password != self.password:
+            if original.nonSocialAuth and original.password != self.password:
                 self.send_password_changed_email()
         super(User, self).save(*args, **kw)
 

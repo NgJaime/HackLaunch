@@ -67,10 +67,10 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                     setattr(self.profile.user, change, form.cleaned_data[change])
 
             # we now have all of the required fields
-            self.profile.user.minimalProfile = True
+            # self.profile.user.minimalProfile = True
 
-            self.profile.save()
-            self.profile.user.save()
+        self.profile.save()
+        self.profile.user.save()
 
         return HttpResponseRedirect("/")
 

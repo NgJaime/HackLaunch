@@ -23,10 +23,10 @@ class Login(FormView):
 def complete(request, backend, *args, **kwargs):
 
     if request.method == 'POST' and backend == u'email':
-        request.session.flush()
         form = InitialPassword(request.POST)
 
         if not form.is_valid():
+            request.session.flush()
             return render(request, 'home.html', {'form': form})
 
     return social_complete(request, backend, *args, **kwargs)
