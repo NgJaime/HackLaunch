@@ -12,6 +12,7 @@ class HomeView(FormView):
     template_name = "home.html"
     success_url = 'profile_edit'
     new_users = User.objects.order_by('date_joined')[:10]
+    new_users.all()
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
