@@ -4,7 +4,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = [u'ec2-52-74-151-51.ap-southeast-1.compute.amazonaws.com',
                  u'52.74.151.51',
-                 u'www.hacklaunch.com']
+                 u'www.hacklaunch.com',
+                 u'hacklaunch.com']
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
