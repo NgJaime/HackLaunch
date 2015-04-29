@@ -68,18 +68,18 @@ cp /etc/ssl/certs/dhparam.pem /etc/nginx/ssl/dhparam.pem
 
 openssl req -new -newkey rsa:2048 -nodes -keyout production.hacklaunch.key -out production.hacklaunch.csr
 
-Country Name (2 letter code) [AU]:SG
-State or Province Name (full name) [Some-State]:Singapore
-Locality Name (eg, city) []:Singapore
-Organization Name (eg, company) [Internet Widgits Pty Ltd]:Hacklaunch
-Organizational Unit Name (eg, section) []:
-Common Name (e.g. server FQDN or YOUR name) []:www.hacklaunch.com
-Email Address []:webmaster@hacklaunch.com
+- Country Name (2 letter code) [AU]:SG
+- State or Province Name (full name) [Some-State]:Singapore
+- Locality Name (eg, city) []:Singapore
+- Organization Name (eg, company) [Internet Widgits Pty Ltd]:Hacklaunch
+- Organizational Unit Name (eg, section) []:
+- Common Name (e.g. server FQDN or YOUR name) []:www.hacklaunch.com
+- Email Address []:webmaster@hacklaunch.com
 
 Please enter the following 'extra' attributes
 to be sent with your certificate request
-A challenge password []:
-An optional company name []:
+- A challenge password []:
+- An optional company name []:
 
   * upload the csr to godaddy to generate the key set. 
   * once ready downlaod the keys
