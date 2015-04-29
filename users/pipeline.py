@@ -52,7 +52,7 @@ def set_extra_data(user, extra_data=None):
                 profile.location = extra_data['location']['name']
                 profile.save()
             elif profile is None:
-                profile, created = UserProfile.objects.update_or_create({'user_id': user.id, 'location': extra_data['location']['name']})
+                profile, created = UserProfile.objects.update_or_create(user_id=user.id, location=extra_data['location']['name'])
                 profile.save()
 
         if profile is not None \
