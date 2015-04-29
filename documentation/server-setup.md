@@ -34,15 +34,15 @@ pip install -r requirements/production.txt
 #Configuration
 
 *hacklaunch/settings/production.py
-	**Update allowed hosts
-	**Update databse connection
+*Update allowed hosts
+  *Update databse connection
 
 *nginx
-	**cp /home/ubuntu/HackLaunch/config/nginx/nginx.conf /etc/nginx/nginx.conf
+	*cp /home/ubuntu/HackLaunch/config/nginx/nginx.conf /etc/nginx/nginx.conf
 
 *supervisor
-	**cp /home/ubuntu/HackLaunch/config/supervisor/production-hacklaunch.conf /etc/supervisor/conf.d/production-hacklaunch.conf
-	**cp /home/ubuntu/HackLaunch/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+  *cp /home/ubuntu/HackLaunch/config/supervisor/production-hacklaunch.conf /etc/supervisor/conf.d/production-hacklaunch.conf
+  *cp /home/ubuntu/HackLaunch/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 
 
