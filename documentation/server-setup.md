@@ -33,16 +33,16 @@ pip install -r requirements/production.txt
 
 #Configuration
 
-*hacklaunch/settings/production.py
-*Update allowed hosts
-  *Update databse connection
+  *hacklaunch/settings/production.py
+  *Update allowed hosts
+    *Update databse connection
 
-*nginx
+  *nginx
 	*cp /home/ubuntu/HackLaunch/config/nginx/nginx.conf /etc/nginx/nginx.conf
 
-*supervisor
-  *cp /home/ubuntu/HackLaunch/config/supervisor/production-hacklaunch.conf /etc/supervisor/conf.d/production-hacklaunch.conf
-  *cp /home/ubuntu/HackLaunch/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+  *supervisor
+    *cp /home/ubuntu/HackLaunch/config/supervisor/production-hacklaunch.conf /etc/supervisor/conf.d/production-hacklaunch.conf
+    *cp /home/ubuntu/HackLaunch/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 
 
@@ -50,11 +50,11 @@ pip install -r requirements/production.txt
 Add the file hacklaunch/settings/keys.py
 
 It should contain:
-*the django secret key
-*social auth identies
-*email settings
+  *the django secret key
+  *social auth identies
+  *email settings
 vasw keys
-*database user, password and host
+  *database user, password and host
 
 
 #SSL connection to db
@@ -86,10 +86,10 @@ to be sent with your certificate request
 A challenge password []:
 An optional company name []:
 
-*upload the csr to godaddy to generate the key set. 
-*once ready downlaod the keys
-*copy to the server scp -i ~/.ssh/hacklaunch-staging.pem * ubuntu@xxx.xxx.xxx.xxx:/home/ubuntu/HackLaunch/config/keys
-*on the server combine the keys provide by godaddy
+  *upload the csr to godaddy to generate the key set. 
+  *once ready downlaod the keys
+  *copy to the server scp -i ~/.ssh/hacklaunch-staging.pem * ubuntu@xxx.xxx.xxx.xxx:/home/ubuntu/HackLaunch/config/keys
+  *on the server combine the keys provide by godaddy
 	cat 8f0725f4c84fa468.crt gd_bundle-g2-g1.crt > hacklaunch.combined.crt
 
 
