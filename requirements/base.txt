@@ -1,6 +1,6 @@
 Django==1.8
 psycopg2==2.6
-python-social-auth==0.2.1
+python-social-auth==0.2.7
 django-autoslug==1.7.2
 zxcvbn==1.0
 git+https://github.com/craigbennett1981/django-zxcvbn-password.git
@@ -11,3 +11,4 @@ Pillow==2.7.0
 django-resized==0.3.5
 gunicorn==19.3.0
 django-secure==1.0.1
+mock==1.0.1
