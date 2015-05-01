@@ -98,3 +98,5 @@ sudo service nginx start
 Make sure the database VPC allows connections from your server's IP
 
 To check nginx conf: nginx -t -c /etc/nginx/nginx.conf
+
+Check if any new packages available: pip list --outdated
