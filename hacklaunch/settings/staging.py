@@ -30,3 +30,18 @@ SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 SECURE_SSL_REDIRECT = True
 EMAIL_USE_TLS = True
+
+INSTALLED_APPS += (
+    "opbeat.contrib.django",
+)
+
+OPBEAT = {
+    "ORGANIZATION_ID": "e77b976a46304abc8dbdb02e617237c8",
+    "APP_ID": "7c47c1556b",
+    "SECRET_TOKEN": "62a9fefe916b83ca4c5109f534c0060a4065082a"
+}
+
+MIDDLEWARE_CLASSES += (
+    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
+
+)
