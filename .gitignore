@@ -8,6 +8,7 @@ hacklaunch/settings/keys.py
 /node_modules
 /logs
 /config/keys/
+/htmlcov
 *.pyc
 *.sqlite3
 bfg.jar

@@ -18,7 +18,6 @@ class MakerTypes(models.Model):
 
 
 class User(AbstractUser):
-    minimalProfile = models.BooleanField(default=False)
     nonSocialAuth = models.BooleanField(default=False)
 
     def getDateJoinedMonth(self):
