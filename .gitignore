@@ -1,5 +1,6 @@
 hacklaunch/settings/keys.py
 /events/migrations/
+/users/migrations/
 /config/nginx/.htpasswd
 /data
 /venv
@@ -14,3 +15,4 @@ hacklaunch/settings/keys.py
 bfg.jar
 hacklaunch.log
 hacklaunch.db
+.coverage
