@@ -10,10 +10,17 @@ class Login(FormView):
     success_url = 'home'
 
     def form_invalid(self, form):
-        self.request.session.flush()
-        return render(self.request, 'login.html', {'form': form, 'new_users': self.new_users})
+        return render(self.request, 'login.html', {'form': form})
 
     def form_valid(self, form):
+        if 'email_validation_address' in self.request.session:
+            self.request.session.pop('email_validation_address')
+
+            if 'partial_pipeline' in self.request.session \
+                and 'backend' in self.request.session['partial_pipeline'] \
+                and self.request.session['partial_pipeline']['backend'] == u'email':
+                self.request.session.pop('partial_pipeline')
+
         return social_complete(self.request, 'email')
 
     def get_success_url(self):
@@ -24,9 +31,16 @@ def complete(request, backend, *args, **kwargs):
 
     if request.method == 'POST' and backend == u'email':
         form = InitialPassword(request.POST)
-        request.session.flush()
 
-        if not form.is_valid():
+        if form.is_valid():
+            if 'email_validation_address' in request.session:
+                request.session.pop('email_validation_address')
+
+                if 'partial_pipeline' in request.session \
+                    and 'backend' in request.session['partial_pipeline'] \
+                    and request.session['partial_pipeline']['backend'] == u'email':
+                    request.session.pop('partial_pipeline')
+        else:
             return render(request, 'home.html', {'form': form})
 
     return social_complete(request, backend, *args, **kwargs)
@@ -39,11 +53,18 @@ class PasswordChangedLogin(FormView):
     success_url = 'home'
 
     def form_invalid(self, form):
-        self.request.session.flush()
-        return render(self.request, 'password_changed_login.html', {'form': form, 'new_users': self.new_users})
+        return render(self.request, 'password_changed_login.html', {'form': form})
 
     def form_valid(self, form):
-        return social_complete(self.request, 'email')
+         if 'email_validation_address' in self.request.session:
+            self.request.session.pop('email_validation_address')
+
+            if 'partial_pipeline' in self.request.session \
+                and 'backend' in self.request.session['partial_pipeline'] \
+                and self.request.session['partial_pipeline']['backend'] == u'email':
+                self.request.session.pop('partial_pipeline')
+
+         return social_complete(self.request, 'email')
 
     def get_success_url(self):
         return redirect(self.request.POST.get('next','home'))
