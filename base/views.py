@@ -12,19 +12,24 @@ class HomeView(FormView):
     template_name = "home.html"
     success_url = 'profile_edit'
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
         new_users = User.objects.order_by('-date_joined')[:10]
-        context['new_users'] = new_users
-        context['form'] = self.form_class
-        return self.render_to_response(context)
+        kwargs['new_users'] = new_users
+        return super(HomeView, self).get_context_data(**kwargs)
 
     def form_invalid(self, form):
-        self.request.session.flush()
         new_users = User.objects.order_by('-date_joined')[:10]
         return render(self.request, 'home.html', {'form': form, 'new_users': new_users})
 
     def form_valid(self, form):
+        if 'email_validation_address' in self.request.session:
+            self.request.session.pop('email_validation_address')
+
+            if 'partial_pipeline' in self.request.session \
+                and 'backend' in self.request.session['partial_pipeline'] \
+                and self.request.session['partial_pipeline']['backend'] == u'email':
+                self.request.session.pop('partial_pipeline')
+
         return social_complete(self.request, 'email')
 
 
