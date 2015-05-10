@@ -36,31 +36,35 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         return initial
 
     def form_valid(self, form):
-        password_changed = False;
+        password_changed = False
+        profile_changed = False
+        user_changed = False
 
-        # todo allow email change once account link with different emails setup
+        # todo allow email change once account link with different emails setup?
         for change in form.changed_data:
             if hasattr(self.profile, change):
                 if change == 'skills':
-                    throughModel = self.profile.skills.through
+                    through_model = self.profile.skills.through
 
                     # todo - probably a better way to do this
-                    throughModel.objects.filter(userprofile_id=self.profile.user_id).delete()
+                    through_model.objects.filter(userprofile_id=self.profile.user_id).delete()
 
-                    throughModel.objects.bulk_create([throughModel(skill_id=current_skill_id, userprofile_id=self.profile.user_id)
+                    through_model.objects.bulk_create([through_model(skill_id=current_skill_id, userprofile_id=self.profile.user_id)
                                                       for current_skill_id in form.cleaned_data['skills']])
                 else:
                     # remove old image form s3
-                    if change == 'image' and 'image' in form.initial:
-                        form.initial['image'].delete()
+                    if change == 'image':
+                        if 'image' in form.initial:
+                            form.initial['image'].delete()
 
-                        # now for the thumbnail
                         if self.profile.thumbnail:
                             self.profile.thumbnail.delete()
 
                         setattr(self.profile, 'thumbnail', form.cleaned_data[change])
 
                     setattr(self.profile, change, form.cleaned_data[change])
+
+                profile_changed = True
 
             elif hasattr(self.profile.user, change):
                 if change == 'password':
@@ -69,11 +73,13 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                 else:
                     setattr(self.profile.user, change, form.cleaned_data[change])
 
-            # we now have all of the required fields
-            # self.profile.user.minimalProfile = True
+                user_changed = True
 
-        self.profile.save()
-        self.profile.user.save()
+        if profile_changed:
+            self.profile.save()
+
+        if user_changed:
+            self.profile.user.save()
 
         if password_changed:
             return HttpResponseRedirect("/password_changed_login")
@@ -95,8 +101,8 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         if len(form.errors) == 0:
             return self.form_valid(form)
 
-        return render(self.request, 'profile_edit.html', {'form': form})
-
+        # return render(self.request, 'profile_edit.html', {'form': form})
+        return super(ProfileEditView, self).form_invalid(form)
 
 def profile_view(request, slug):
     profile = get_object_or_404(UserProfile, slug=slug)
@@ -105,10 +111,11 @@ def profile_view(request, slug):
 
 
 def require_email(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and 'email' in request.POST and request.POST['email'] is not None:
         request.session['saved_email'] = request.POST.get('email')
         backend = request.session['partial_pipeline']['backend']
         return redirect('social:complete', backend=backend)
+
     return render_to_response('require_email.html', RequestContext(request))
 
 
@@ -126,12 +133,11 @@ def delete_user(request):
     UserSocialAuth.objects.filter(user=request.user).delete()
     # don't delete in case there are some outstanding foreign keys linking to the user but set the email
     # just in case the user wants to rejoin later
-    User.objects.filter(id=request.user.id).update(is_active=False, email='gone@hacklaaunch.com')
+    User.objects.filter(id=request.user.id).update(is_active=False, email='gone@hacklaunch.com')
 
-    return HttpResponseRedirect(reverse('django.contrib.auth.views.logout'))
+    return HttpResponseRedirect('/logout')
 
 
-@login_required(redirect_field_name='/')
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')

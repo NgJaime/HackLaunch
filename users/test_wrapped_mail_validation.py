@@ -4,11 +4,14 @@ from mock import MagicMock, patch
 import social.pipeline.partial
 import imp
 
+
 @patch('social.pipeline.mail.mail_validation')
 class WrappedMailValidationTestCase(SimpleTestCase):
 
-    def test_new_user_email_in_request(self, mock_mail_validation):
-        mail_validation = MagicMock
+    @patch('users.pipeline.partial')
+    def test_new_user_email_in_request(self, mock_mail_validation, mock_partial):
+        mail_validation = MagicMock()
+        mock_partial = MagicMock()
 
         imp.reload(social.pipeline.partial)
 

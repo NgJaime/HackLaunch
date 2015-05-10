@@ -1,7 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from users.views import ProfileEditView
 from auth.views import Login, PasswordChangedLogin
+from users.views import logout
 
 admin.autodiscover()
 
@@ -19,7 +21,7 @@ urlpatterns = [
     url(r'^validation_sent/$', 'users.views.validation_sent', name='validation_sent'),
     url(r'^complete/(?P<backend>[^/]+)/$', 'auth.views.complete', name='complete'),
 
-    url(r'^logout/$', 'users.views.logout', name='logout'),
+    url(r'^logout/$', login_required(logout), name='logout'),
     url(r'^login/$', Login.as_view(), name='login'),
     url(r'^password_changed_login/$', PasswordChangedLogin.as_view(), name='password_changed_login'),
 

@@ -69,7 +69,7 @@ class UserPasswordTestCase(SimpleTestCase):
 
         result = user_password(None, user, backend=backend, response={'password': 'something'})
 
-        self.assertDictEqual(result, {'user': None, 'social': None}, msg="Missing response invalid result")
+        self.assertIsNone(result)
         self.assertEqual(user.set_password.call_count, 1)
         self.assertEqual(len(user.set_password.call_args[0]), 1)
         self.assertEqual(user.set_password.call_args[0][0], 'something')
