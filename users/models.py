@@ -63,4 +63,8 @@ class UserProfile(models.Model):
         name = self.user.username
         return name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("profile_view", [self.slug])
+
 

@@ -29,6 +29,7 @@ PREREQ_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'social.apps.django_app.default',
     'zxcvbn_password',
     'widget_tweaks',

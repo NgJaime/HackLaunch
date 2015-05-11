@@ -1,3 +1,6 @@
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase, Client
 
-# Create your tests here.
+
+class BaseAcceptanceTest(LiveServerTestCase):
+    def setUp(self):
+        self.client = Client()

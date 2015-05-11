@@ -1,17 +1,30 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
+from base.sitemap import StaticViewSitemap, ProfileSitemap, EventsSitemap
 from users.views import ProfileEditView
 from auth.views import Login, PasswordChangedLogin
 from users.views import logout
 
 admin.autodiscover()
 
+sitemaps = {
+    'static': StaticViewSitemap,
+    'events': EventsSitemap,
+    'profiles': ProfileSitemap,
+}
+
 urlpatterns = [
     url(r'^$', include('base.urls')),
     url(r'^events/', include('events.urls')),
+
     url(r'^terms/$', 'base.views.terms', name='terms'),
     url(r'^credits/$', 'base.views.credits', name='credits'),
+
+    url(r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
     url(r'^profile/$', ProfileEditView.as_view()),
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
@@ -35,6 +48,7 @@ urlpatterns = [
         {'template_name': 'password_reset_confirm.html'}, name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete',
         {'template_name': 'password_reset_complete.html'}, name='password_reset_complete'),
+
     url(r'', include('social.apps.django_app.urls', namespace='social'))
 ]
 
