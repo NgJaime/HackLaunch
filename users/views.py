@@ -1,15 +1,17 @@
-from django.shortcuts import render, redirect, render_to_response
+import json
+from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.contrib.auth import logout as auth_logout, authenticate, login
-from forms import UserProfileForm
-from models import UserProfile, User
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from social.apps.django_app.default.models import UserSocialAuth
 from base.views import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from forms import UserProfileForm
+
+from models import UserProfile, User
 
 
 class ProfileEditView(LoginRequiredMixin, FormView):
@@ -141,3 +143,22 @@ def delete_user(request):
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
+
+@csrf_protect
+def profile_image_upload(request):
+    if request.is_ajax():
+        if len(request.FILES) == 1:
+            uploaded_file = request.FILES['file_data'] if request.FILES else None
+
+            profile = request.user.userprofile
+            profile.image.delete()
+            profile.thumbnail.delete()
+            profile.image = uploaded_file
+            profile.thumbnail = uploaded_file
+            profile.save()
+
+            return HttpResponse(json.dumps({'success': True, 'thumbnailUrl': profile.thumbnail.url}))
+        else:
+            return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Multiple file uploaded'}))
+
+    return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Invalid request'}))

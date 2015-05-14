@@ -8800,3 +8800,8 @@ input[type="date"]:focus {
     border-right: 3px solid;
     border-right-color: white;
 }
+
+.grey-border-right {
+    border-right: 1px solid;
+    border-right-color: rgb(221, 221, 221);
+}
