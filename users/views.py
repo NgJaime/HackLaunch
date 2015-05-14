@@ -157,9 +157,8 @@ def profile_image_upload(request):
             profile.thumbnail = uploaded_file
             profile.save()
 
-            data = {'success': True , 'thumbnailUrl': profile.thumbnail.url}
-            return HttpResponse(json.dumps(data))
+            return HttpResponse(json.dumps({'success': True, 'thumbnailUrl': profile.thumbnail.url}))
         else:
-            return HttpResponseBadRequest(content={'success': False, 'message': 'Multiple file uploaded'})
+            return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Multiple file uploaded'}))
 
-    return HttpResponseBadRequest(content={'success': False, 'message': 'Invalid request'})
+    return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Invalid request'}))
