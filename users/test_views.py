@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase
 from django.test import RequestFactory
 from django.contrib.auth.models import AnonymousUser
@@ -10,7 +11,7 @@ from social.apps.django_app.default.models import UserSocialAuth
 
 from users.models import User, UserProfile, Skill
 
-from users.views import ProfileEditView, profile_view, require_email, validation_sent, delete_user, logout
+from users.views import *
 
 
 def add_middleware_to_request(request, middleware_class):
@@ -378,6 +379,78 @@ class LogoutTestCase(TestCase):
         self.assertEqual(response.url, '/')
         self.assertEqual(response.status_code, 302)
         mock_auth_logout.assert_called_once_with(request)
+
+
+@patch('users.views.csrf_protect', MagicMock)
+class ProfileImageUploadTestCase(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user('bob', first_name='bob', last_name='doe', email='bob@abc.com')
+        self.profile = UserProfile.objects.create(user=self.user, location='over there', summary='something')
+
+    def test_multiple_files_uploaded(self):
+        request = self.factory.request()
+        request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        request.FILES.appendlist('a', MagicMock())
+        request.FILES.appendlist('b', MagicMock())
+
+        response = profile_image_upload(request)
+        content = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(content['success'])
+        self.assertEqual(content['message'], 'Multiple file uploaded')
+
+    def test_non_ajax_request(self):
+
+        request = self.factory.request()
+        request.POST
+        response = profile_image_upload(request)
+        content = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(content['success'])
+        self.assertEqual(content['message'], 'Invalid request')
+
+
+    def test_valid_call(self):
+        old_image_thumb_mock = MagicMock()
+        old_image_thumb_mock.name = 'old_mock_image_thumb'
+        old_image_thumb_mock.delete.return_value = True
+
+        old_image_mock = MagicMock()
+        old_image_mock.name = 'old_mock_image'
+        old_image_mock.delete.return_value = True
+
+        self.profile.image = old_image_mock;
+        self.profile.thumbnail = old_image_thumb_mock;
+
+        new_image_mock = MagicMock(spec=File, name='FileMock')
+        new_image_mock.name = 'new_mock_image'
+
+        request = self.factory.request()
+        request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        request.FILES.appendlist('file_data', new_image_mock)
+        request.user = self.user
+
+        mock_save = MagicMock()
+
+        self.profile.save = mock_save
+
+        response = profile_image_upload(request)
+        content = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(content['success'])
+        self.assertEqual(content['thumbnailUrl'], "http://hacklaunch-images-test.s3.amazonaws.com/new_mock_image")
+        self.assertEqual(self.profile.image, new_image_mock)
+        self.assertEqual(self.profile.thumbnail, new_image_mock)
+        self.assertEqual(mock_save.call_count, 1)
+        self.assertEqual(old_image_thumb_mock.delete.call_count, 1)
+        self.assertEqual(old_image_mock.delete.call_count, 1)
+
+
 
 
 
