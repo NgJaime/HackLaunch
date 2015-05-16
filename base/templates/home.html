@@ -151,7 +151,7 @@
                                                              {% if user.userprofile.thumbnail %}
                                                                 src="{{ user.userprofile.thumbnail.url }}" alt="{{ user.get_full_name }}"
                                                              {% else %}
-                                                                src="//placehold.it/70" class="avatar img-circle" alt="avatar"
+                                                                src="{% static "images/avatar.jpg" %}" class="avatar img-circle" alt="avatar"
                                                              {% endif %} >
                                                 </div>
                                                 <div class="col-md-8 text-center vertical-center" style="height: 140px; margin-bottom: 0px;">

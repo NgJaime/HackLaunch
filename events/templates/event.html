@@ -88,7 +88,7 @@
                             <div class="clearfix"></div>
                             <img src="{% static "images/events/jaime-ng.jpg" %}" alt="Jaime Ng"
                                  class="alignleft imageborder" style="width: 111px; height: 111px">
-                            <p class="no-margin-top align="justify"">Jaime is a serial entrepreneur focused on driving HackLaunch as a platform for hackathons that helps innovator participate,
+                            <p class="no-margin-top" align="justify">Jaime is a serial entrepreneur focused on driving HackLaunch as a platform for hackathons that helps innovator participate,
                                 build and showcase their profile & projects.</p>
 
                             <a href="https://www.twitter.com/jaime_ng" class="social-icon-ar sm twitter animated fadeInDown"><i class="fa fa-twitter"></i>
@@ -137,7 +137,7 @@
                 <ul class="bx-vertical" style="padding: 0px;">
                     {% for user in event.users.all %}
                         <li style="padding-right: 0px; margin-bottom: 0px; margin-right: 0px; background-color: transparent;">
-                            <div style="background-color: rgba(131, 225, 28, 1); cursor:pointer; height: 140px;"
+                            <div style="background-color: #666; cursor:pointer; height: 140px;"
                                  onclick="location.href='/profile/{{ user.userprofile.slug }}'";>
                                 <div class="row" style="margin: 0px;">
                                     <div class="col-md-4 vertical-center white-border-right" style=" height: 140px;">
@@ -146,7 +146,7 @@
                                                  {% if user.userprofile.thumbnail %}
                                                     src="{{ user.userprofile.thumbnail.url }}" alt="{{ user.get_full_name }}"
                                                  {% else %}
-                                                    src="//placehold.it/70" class="avatar img-circle" alt="avatar"
+                                                    src="{% static "images/avatar.jpg" %}" class="avatar img-circle" alt="avatar"
                                                  {% endif %} >
                                     </div>
                                     <div class="col-md-8 text-center vertical-center" style="height: 140px; margin-bottom: 0px;">

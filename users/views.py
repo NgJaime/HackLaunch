@@ -30,7 +30,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         try:
             url = self.profile.image.url
         except ValueError:
-            url = static('images/user.jpg')
+            url = static('images/avatar.jpg')
 
         initial['first_name'] = self.request.user.first_name
         initial['last_name'] = self.request.user.last_name
