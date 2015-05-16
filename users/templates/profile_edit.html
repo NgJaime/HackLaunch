@@ -405,7 +405,7 @@
             uploadClass: "btn btn-info",
             uploadLabel: "Upload",
             dropZoneTitle: 'Drag image or click pick image',
-            initialPreview: ["<img src='{{ form.initial.image.url }}' class='file-preview-image center' id='initial-profile-image' alt='{{  user.get_full_name }}' style='display: block; margin-left: auto; margin-right: auto' >"],
+            initialPreview: ["<img src='{{ form.initial.image_url }}' class='file-preview-image center' id='initial-profile-image' alt='{{  user.get_full_name }}' style='display: block; margin-left: auto; margin-right: auto' >"],
             initialPreviewShowDelete: true,
             initialPreviewRemoveOnChange: true,
             singlePreviewOnly: true,
@@ -442,11 +442,8 @@
 
         $('#profile-image').on('fileuploaded', function(event, data, previewId, index) {
             var response = data.response;
-
                 $('#user_dropdown').html('<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="border: 0px; padding: 5px 0px 0px 0px;">\n' +
-                                              '<img src="' + response.thumbnailUrl + '" {{ user.userprofile.thumbnail.url }}" alt="{{ user.get_full_name }}" class="img-circle"></a>\n');
-
+                                              '<img src="' + response.thumbnailUrl + '" alt="{{ user.get_full_name }}" class="img-circle"></a>\n');
         });
     </script>
 {% endblock %}
-

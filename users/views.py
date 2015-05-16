@@ -1,4 +1,5 @@
 import json
+from exceptions import ValueError
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
@@ -7,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from django.templatetags.static import static
 from social.apps.django_app.default.models import UserSocialAuth
 from base.views import LoginRequiredMixin
 from forms import UserProfileForm
@@ -25,6 +27,11 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
         self.profile, created = UserProfile.objects.get_or_create(user_id=self.request.user.id)
 
+        try:
+            url = self.profile.image.url
+        except ValueError:
+            url = static('images/user.jpg')
+
         initial['first_name'] = self.request.user.first_name
         initial['last_name'] = self.request.user.last_name
         initial['email'] = self.request.user.email
@@ -32,7 +39,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         initial['location'] = self.profile.location
         initial['skills'] = [skill.id for skill in self.profile.skills.all()]
         initial['maker_type'] = [maker_type.id for maker_type in self.profile.maker_type.all()]
-        initial['image'] = self.profile.image
+        initial['image_url'] = url
         initial['username'] = self.profile.user.username
 
         return initial
