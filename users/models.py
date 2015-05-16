@@ -12,9 +12,15 @@ from s3 import upload_profile_image, upload_profile_thumbnail
 class Skill(models.Model):
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
 
 class MakerTypes(models.Model):
     name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
 
 
 class User(AbstractUser):
@@ -59,6 +65,9 @@ class UserProfile(models.Model):
     location = models.CharField(max_length=128, blank=True, null=True)
     summary = models.CharField(max_length=256, blank=True, null=True)
 
+    def __unicode__(self):
+        return self.user.get_full_name()
+
     def get_slug_name(self):
         name = self.user.username
         return name
@@ -66,5 +75,6 @@ class UserProfile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ("profile_view", [self.slug])
+
 
 
