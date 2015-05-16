@@ -37,6 +37,9 @@ class User(AbstractUser):
             original = User.objects.get(pk=self.pk)
             if original.nonSocialAuth and original.password != self.password:
                 self.send_password_changed_email()
+        else:
+            self.send_welcome_email()
+
         super(User, self).save(*args, **kw)
 
     def send_password_changed_email(self):
@@ -48,6 +51,17 @@ class User(AbstractUser):
         html_message = get_template('password_changed_email.html').render(Context(context))
         email = EmailMessage('Your password at HackLaunch has been changed', html_message, to=[self.email],
                              from_email=settings.EMAIL_FROM)
+        email.content_subtype = 'html'
+        email.send()
+
+    def send_welcome_email(self):
+        context = {
+            'first_name': self.first_name
+        }
+
+        html_message = get_template('welcome_email.html').render(Context(context))
+        email = EmailMessage('Welcome to Hacklaunch', html_message, to=[self.email],
+                             from_email=settings.SECONDARY_EMAIL_FROM)
         email.content_subtype = 'html'
         email.send()
 

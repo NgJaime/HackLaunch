@@ -191,6 +191,7 @@ SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
 SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'users.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/validation_sent/'
 EMAIL_FROM = 'noreply@hacklaunch.com'
+SECONDARY_EMAIL_FROM = 'howdy@hacklaunch.com'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'home.html'
 SOCIAL_AUTH_EMAIL_FORM_URL = '/'
 
