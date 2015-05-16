@@ -200,7 +200,7 @@ SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/profile/'
 
 SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
 
-SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email',]
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
 
 
 #############################
