@@ -1,6 +1,6 @@
 import logging
 from django import forms
-from models import Skill, MakerTypes
+from models import Skill, MakerTypes, COUNTRIES
 from zxcvbn_password.fields import PasswordField, PasswordConfirmationField
 from django.conf import settings
 from users.models import User
@@ -9,11 +9,16 @@ logger = logging.getLogger(__name__)
 
 
 class UserProfileForm(forms.Form):
+    form_countries = COUNTRIES
+    form_countries.insert(0, [-1, ''])
+
     first_name = forms.CharField(label='First name', max_length=30, min_length=1)
     last_name = forms.CharField(label='Last name', max_length=30, min_length=1)
-    location = forms.CharField(label='Location', max_length=128)
+    country = forms.ChoiceField(choices=form_countries,
+                                required=False,
+                                label='country')
     summary = forms.CharField(label='summary', max_length=256, required=False, widget=forms.Textarea)
-    # todo the skil marker types queries could be cached
+    # todo the skill marker types queries could be cached
     skills = forms.TypedMultipleChoiceField(label='Skills',
                                             coerce=int,
                                             choices=[(skill.id, skill.name) for skill in Skill.objects.extra(select={'name_lower': 'lower(name)'}).order_by('name_lower')],

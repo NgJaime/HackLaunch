@@ -129,17 +129,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-lg-3 control-label">Location:</label>
+                    <label class="col-lg-3 control-label">Country:</label>
 
-                    {% if form.errors.location %}
-                        <div id="location-input" class="col-lg-6 has-error has-feedback">
-                            {% render_field form.location name='location' class="form-control" id="location" onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
-                                <span id="location-icon"
+                    {% if form.errors.country %}
+                        <div id="country-input" class="col-lg-6 has-error has-feedback">
+                            {% render_field form.country name='country' class="form-control" id="country" data-placeholder="Start typing to select your country..." onkeyup="profileValidation.removeErrorOnValue(this.value, this.name)" %}
+                                <span id="country-icon"
                                       class="glyphicon glyphicon-remove form-control-feedback"></span>
                         </div>
-                        <div id="location-errors" class="col-lg-3"
+                        <div id="country-errors" class="col-lg-3"
                              style="padding-top: 7px; padding-left: 5px;">
-                            {% for error in form.errors.location %}
+                            {% for error in form.errors.country %}
                                 <p class="text-muted">
                                     <span style="color: red">{{ error }}</span>
                                 </p>
@@ -147,11 +147,11 @@
                         </div>
                     {% else %}
                         <div class="col-lg-6">
-                            {% render_field form.location class="form-control" %}
-                                <span id="location-icon"
+                            {% render_field form.country class="form-control" id="country" data-placeholder="Start typing to select your country..." %}
+                                <span id="country-icon"
                                       class="glyphicon glyphicon-remove form-control-feedback hidden"></span>
                         </div>
-                        <div id="location-errors" class="col-lg-3 hidden"
+                        <div id="country-errors" class="col-lg-3 hidden"
                              style="padding-top: 7px; padding-left: 5px;"></div>
                     {% endif %}
                 </div>
@@ -384,6 +384,7 @@
 
         {# chosen.js for multiselect #}
         $("#id_skills").chosen();
+        $("#country").chosen();
 
     </script>
 

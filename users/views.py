@@ -1,8 +1,7 @@
 import json
 from exceptions import ValueError
-from django.shortcuts import render, redirect, render_to_response, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, render_to_response
 from django.template import RequestContext
-from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.contrib.auth import logout as auth_logout
@@ -36,7 +35,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         initial['last_name'] = self.request.user.last_name
         initial['email'] = self.request.user.email
         initial['summary'] = self.profile.summary
-        initial['location'] = self.profile.location
+        initial['country'] = self.profile.country
         initial['skills'] = [skill.id for skill in self.profile.skills.all()]
         initial['maker_type'] = [maker_type.id for maker_type in self.profile.maker_type.all()]
         initial['image_url'] = url
@@ -61,8 +60,8 @@ class ProfileEditView(LoginRequiredMixin, FormView):
                     through_model.objects.bulk_create([through_model(skill_id=current_skill_id, userprofile_id=self.profile.user_id)
                                                       for current_skill_id in form.cleaned_data['skills']])
                 else:
-                    # remove old image form s3
                     if change == 'image':
+                         # remove old image form s3
                         if 'image' in form.initial:
                             form.initial['image'].delete()
 
