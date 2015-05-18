@@ -409,8 +409,7 @@
 
         $('#profile-image').on('fileuploaded', function (event, data, previewId, index) {
             var response = data.response;
-            $('#user_dropdown').html('<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="border: 0px; padding: 5px 0px 0px 0px;">\n' +
-                    '<img src="' + response.thumbnailUrl + '" alt="{{ user.get_full_name }}" class="img-circle"></a>\n');
+            $('#user_dropdown_lable').html('<img src="' + response.thumbnailUrl + '" alt="{{ user.get_full_name }}" class="img-circle" >');
         });
     </script>
 {% endblock %}
