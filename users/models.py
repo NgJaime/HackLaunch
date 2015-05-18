@@ -87,7 +87,7 @@ class UserProfile(models.Model):
     summary = models.CharField(max_length=256, blank=True, null=True)
 
     def __unicode__(self):
-        return self.user.get_full_name()
+        return self.user.get_full_name() + ' - ' + self.location
 
     def get_slug_name(self):
         name = self.user.username
@@ -97,5 +97,10 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return ("profile_view", [self.slug])
 
+    def get_full_country_name(self):
+        if self.country:
+            return pycountry.countries.get(alpha2=self.country).name
+        else:
+            return None
 
 
