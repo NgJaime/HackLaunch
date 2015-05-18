@@ -13,22 +13,26 @@
     <h1 class="">Edit Profile</h1>
 
     <hr class="">
-    <div class="row">
+    <div class="row row-same-height">
 
         <!-- left column -->
-        <div class="col-md-3 equal grey-border-right">
+        <div class="col-md-3 col-md-height col-lg-height equal grey-border-right" style="height: 100%">
             <h3 class="">Profile Image</h3>
+
             <div class="form-group">
                 <input id="profile-image" type="file" multiple class="file" data-overwrite-initial="false"
                        data-min-file-count="2">
             </div>
-            <div class="delete">
+
+            <h3 class="hidden-xs hidden-sm" style="padding-top: 30px">Settings</h3>
+
+            <div class="delete hidden-xs hidden-sm">
                 <a href="#" onclick="return confirm_delete(this);">Delete account</a>
             </div>
         </div>
 
         <!-- edit form column -->
-        <div class="col-md-9 personal-info equal">
+        <div class="col-md-9 col-md-height col-lg-height personal-info equal">
             <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
                   onsubmit="return profileValidation.validate()">
                 {% csrf_token %}
@@ -338,43 +342,6 @@
 
 {% block extra_scripts %}
     <script type="text/javascript">
-        {# todo review reactive #}
-        var small = $(".equal").height();
-
-        var equalHeight = function () {
-            if ($(document).width() >= 992) {
-                var heights = $(".equal").map(function () {
-                            return $(this).height();
-                        }).get(),
-
-                        maxHeight = Math.max.apply(null, heights);
-
-                $(".equal").height(maxHeight);
-            } else {
-                $(".small").height(small);
-            }
-        };
-
-        var positionDelete = function () {
-            var del = $(".delete");
-            del.removeAttr('style');
-
-            if ($(document).width() >= 992) {
-                $(".delete").css({'position': 'absolute', 'bottom': '65px', 'left': '80px'});
-            } else {
-                $(".delete").css({'text-align': 'right'});
-            }
-        }
-
-        $(document).ready(function () {
-            equalHeight();
-            positionDelete();
-        });
-
-        window.onresize = function (event) {
-            equalHeight();
-            positionDelete();
-        };
 
         function confirm_delete(node) {
             if (confirm("Warning your account is about to be deleted. Do you wish to continue?")) {
@@ -419,32 +386,31 @@
             uploadExtraData: {csrfmiddlewaretoken: '{{ csrf_token }}'},
             layoutTemplates: {
                 footer: '',
-                preview:
-                    '<div class="file-preview {class}">\n' +
-                    '    <div class="{dropClass}">\n' +
-                    '       <div class="file-preview-thumbnails"></div>\n' +
-                    '       <div class="clearfix" style="text-align: center;"></div>' +
-                    '       <div class="file-preview-status text-center text-success" style="width:100%"></div>\n' +
-                    '       <div class="kv-fileinput-error"></div>\n' +
-                    '    </div>\n' +
-                    '</div>'
+                preview: '<div class="file-preview {class}">\n' +
+                '    <div class="{dropClass}">\n' +
+                '       <div class="file-preview-thumbnails"></div>\n' +
+                '       <div class="clearfix" style="text-align: center;"></div>' +
+                '       <div class="file-preview-status text-center text-success" style="width:100%"></div>\n' +
+                '       <div class="kv-fileinput-error"></div>\n' +
+                '    </div>\n' +
+                '</div>'
             },
             previewTemplates: {
                 image: '<div class="file-preview-frame" id="{previewId}" data-fileindex="{fileindex}" style="width:100%">\n' +
-                        '   <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" style="width:{width};height:{height};" >\n' +
-                        '   {footer}\n' +
-                        '</div>\n',
+                '   <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" style="width:{width};height:{height};" >\n' +
+                '   {footer}\n' +
+                '</div>\n',
                 generic: '<div class="file-preview-frame" id="{previewId}" data-fileindex="{fileindex}" style="width:100%">\n' +
-                            '   {content}\n' +
-                            '   {footer}\n' +
-                            '</div>\n'
+                '   {content}\n' +
+                '   {footer}\n' +
+                '</div>\n'
             }
         });
 
-        $('#profile-image').on('fileuploaded', function(event, data, previewId, index) {
+        $('#profile-image').on('fileuploaded', function (event, data, previewId, index) {
             var response = data.response;
-                $('#user_dropdown').html('<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="border: 0px; padding: 5px 0px 0px 0px;">\n' +
-                                              '<img src="' + response.thumbnailUrl + '" alt="{{ user.get_full_name }}" class="img-circle"></a>\n');
+            $('#user_dropdown').html('<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="border: 0px; padding: 5px 0px 0px 0px;">\n' +
+                    '<img src="' + response.thumbnailUrl + '" alt="{{ user.get_full_name }}" class="img-circle"></a>\n');
         });
     </script>
 {% endblock %}
