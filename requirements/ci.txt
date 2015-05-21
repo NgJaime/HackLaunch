@@ -1,0 +1,8 @@
+-r production.txt
+mock==1.0.1
+coverage==4.0a5
+django-jenkins==0.17.0
+pyflakes==0.8.1
+jslint==0.6.0
+pylint==1.4.3
+pep8==1.6.2

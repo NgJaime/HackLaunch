@@ -16,3 +16,4 @@ bfg.jar
 hacklaunch.log
 hacklaunch.db
 .coverage
+npm-debug.log
