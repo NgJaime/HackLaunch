@@ -32,7 +32,7 @@ class ProfileEditViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.user1 = User.objects.create_user('bob', first_name='bob', last_name='doe', email='bob@abc.com')
-        self.profile1 = UserProfile.objects.create(user=self.user1, location='over there',
+        self.profile1 = UserProfile.objects.create(user=self.user1, country='SG',
                                                    summary='something')
 
     # def tearDown(self):
@@ -64,7 +64,7 @@ class ProfileEditViewTestCase(TestCase):
         self.assertEqual('bob@abc.com', initial['email'])
         self.assertEqual('bob', initial['first_name'])
         self.assertEqual('doe', initial['last_name'])
-        self.assertEqual('over there', initial['location'])
+        self.assertEqual('SG', initial['country'])
         self.assertEqual([], initial['maker_type'])
         self.assertEqual([], initial['skills'])
         self.assertEqual('something', initial['summary'])
@@ -258,7 +258,7 @@ class ProfileViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.user1 = User.objects.create_user('bob', first_name='bob', last_name='doe', email='bob@abc.com')
-        self.profile1 = UserProfile.objects.create(user=self.user1, location='over there',
+        self.profile1 = UserProfile.objects.create(user=self.user1, country='SG',
                                                    summary='something nice')
 
     def test_valid_slug(self):
@@ -271,7 +271,7 @@ class ProfileViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertInHTML('<p>something nice</p>', response.content)
         self.assertInHTML('<h1><strong>bob doe</strong></h1>', response.content)
-        self.assertInHTML('<td>over there</td>', response.content)
+        self.assertInHTML('<td>Singapore</td>', response.content)
 
     def test_invalid_slug(self):
         request = self.factory.get('profile')
