@@ -8,7 +8,7 @@ TEMPLATE_DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hacklaunch-test',
+        'NAME': 'hacklaunch_test',
         'USER': 'hacklaunch',
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
