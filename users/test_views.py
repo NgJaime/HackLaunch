@@ -413,41 +413,44 @@ class ProfileImageUploadTestCase(TestCase):
         self.assertFalse(content['success'])
         self.assertEqual(content['message'], 'Invalid request')
 
-    # def test_valid_call(self):
-    #     old_image_thumb_mock = MagicMock()
-    #     old_image_thumb_mock.name = 'old_mock_image_thumb'
-    #     old_image_thumb_mock.delete.return_value = True
-    #
-    #     old_image_mock = MagicMock()
-    #     old_image_mock.name = 'old_mock_image'
-    #     old_image_mock.delete.return_value = True
-    #
-    #     self.profile.image = old_image_mock;
-    #     self.profile.thumbnail = old_image_thumb_mock;
-    #
-    #     new_image_mock = MagicMock(spec=File, name='FileMock')
-    #     new_image_mock.name = 'new_mock_image'
-    #
-    #     request = self.factory.request()
-    #     request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
-    #     request.FILES.appendlist('file_data', new_image_mock)
-    #     request.user = self.user
-    #
-    #     mock_save = MagicMock()
-    #
-    #     self.profile.save = mock_save
-    #
-    #     response = profile_image_upload(request)
-    #     content = json.loads(response.content)
-    #
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTrue(content['success'])
-    #     self.assertEqual(content['thumbnailUrl'], "http://hacklaunch-images-test.s3.amazonaws.com/new_mock_image")
-    #     self.assertEqual(self.profile.image, new_image_mock)
-    #     self.assertEqual(self.profile.thumbnail, new_image_mock)
-    #     self.assertEqual(mock_save.call_count, 1)
-    #     self.assertEqual(old_image_thumb_mock.delete.call_count, 1)
-    #     self.assertEqual(old_image_mock.delete.call_count, 1)
+
+    @patch('users.models.UserProfile.thumbnail')
+    def test_valid_call(self, mock_thumbnail):
+        old_image_thumb_mock = MagicMock()
+        old_image_thumb_mock.name = 'old_mock_image_thumb'
+        old_image_thumb_mock.delete.return_value = True
+
+        old_image_mock = MagicMock()
+        old_image_mock.name = 'old_mock_image'
+        old_image_mock.delete.return_value = True
+
+        self.profile.image = old_image_mock;
+        self.profile.thumbnail = old_image_thumb_mock;
+
+        new_image_mock = MagicMock(spec=File, name='FileMock')
+        new_image_mock.name = 'new_mock_image'
+        new_image_mock.url = 'some-url'
+
+        request = self.factory.request()
+        request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        request.FILES.appendlist('file_data', new_image_mock)
+        request.user = self.user
+
+        mock_save = MagicMock()
+
+        self.profile.save = mock_save
+
+        response = profile_image_upload(request)
+        content = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(content['success'])
+        self.assertEqual(content['thumbnailUrl'], 'some-url')
+        self.assertEqual(self.profile.image, new_image_mock)
+        self.assertEqual(self.profile.thumbnail, new_image_mock)
+        self.assertEqual(mock_save.call_count, 1)
+        self.assertEqual(old_image_thumb_mock.delete.call_count, 1)
+        self.assertEqual(old_image_mock.delete.call_count, 1)
 
 
 
