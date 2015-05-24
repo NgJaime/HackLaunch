@@ -19,6 +19,7 @@ sitemaps = {
 urlpatterns = [
     url(r'^$', include('base.urls')),
     url(r'^events/', include('events.urls')),
+    url(r'^projects/', include('projects.urls')),
 
     url(r'^terms/$', 'base.views.terms', name='terms'),
     url(r'^credits/$', 'base.views.credits', name='credits'),
@@ -29,7 +30,6 @@ urlpatterns = [
     url(r'^profile/$', login_required(ProfileEditView.as_view())),
     url(r'^profile/upload/profile_image', login_required(profile_image_upload), name='profile_image_upload'),
     url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
-
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^email_required/$', 'users.views.require_email', name='require_email'),

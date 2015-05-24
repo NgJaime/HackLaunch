@@ -39,7 +39,8 @@ PREREQ_APPS = [
 
 PROJECT_APPS = [
     'users',
-    'events'
+    'events',
+    'projects'
 ]
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
@@ -65,8 +66,8 @@ LOGIN_URL = '/login'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates', 'events/templates'],
-        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates', 'events/templates'],
+        'DIRS': ['templates', 'base/templates', 'users/templates', 'auth/templates', 'events/templates',
+                 'projects/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
