@@ -1,1 +1,1 @@
-# HackLaunch 2015
+# HackLaunch
