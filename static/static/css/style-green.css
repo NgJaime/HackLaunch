@@ -2160,6 +2160,14 @@ hr.double {
     padding-top: 6px;
 }
 
+.social-icon-ar.grey {
+    background-color: #808080;
+    background-image: -webkit-linear-gradient(bottom, #808080, #808080);
+    background-image: -moz-linear-gradient(bottom, #808080, #808080);
+    background-image: -o-linear-gradient(bottom, #808080, #808080);
+    background-image: linear-gradient(to top, #808080, #808080);
+}
+
 .social-icon-ar.tumblr {
     background-color: #32506d;
     background-image: -webkit-linear-gradient(bottom, #32506d, #426a90);
@@ -2493,7 +2501,7 @@ hr.double {
 }
 
 .content-box.box-primary:hover {
-    background-color: #1da480;
+    background-color: #8ADE24;
 }
 
 .content-box.box-success:hover {
@@ -4588,6 +4596,14 @@ input.input-lg[type="text"] {
 }
 
 .margin-10 {
+    margin: 10px 0 !important;
+}
+
+.margin-bottom-20 {
+    margin: 20px 0 !important;
+}
+
+.margin-top-10 {
     margin: 10px 0 !important;
 }
 
@@ -8804,4 +8820,9 @@ input[type="date"]:focus {
 .grey-border-right {
     border-right: 1px solid;
     border-right-color: rgb(221, 221, 221);
+}
+
+.center {
+    text-align: center;
+    width: 100%;
 }

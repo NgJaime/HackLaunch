@@ -35,6 +35,7 @@ PREREQ_APPS = [
     'zxcvbn_password',
     'widget_tweaks',
     'storages',
+    'froala_editor',
 ]
 
 PROJECT_APPS = [
@@ -149,12 +150,26 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'WARNING',
         },
+        'events': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+        },
+        'projects': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+        },
     }
 }
 
 PASSWORD_MIN_LENGTH = 8
 PASSWORD_MAX_LENGTH = 128
 PASSWORD_MIN_ENTROPY = 25
+
+#############################
+# FROALA editor settings
+#############################
+FROALA_INCLUDE_JQUERY = False
+FROALA_EDITOR_PLUGINS = ('font_size', 'font_family', 'colors', 'block_styles', 'tables', 'lists', 'char_counter', 'urls', 'inline_styles', 'entities')
 
 #############################
 # Python social auth settings

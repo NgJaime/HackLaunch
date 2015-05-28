@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Edit Project{% endblock %}
+
+{% block events-nav %}active{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static "css/bootstrap-tagsinput.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{% static "froala_editor/css/font-awesome.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{% static "froala_editor/css/froala_editor.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{% static "froala_editor/css/froala_style.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="{% static "js/jquery.min.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding-top: 25px;">
+                <div class="title-logo animated fadeInDown animation-delay-5">
+                    {{ form.logo }}
+                    {{ form.title }}
+                </div>
+                <p class="slogan text-center no-margin-bottom">
+                    {{ form.tag_line }}
+                </p>
+            </div>
+
+            <div class="col-md-12 center">
+                <div class="small-margin-bottom fadeInDown animation-delay-3"
+                     style="margin-top: 20px;">
+                    {% if form.facebook.url %}
+                        <a id='link-facebook' href="#" class="social-icon-ar facebook" onclick="editSocialURL('facebook', this.val())"><i
+                            class="fa fa-facebook" ></i></a>
+                    {% else %}
+                        <a id='link-facebook' href="#" class="social-icon-ar grey" onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
+                            class="fa fa-facebook" ></i></a>
+                    {% endif %}
+
+                    {% if form.google_plus.url %}
+                        <a id='link-google-plus' href="#" class="social-icon-ar google-plus" onclick="editSocialURL('google-plus', this.val())"><i
+                            class="fa fa-google-plus"></i></a>
+                    {% else %}
+                        <a id='link-google-plus' href="#" class="social-icon-ar grey" onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
+                            class="fa fa-google-plus" ></i></a>
+                    {% endif %}
+
+                    {% if form.instagram.url %}
+                        <a id='link-instagram' href="#" class="social-icon-ar instagram" onclick="editSocialURL('instagram', this.val())"><i
+                            class="fa fa-instagram" ></i></a>
+                    {% else %}
+                        <a id='link-instagram' href="#" class="social-icon-ar grey" onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
+                            class="fa fa-instagram" ></i></a>
+                    {% endif %}
+
+                    {% if form.pinterest.url %}
+                        <a id='link-pinterest' href="#" class="social-icon-ar pinterest" onclick="editSocialURL('pinterest', this.val())"><i
+                            class="fa fa-pinterest" ></i></a>
+                    {% else %}
+                        <a id='link-pinterest' href="#" class="social-icon-ar grey" onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
+                            class="fa fa-pinterest" ></i></a>
+                    {% endif %}
+
+                    {% if form.twitter.url %}
+                        <a id='link-twitter' href="#" class="social-icon-ar twitter" onclick="editSocialURL('twitter', this.val())"><i
+                            class="fa fa-twitter" ></i></a>
+                    {% else %}
+                        <a id='link-twitter' href="#" class="social-icon-ar grey" onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
+                            class="fa fa-twitter" ></i></a>
+                    {% endif %}
+                </div>
+
+                <div style="margin: 5px;">
+                    {% render_field form.facebook class="hidden" name='facebook' style="width: 250px" %}
+                    <button id="update-facebook" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('facebook')">Update</button>
+                </div>
+                <div style="margin: 5px;">
+                    {% render_field form.instagram class="hidden" name='instagram' style="width: 250px"%}
+                    <button id="update-instagram" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('instagram')">Update</button>
+                </div>
+                <div style="margin: 5px;">
+                    {% render_field form.google_plus class="hidden" name='google-plus' id="id_google-plus" style="width: 250px"%}
+                    <button id="update-google-plus" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('google-plus')">Update</button>
+                </div>
+                <div style="margin: 5px;">
+                    {% render_field form.pinterest class="hidden" name='pinterest' style="width: 250px"%}
+                    <button id="update-pinterest" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('pinterest')">Update</button>
+                </div>
+                <div style="margin: 5px;">
+                    {% render_field form.twitter class="hidden" name='twitter' style="width: 250px"%}
+                    <button id="update-twitter" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('twitter')">Update</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 ">
+                <h2 class="section-title no-margin-top no-margin-bottom">
+                    Project Pitch
+                </h2>
+
+                {{ form.pitch }}
+
+                <h2 class="section-title">Time Line</h2>
+                <ul class="timeline-2">
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">{{ form.date }} <span>{{ form.month }}</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"
+                                 style="color: white;">{% render_field form.new_timeline_post_title style='color: white' %}</div>
+                            {{ form.new_timeline_post }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <div class="content-box box-primary animated fadeInDown animation-delay-14">
+                    <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Creators</strong></h4>
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img src="http://hacklaunch-images-test.s3.amazonaws.com/profiles-thumbnail/3c24a3fd-fd28-11e4-b27a-1040f3809a1c.png"
+                                 alt="Craig Bennett" class="img-circle">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#" style="color: white">Jaime Ng</a></h4>
+
+                            <p>Technical Lead - piecing together the MVP</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="panel panel-default fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
+                    <div class="panel-body">
+                        <input type="text" value="New project" class="label-success" data-role="tagsinput"
+                               style="display: none;">
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-database"></i> Technologies</div>
+                    <div class="panel-body">
+
+                        <div class="ui-widget">
+                            <input id="technologyInput" onkeyup="newTechnology()">
+                            <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;" onclick="addTechnology()"></i>
+
+                            <div id="technologies" style="margin-top: 10px"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-desktop"></i> Design and code</div>
+                    <div class="panel-body center">
+                        <p>Link to your project's Github account</p>
+
+                        <a href="{% url 'social:begin' 'github' %}" class="animated fadeIn animation-delay-7 git"
+                           style="color: transparent; padding-top: 20px">
+                            <i class="fa fa-github fa-3x" style="color: #2a2a2a;"></i>
+                        </a>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static "froala_editor/js/froala_editor.min.js" %}"></script>
+    <script src="{% static "js/bootstrap-tagsinput.js" %}"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            {% autoescape off %}
+                var availableTags = {{ form.technologies }}
+            {% endautoescape %}
+            $("#technologyInput").autocomplete({
+                source: availableTags
+            });
+        });
+
+        var newTechnology = function() {
+            $('#addTechnology').removeClass('hidden');
+
+            if(event.keyCode == 13){
+                addTechnology();
+            }
+        };
+
+        var addTechnology = function() {
+            var value = $('#technologyInput').val();
+
+            $('#technologies').append('<p class="addedTechnology" id="technology-' + value + '">' + value + '<i id="technology-' + value + '" class="fa fa-minus-circle" style="color: red; padding-left: 5px;" onclick="removeTechnology(this.id)"></i><p>');
+
+            $('#technologyInput').val('');
+            $('#addTechnology').addClass('hidden');
+        };
+
+        var removeTechnology = function(id) {
+            $('#' + id).remove();
+        };
+
+        var editSocialURL = function(name, link) {
+            var input = $('#id_' + name);
+            input.removeClass('hidden');
+            input.val(link);
+
+            $('#update-' + name).removeClass('hidden');
+        };
+
+        var updateSocialKeyDown = function(name) {
+            if(event.keyCode == 13){
+                updateSocialURL(name);
+            }
+        };
+
+        var updateSocialURL = function(name) {
+            var input = $('#id_' + name),
+                link = input.val(),
+                icon = $('#link-' + name);
+
+            input.addClass('hidden');
+            $('#update-' + name).addClass('hidden');
+
+            icon.removeClass('grey');
+            icon.addClass(name);
+        };
+    </script>
+
+
+{% endblock %}
+
+

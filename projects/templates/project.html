@@ -1,1 +1,519 @@
-<p>project test</p>
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Project{% endblock %}
+
+{% block events-nav %}active{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding-top: 25px;">
+                <div class="title-logo animated fadeInDown animation-delay-5">
+                    Hack<span>Launch</span>
+                </div>
+                <p class="slogan text-center no-margin-bottom">
+                    Participate in our events. Build your profile and projects. Showcase your talent and work to the world.
+                </p>
+            </div>
+
+            <div class="col-md-12 center">
+                <div class="slidebar-social-icons center small-margin-bottom fadeInDown animation-delay-3"
+                     style="margin-top: 20px;">
+                    <a href="http://www.instagram.com/hacklaunch" class="social-icon-ar instagram"><i
+                            class="fa fa-instagram"></i></a>
+                    <a href="http://plus.google.com/+Hacklaunch" class="social-icon-ar google-plus"><i
+                            class="fa fa-google-plus"></i></a>
+                    <a href="http://www.facebook.com/hacklaunch" class="social-icon-ar facebook"><i
+                            class="fa fa-facebook"></i></a>
+                    <a href="http://www.pinterest.com/hacklaunch" class="social-icon-ar pinterest"><i
+                            class="fa fa-pinterest"></i></a>
+                    <a href="http://www.twitter.com/hacklaunch" class="social-icon-ar twitter"><i
+                            class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 ">
+                <h2 class="section-title no-margin-top no-margin-bottom">
+                    Project Pitch
+                    <a href="#" class="button button-highlight button-pill button-small pull-right margin-top-10"><strong>+ Follow</strong></a>
+                </h2>
+
+                <img src="{% static "images/events/jaime-ng.jpg" %}" alt="Jaime Ng" class="alignleft img-circle"
+                     style="padding: 10px;">
+
+                <div style="padding: 10px;">
+                    <p>Lorem ipsum dolor sit amet, <strong>consectetuer adipiscing elit</strong>. Aenean commodo
+                        ligula
+                        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                        nascetur
+                        ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla
+                        consequat massa quis enim.</p>
+
+                    <p>Lorem ipsum dolor sit amet, <strong>consectetuer adipiscing elit</strong>. Aenean commodo
+                        ligula
+                        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                        nascetur
+                        ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla
+                        consequat massa quis enim.</p>
+
+                    <p>Aenean leo ligula, porttitor eu <a href="#">consequat vitae</a> eleifend ac enim. <em>Aliquam
+                        lorem ante</em>, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut
+                        metus
+                        varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur
+                        ullamcorper ultricies nisi.</p>
+                </div>
+
+                <h2 class="section-title no-margin-top">Time Line</h2>
+                <ul class="timeline-2">
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">31/5/2014 <span>May</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Full image in Timeline</div>
+                            <div class="video">
+                                <img src="assets/img/demo/office2.jpg" alt="" width="100%" class="img-responsive">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">7/3/2014 <span>March</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="alert alert-info">
+                            <h4>You can use Alerts!</h4>
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, sequi, assumenda
+                                voluptates maxime natus possimus dolore rerum deleniti impedit hic minima id commodi
+                                obcaecati quas ab in incidunt rem harum?</p>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">20/2/2014 <span>February</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-royal">
+                            <div class="panel-heading">Lorem ipsum dolor sit</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, illum aspernatur
+                                    placeat eveniet ullam modi asperiores perspiciatis labore animi odio ea dicta
+                                    consectetur similique. Soluta officiis facilis velit sunt rem.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">29/12/2013 <span>December</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Progress bars in timeline</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, eaque, odit,
+                                    officiis repellendus magni nihil enim reprehenderit vel fugit consequuntur totam
+                                    harum saepe quo molestiae numquam nisi distinctio? Rem, magni.</p>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>HTML 5</strong>
+
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="90"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+                                                <span class="sr-only">90% Complete</span>
+                                            </div>
+                                        </div>
+                                        <strong>CSS 3</strong>
+
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
+                                                <span class="sr-only">70% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Javascript</strong>
+
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="90"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+                                                <span class="sr-only">90% Complete</span>
+                                            </div>
+                                        </div>
+                                        <strong>PHP 5</strong>
+
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                <span class="sr-only">60% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">15/8/2013 <span>August</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Responsive video in timeline</div>
+                            <div class="video">
+                                <iframe src="http://player.vimeo.com/video/50061391?title=0&amp;byline=0&amp;portrait=0"></iframe>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">29/7/2013 <span>July</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-success">
+                            <div class="panel-heading">Success color in panel event</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, illum aspernatur
+                                    placeat eveniet ullam modi asperiores perspiciatis labore animi odio ea dicta
+                                    consectetur similique. Soluta officiis facilis velit sunt rem.</p>
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li class="animated fadeInRight animation-delay-2">
+                        <time class="timeline-time" datetime="">18/3/2013 <span>March</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Event with several images and table!</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, nulla recusandae
+                                    blanditiis architecto soluta culpa obcaecati quis earum atque consequuntur.</p>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img src="assets/img/demo/office2.jpg" alt="" class="img-responsive">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <img src="assets/img/demo/office3.jpg" alt="" class="img-responsive">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <img src="assets/img/demo/office4.jpg" alt="" class="img-responsive">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, ipsum
+                                    voluptates eius placeat dolorum reprehenderit ducimus accusamus magni aspernatur at
+                                    dolore assumenda quae suscipit enim veritatis obcaecati molestias laudantium
+                                    maxime!</p>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Username</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                    <li class="animated fadeInRight animation-delay-4">
+                        <time class="timeline-time" datetime="">22/10/2012 <span>October</span></time>
+                        <i class="timeline-2-point"></i>
+                        <blockquote class="blockquote-color-bg-primary">
+                            <p><strong>Blockquote in timeline!</strong> consectetur adipiscing elit. Integer sodales
+                                sagittis magna. consectetur adipiscing elit sed consequat, quam semper libero.</p>
+                            <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                        </blockquote>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-6">
+                        <time class="timeline-time" datetime="">30/4/2012 <span>April</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Event with list</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, neque, eos
+                                    accusantium veniam error eligendi praesentium atque odio vero ipsa quia ipsam saepe.
+                                    Omnis, esse atque aliquid ad tempore nesciunt!</p>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="small-font">
+                                            <li>eveniet accusantium voluptatum itaque</li>
+                                            <li>minima nam doloribus quas quos</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="small-font">
+                                            <li>quasi quidem quas nostrum animi</li>
+                                            <li>perferendis corporis vitae nobis</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-8">
+                        <time class="timeline-time" datetime="">27/1/2012 <span>Junuary</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Event with responsive image</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img src="assets/img/demo/office1.jpg" alt="" class="img-responsive">
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                            praesentium, quam! Quia fugiat aperiam.</p>
+
+                                        <p>Perspiciatis soluta voluptate dolore officiis libero repellat cupiditate
+                                            explicabo atque facere aliquam.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="animated fadeInRight animation-delay-10">
+                        <time class="timeline-time" datetime="">14/1/2012 <span>Junuary</span></time>
+                        <i class="timeline-2-point"></i>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Simple text event in Timeline</div>
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, illum aspernatur
+                                    placeat eveniet ullam modi asperiores perspiciatis labore animi odio ea dicta
+                                    consectetur similique. Soluta officiis facilis velit sunt rem.</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+
+            </div>
+            <div class="col-md-3">
+{#                <div class="center margin-bottom-20">#}
+{#                    <a href="#" class="button button-primary button-pill button-small"><strong>+ Follow</strong></a>#}
+{#                </div>#}
+                <div class="content-box box-primary animated fadeInDown animation-delay-14">
+                    <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Creators</strong></h4>
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img src="http://hacklaunch-images-test.s3.amazonaws.com/profiles-thumbnail/3c24a3fd-fd28-11e4-b27a-1040f3809a1c.png"
+                                 alt="Craig Bennett" class="img-circle">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#" style="color: white">Jaime Ng</a></h4>
+
+                            <p>Technical Lead - piecing together the MVP</p>
+                        </div>
+                    </div>
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img src="http://hacklaunch-images-test.s3.amazonaws.com/profiles-thumbnail/3c24a3fd-fd28-11e4-b27a-1040f3809a1c.png"
+                                 alt="Craig Bennett" class="img-circle">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#" style="color: white">Craig Bennett</a></h4>
+
+                            <p>Technical Lead - piecing together the MVP</p>
+                        </div>
+                    </div>
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img src="http://hacklaunch-images-test.s3.amazonaws.com/profiles-thumbnail/3c24a3fd-fd28-11e4-b27a-1040f3809a1c.png"
+                                 alt="Craig Bennett" class="img-circle">
+                        </a>
+
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#" style="color: white">Shawn Ng</a></h4>
+
+                            <p>Technical Lead - piecing together the MVP</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="panel panel-default fadeInUp animation-delay-12">
+                    <div class="panel-heading">Tags</div>
+                    <div class="panel-body">
+                        <ul style="padding-left: 0px">
+
+                            <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
+                                <div><span>Community Building</span></div>
+                            </li>
+
+                            <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
+                                <div><span>Innovation Platofrm</span></div>
+                            </li>
+
+                            <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
+                                <div><span>Events</span></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading">Technologies</div>
+                    <div class="panel-body">
+                        <section>
+                            <h5 class="no-margin">Python</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar"
+                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
+                                    <span class="sr-only">65% </span>
+                                </div>
+                            </div>
+
+                            <h5 class="no-margin">Javascript</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar"
+                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                                    <span class="sr-only">50%</span>
+                                </div>
+                            </div>
+
+                            <h5 class="no-margin">HTML</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                                    <span class="sr-only">40%</span>
+                                </div>
+                            </div>
+
+                            <h5 class="no-margin">Bootstrap</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="85"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+                                    <span class="sr-only">30%</span>
+                                </div>
+                            </div>
+
+
+                            <h5 class="no-margin">CSS</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="85"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                                    <span class="sr-only">10%</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+
+                <br>
+
+                <div class="panel-group animated fadeInDown animation-delay-12" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-link">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <i class="fa fa-lightbulb-o"></i> Source Code
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati molestiae id
+                                    ipsum ipsa repudiandae. Voluptatum, molestias, quas magnam repellat quos facilis
+                                    sequi. Ullam optio eius deleniti dolore quasi doloribus ipsam incidunt
+                                    perferendis.</p>
+
+                                <p>Dolores, corrupti, laborum, officia sit aliquam doloremque accusantium nemo sunt
+                                    veniam est incidunt perferendis minima obcaecati ex aperiam voluptatibus blanditiis
+                                    eum suscipit magnam dolorum in adipisci nihil ipsam perspiciatis molestiae!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-link">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">
+                                <i class="fa fa-desktop"></i> Design and code
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit dignissimos
+                                    inventore cupiditate expedita saepe enim nobis nostrum? Laborum, laudantium,
+                                    maiores, cupiditate, perspiciatis at ad accusamus corporis sed ipsam et velit!</p>
+
+                                <p>Incidunt, harum itaque voluptatum asperiores recusandae explicabo maiores. Alias,
+                                    quos, ex impedit at error id laborum fugit architecto qui beatae molestiae dolorum
+                                    rem veritatis quia aliquam totam accusamus perferendis. Nulla!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-link">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">
+                                <i class="fa fa-user"></i> Quality and Support
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia, rerum unde
+                                    doloribus accusamus pariatur non expedita quibusdam velit totam obcaecati.
+                                    Consequatur, deserunt, asperiores quam nisi earum voluptates animi labore
+                                    tempore!</p>
+
+                                <p>Dolorum, aliquam, totam labore saepe error a eum culpa assumenda sint laudantium ipsa
+                                    iure ullam et dicta nesciunt repellendus optio voluptatibus reprehenderit odit
+                                    officia fugiat necessitatibus recusandae architecto ad neque?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -16,7 +16,8 @@
     "font-awesome": "4.2.0",
     "holderjs": "2.3.2",
     "html5shiv": "3.7.2",
-    "jquery": "1.11.1",
+    "jquery": "1.11.3",
+    "jquery-ui": "1.11.4",
     "jquery-cookie": "1.4.1",
     "jquery.countdown": "2.0.4",
     "lightbox": "2.7.1",
@@ -28,6 +29,7 @@
     "yamm3": "https://github.com/geedmo/yamm3/archive/master.zip",
     "bootstrap-switch": "3.2.1",
     "chosen": "1.4.2",
-    "bootstrap-fileinput": "4.2.0"
+    "bootstrap-fileinput": "4.2.0",
+    "bootstrap-tagsinput": "*"
   }
 }
