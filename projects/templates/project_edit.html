@@ -31,65 +31,110 @@
                 <div class="small-margin-bottom fadeInDown animation-delay-3"
                      style="margin-top: 20px;">
                     {% if form.facebook.url %}
-                        <a id='link-facebook' href="#" class="social-icon-ar facebook" onclick="editSocialURL('facebook', this.val())"><i
-                            class="fa fa-facebook" ></i></a>
+                        <a id='link-facebook' href="#" class="social-icon-ar facebook"
+                           onclick="editSocialURL('facebook', this.val())"><i
+                                class="fa fa-facebook"></i></a>
                     {% else %}
-                        <a id='link-facebook' href="#" class="social-icon-ar grey" onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
-                            class="fa fa-facebook" ></i></a>
+                        <a id='link-facebook' href="#" class="social-icon-ar grey"
+                           onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
+                                class="fa fa-facebook"></i></a>
                     {% endif %}
 
                     {% if form.google_plus.url %}
-                        <a id='link-google-plus' href="#" class="social-icon-ar google-plus" onclick="editSocialURL('google-plus', this.val())"><i
-                            class="fa fa-google-plus"></i></a>
+                        <a id='link-google-plus' href="#" class="social-icon-ar google-plus"
+                           onclick="editSocialURL('google-plus', this.val())"><i
+                                class="fa fa-google-plus"></i></a>
                     {% else %}
-                        <a id='link-google-plus' href="#" class="social-icon-ar grey" onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
-                            class="fa fa-google-plus" ></i></a>
+                        <a id='link-google-plus' href="#" class="social-icon-ar grey"
+                           onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
+                                class="fa fa-google-plus"></i></a>
                     {% endif %}
 
                     {% if form.instagram.url %}
-                        <a id='link-instagram' href="#" class="social-icon-ar instagram" onclick="editSocialURL('instagram', this.val())"><i
-                            class="fa fa-instagram" ></i></a>
+                        <a id='link-instagram' href="#" class="social-icon-ar instagram"
+                           onclick="editSocialURL('instagram', this.val())"><i
+                                class="fa fa-instagram"></i></a>
                     {% else %}
-                        <a id='link-instagram' href="#" class="social-icon-ar grey" onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
-                            class="fa fa-instagram" ></i></a>
+                        <a id='link-instagram' href="#" class="social-icon-ar grey"
+                           onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
+                                class="fa fa-instagram"></i></a>
                     {% endif %}
 
                     {% if form.pinterest.url %}
-                        <a id='link-pinterest' href="#" class="social-icon-ar pinterest" onclick="editSocialURL('pinterest', this.val())"><i
-                            class="fa fa-pinterest" ></i></a>
+                        <a id='link-pinterest' href="#" class="social-icon-ar pinterest"
+                           onclick="editSocialURL('pinterest', this.val())"><i
+                                class="fa fa-pinterest"></i></a>
                     {% else %}
-                        <a id='link-pinterest' href="#" class="social-icon-ar grey" onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
-                            class="fa fa-pinterest" ></i></a>
+                        <a id='link-pinterest' href="#" class="social-icon-ar grey"
+                           onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
+                                class="fa fa-pinterest"></i></a>
                     {% endif %}
 
                     {% if form.twitter.url %}
-                        <a id='link-twitter' href="#" class="social-icon-ar twitter" onclick="editSocialURL('twitter', this.val())"><i
-                            class="fa fa-twitter" ></i></a>
+                        <a id='link-twitter' href="#" class="social-icon-ar twitter"
+                           onclick="editSocialURL('twitter', this.val())"><i
+                                class="fa fa-twitter"></i></a>
                     {% else %}
-                        <a id='link-twitter' href="#" class="social-icon-ar grey" onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
-                            class="fa fa-twitter" ></i></a>
+                        <a id='link-twitter' href="#" class="social-icon-ar grey"
+                           onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
+                                class="fa fa-twitter"></i></a>
                     {% endif %}
                 </div>
 
-                <div style="margin: 5px;">
-                    {% render_field form.facebook class="hidden" name='facebook' style="width: 250px" %}
-                    <button id="update-facebook" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('facebook')">Update</button>
+                <div id='div-facebook' class="row hidden">
+                    <div class="col-centered">
+                        <div class="input-group" style="margin: 5px; text-align: center;">
+                            {% render_field form.facebook class="form-control" name='facebook' style="width: 250px" %}
+                            <button id="update-facebook" type="button" class="btn btn-ar btn-default"
+                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin: 5px;">
-                    {% render_field form.instagram class="hidden" name='instagram' style="width: 250px"%}
-                    <button id="update-instagram" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('instagram')">Update</button>
+                <div id="div-instagram" class="row hidden">
+                    <div class="col-centered">
+                        <div class="input-group" style="margin: 5px; text-align: center;">
+                            {% render_field form.instagram class="form-control" name='instagram' style="width: 250px" %}
+                            <button id="update-instagram" type="button" class="btn btn-ar btn-default"
+                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('instagram')">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin: 5px;">
-                    {% render_field form.google_plus class="hidden" name='google-plus' id="id_google-plus" style="width: 250px"%}
-                    <button id="update-google-plus" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('google-plus')">Update</button>
+                <div id="div-google-plus" class="row hidden">
+                    <div class="col-centered">
+                        <div class="input-group" style="margin: 5px; text-align: center;">
+                            {% render_field form.google_plus class=" form-control" name='google-plus' id="id_google-plus" style="width: 250px" %}
+                            <button id="update-google-plus" type="button" class="btn btn-ar btn-default"
+                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('google-plus')">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin: 5px;">
-                    {% render_field form.pinterest class="hidden" name='pinterest' style="width: 250px"%}
-                    <button id="update-pinterest" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('pinterest')">Update</button>
+                <div id="div-pinterest" class="row hidden">
+                    <div class="col-centered">
+                        <div class="input-group" style="margin: 5px; text-align: center;">
+                            {% render_field form.pinterest class="form-control" name='pinterest' style="width: 250px" %}
+                            <button id="update-pinterest" type="button" class="btn btn-ar btn-default"
+                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('pinterest')">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin: 5px;">
-                    {% render_field form.twitter class="hidden" name='twitter' style="width: 250px"%}
-                    <button id="update-twitter" type="button" class="btn btn-ar btn-default hidden" style="height: 31px;" onclick="updateSocialURL('twitter')">Update</button>
+                <div id="div-twitter" class="row hidden">
+                    <div class="col-centered">
+                        <div class="input-group" style="margin: 5px; text-align: center;">
+                            {% render_field form.twitter class="form-control" name='twitter' style="width: 250px" %}
+                            <button id="update-twitter" type="button" class="btn btn-ar btn-default"
+                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('twitter')">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -151,7 +196,8 @@
 
                         <div class="ui-widget">
                             <input id="technologyInput" onkeyup="newTechnology()">
-                            <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;" onclick="addTechnology()"></i>
+                            <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;"
+                               onclick="addTechnology()"></i>
 
                             <div id="technologies" style="margin-top: 10px"></div>
                         </div>
@@ -185,20 +231,20 @@
             {% autoescape off %}
                 var availableTags = {{ form.technologies }}
             {% endautoescape %}
-            $("#technologyInput").autocomplete({
-                source: availableTags
-            });
+        $("#technologyInput").autocomplete({
+            source: availableTags
+        });
         });
 
-        var newTechnology = function() {
+        var newTechnology = function () {
             $('#addTechnology').removeClass('hidden');
 
-            if(event.keyCode == 13){
+            if (event.keyCode == 13) {
                 addTechnology();
             }
         };
 
-        var addTechnology = function() {
+        var addTechnology = function () {
             var value = $('#technologyInput').val();
 
             $('#technologies').append('<p class="addedTechnology" id="technology-' + value + '">' + value + '<i id="technology-' + value + '" class="fa fa-minus-circle" style="color: red; padding-left: 5px;" onclick="removeTechnology(this.id)"></i><p>');
@@ -207,35 +253,72 @@
             $('#addTechnology').addClass('hidden');
         };
 
-        var removeTechnology = function(id) {
+        var removeTechnology = function (id) {
             $('#' + id).remove();
         };
 
-        var editSocialURL = function(name, link) {
+        var editSocialURL = function (name, link) {
             var input = $('#id_' + name);
-            input.removeClass('hidden');
-            input.val(link);
+            if (input.val() == '') {
+                input.val(link);
+            }
 
-            $('#update-' + name).removeClass('hidden');
+            $('#div-' + name).removeClass('hidden');
         };
 
-        var updateSocialKeyDown = function(name) {
-            if(event.keyCode == 13){
+        var updateSocialKeyUp = function (name) {
+            if (event.keyCode == 13) {
                 updateSocialURL(name);
             }
         };
 
-        var updateSocialURL = function(name) {
+        var updateSocialURL = function (name) {
             var input = $('#id_' + name),
-                link = input.val(),
-                icon = $('#link-' + name);
+                    link = input.val(),
+                    icon = $('#link-' + name),
+                    inputDiv = $('#div-' + name),
+                    valid = false;
 
-            input.addClass('hidden');
-            $('#update-' + name).addClass('hidden');
+            if (name === 'google-plus'
+                    && (link.startsWith('http://plus.google.com/')
+                        || link.startsWith('https://plus.google.com/')
+                        || link.startsWith('www.plus.google.com/'))
+                    && (!link.endsWith('.com/') && !link.endsWith('.com'))){
+                valid = true;
+            }
+            else if ((link.startsWith('http://www.' + name + '.com/')
+                        || link.startsWith('https://www.' + name + '.com/')
+                        || link.startsWith('www.' + name + '.com/'))
+                      && (!link.endsWith('.com/') && !link.endsWith('.com'))){
+                valid = true;
+            }
 
-            icon.removeClass('grey');
-            icon.addClass(name);
+            if (valid) {
+                $('#div-' + name).addClass('hidden');
+
+                icon.removeClass('grey');
+                icon.addClass(name);
+            }
+            else {
+                inputDiv.addClass('has-error');
+            }
         };
+
+        $("#id_facebook").keyup(function () {
+            updateSocialKeyUp('facebook');
+        });
+        $("#id_google-plus").keyup(function () {
+            updateSocialKeyUp('google-plus');
+        });
+        $("#id_instagram").keyup(function () {
+            updateSocialKeyUp('instagram');
+        });
+        $("#id_pinterest").keyup(function () {
+            updateSocialKeyUp('pinterest');
+        });
+        $("#id_twitter").keyup(function () {
+            updateSocialKeyUp('twitter');
+        });
     </script>
 
 

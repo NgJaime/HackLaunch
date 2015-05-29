@@ -8826,3 +8826,8 @@ input[type="date"]:focus {
     text-align: center;
     width: 100%;
 }
+
+.col-centered{
+      display: inline-block;;
+      margin: 0 auto;
+}
