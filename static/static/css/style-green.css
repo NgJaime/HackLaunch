@@ -8831,3 +8831,7 @@ input[type="date"]:focus {
       display: inline-block;;
       margin: 0 auto;
 }
+
+.red{
+    color: red;
+}

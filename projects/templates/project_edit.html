@@ -136,6 +136,13 @@
                         </div>
                     </div>
                 </div>
+                <div id="social-link-error" class="hidden center">
+                    <p class="hidden red" id="social-link-error-facebook">Please enter a valid Facebook link</p>
+                    <p class="hidden red" id="social-link-error-google-plus">Please enter a valid Google Plus link</p>
+                    <p class="hidden red" id="social-link-error-instagram">Please enter a valid Instagram link</p>
+                    <p class="hidden red" id="social-link-error-pinterest">Please enter a valid Pinterest link</p>
+                    <p class="hidden red" id="social-link-error-twitter">Please enter a valid Twitter link</p>
+                </div>
             </div>
         </div>
 
@@ -277,6 +284,8 @@
                     link = input.val(),
                     icon = $('#link-' + name),
                     inputDiv = $('#div-' + name),
+                    errorMessageDiv = $('#social-link-error'),
+                    errorMesage = $('#social-link-error-' + name),
                     valid = false;
 
             if (name === 'google-plus'
@@ -298,9 +307,15 @@
 
                 icon.removeClass('grey');
                 icon.addClass(name);
+
+                inputDiv.removeClass('has-error');
+                errorMesage.addClass('hidden');
             }
             else {
                 inputDiv.addClass('has-error');
+
+                errorMessageDiv.removeClass('hidden');
+                errorMesage.removeClass('hidden');
             }
         };
 
