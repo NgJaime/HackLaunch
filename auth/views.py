@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
+from django.contrib.auth import logout as auth_logout
+from django.http import HttpResponseRedirect
 from social.apps.django_app.views import complete as social_complete
 from base.forms import InitialPassword
 
@@ -68,3 +70,7 @@ class PasswordChangedLogin(FormView):
 
     def get_success_url(self):
         return redirect(self.request.POST.get('next','home'))
+
+def logout(request):
+    auth_logout(request)
+    return HttpResponseRedirect('/')

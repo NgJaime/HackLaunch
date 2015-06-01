@@ -22,7 +22,7 @@ class Technologies(models.Model):
 class Project(models.Model):
     logo = FroalaField(options={'inlineMode': True, 'placeholder': 'Add a logo'},
                        plugins=('image'))
-    title = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Name your project'})
+    title = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Name your project', 'blockStyles': {'p': {'margin': '0px;'}}})
     tag_line = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Provide a tag line for your project.'},
                            plugins=('font_size', 'font_family', 'colors', 'block_styles', 'char_counter'))
     pitch = FroalaField(options={'placeholder': 'Create a pitch for your project it can include images, videos and embeded youtube content.'},
@@ -40,7 +40,6 @@ class Project(models.Model):
     instagram = models.URLField()
     pinterest = models.URLField()
     twitter = models.URLField()
-
 
 
 class ProjectCreators(models.Model):

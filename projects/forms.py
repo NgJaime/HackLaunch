@@ -1,5 +1,6 @@
 import json
 from django import forms
+from django.core.urlresolvers import reverse_lazy
 from froala_editor.widgets import FroalaEditor
 from datetime import datetime
 from projects.models import Project
@@ -15,6 +16,8 @@ class ProjectForm(forms.ModelForm):
     month = datetime.now().strftime("%B")
 
     technologies = json.dumps(list(Skill.objects.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
+
+    get_user_url = reverse_lazy('get_user')
 
     class Meta:
         model = Project

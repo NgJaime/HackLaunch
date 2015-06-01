@@ -4,9 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
 from base.sitemap import StaticViewSitemap, ProfileSitemap, EventsSitemap
-from users.views import ProfileEditView
-from auth.views import Login, PasswordChangedLogin
-from users.views import logout, profile_image_upload
+from auth.views import Login, logout, PasswordChangedLogin
 
 admin.autodiscover()
 
@@ -20,16 +18,13 @@ urlpatterns = [
     url(r'^$', include('base.urls')),
     url(r'^events/', include('events.urls')),
     url(r'^projects/', include('projects.urls')),
+    url(r'^users/', include('users.urls')),
 
     url(r'^terms/$', 'base.views.terms', name='terms'),
     url(r'^credits/$', 'base.views.credits', name='credits'),
 
     url(r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-
-    url(r'^profile/$', login_required(ProfileEditView.as_view())),
-    url(r'^profile/upload/profile_image', login_required(profile_image_upload), name='profile_image_upload'),
-    url(r'^profile/(?P<slug>[^/]+)/$', 'users.views.profile_view', name='profile_view'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^email_required/$', 'users.views.require_email', name='require_email'),

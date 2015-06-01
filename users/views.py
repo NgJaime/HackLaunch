@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, 
 from django.template import RequestContext
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
-from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.templatetags.static import static
@@ -146,10 +145,6 @@ def delete_user(request):
     return HttpResponseRedirect('/logout')
 
 
-def logout(request):
-    auth_logout(request)
-    return HttpResponseRedirect('/')
-
 @csrf_protect
 def profile_image_upload(request):
     if request.is_ajax():
@@ -166,5 +161,35 @@ def profile_image_upload(request):
             return HttpResponse(json.dumps({'success': True, 'thumbnailUrl': profile.thumbnail.url}))
         else:
             return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Multiple file uploaded'}))
+
+    return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Invalid request'}))
+
+
+@csrf_protect
+def get_user(request):
+    if request.is_ajax():
+        if 'username' in request.REQUEST:
+            username = request.REQUEST['username']
+
+            if len(username) == 0:
+                return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
+
+            if username[0] is '@':
+                username = username[1:]
+
+            profile = UserProfile.objects.filter(user__username=username)
+
+            if not profile:
+                return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
+
+            if not profile[0].thumbnail:
+                thumbnail = static('images/avatar.jpg')
+            else:
+                thumbnail = profile[0].thumbnail.url
+
+            return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile[0].user.get_full_name(),
+                                            'thumbnail': thumbnail, 'slug': profile[0].slug}))
+        else:
+            return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
 
     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Invalid request'}))
