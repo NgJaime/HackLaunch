@@ -15,6 +15,10 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += (
+    "django_extensions",
+)
+
 ALLOWED_HOSTS = []
 
 AWS_S3_SECURE_URLS = False
