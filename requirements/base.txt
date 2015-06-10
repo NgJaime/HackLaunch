@@ -14,3 +14,4 @@ django-secure==1.0.1
 bootstrap-admin==0.3.6
 pycountry==1.10
 django-froala-editor==1.2.7
+djangoajax==2.2.15

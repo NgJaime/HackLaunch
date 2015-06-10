@@ -16,245 +16,294 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-md-12" style="padding-top: 25px;">
-                <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
-                    <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
-                    {% render_field form.title style="margin-bottom: 0px;" %}
+
+        <form action="{% url 'project_edit' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12" style="padding-top: 25px;">
+                    <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
+                        <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                        {% render_field project_form.title style="margin-bottom: 0px;" %}
+                    </div>
+                    <p class="slogan text-center no-margin-bottom">
+                        {{ project_form.tag_line }}
+                    </p>
                 </div>
-                <p class="slogan text-center no-margin-bottom">
-                    {{ form.tag_line }}
-                </p>
+
+                <div class="col-md-12 center">
+                    <div class="small-margin-bottom fadeInDown animation-delay-3"
+                         style="margin-top: 20px;">
+                        {% if project_form.facebook.url %}
+                            <a id='link-facebook' href="{{ project_form.facebook.url }}" class="social-icon-ar facebook"
+                               onclick="editSocialURL('facebook', this.val())"><i
+                                    class="fa fa-facebook"></i></a>
+                        {% else %}
+                            <a id='link-facebook' href="#" class="social-icon-ar grey"
+                               onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
+                                    class="fa fa-facebook"></i></a>
+                        {% endif %}
+
+                        {% if project_form.google_plus.url %}
+                            <a id='link-google-plus' href="{{ project_form.google_plus.url }}" class="social-icon-ar google-plus"
+                               onclick="editSocialURL('google-plus', this.val())"><i
+                                    class="fa fa-google-plus"></i></a>
+                        {% else %}
+                            <a id='link-google-plus' href="#" class="social-icon-ar grey"
+                               onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
+                                    class="fa fa-google-plus"></i></a>
+                        {% endif %}
+
+                        {% if project_form.instagram.url %}
+                            <a id='link-instagram' href="{{ project_form.instagram.url }}" class="social-icon-ar instagram"
+                               onclick="editSocialURL('instagram', this.val())"><i
+                                    class="fa fa-instagram"></i></a>
+                        {% else %}
+                            <a id='link-instagram' href="#" class="social-icon-ar grey"
+                               onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
+                                    class="fa fa-instagram"></i></a>
+                        {% endif %}
+
+                        {% if project_form.pinterest.url %}
+                            <a id='link-pinterest' href="{{ project_form.pinterest.url }}" class="social-icon-ar pinterest"
+                               onclick="editSocialURL('pinterest', this.val())"><i
+                                    class="fa fa-pinterest"></i></a>
+                        {% else %}
+                            <a id='link-pinterest' href="#" class="social-icon-ar grey"
+                               onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
+                                    class="fa fa-pinterest"></i></a>
+                        {% endif %}
+
+                        {% if project_form.twitter.url %}
+                            <a id='link-twitter' href="{{ project_form.twitter.url }}" class="social-icon-ar twitter"
+                               onclick="editSocialURL('twitter', this.val())"><i
+                                    class="fa fa-twitter"></i></a>
+                        {% else %}
+                            <a id='link-twitter' href="#" class="social-icon-ar grey"
+                               onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
+                                    class="fa fa-twitter"></i></a>
+                        {% endif %}
+                    </div>
+
+                    <div id='div-facebook' class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field project_form.facebook class="form-control" name='facebook' style="width: 250px" %}
+                                <button id="update-facebook" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div-instagram" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field project_form.instagram class="form-control" name='instagram' style="width: 250px" %}
+                                <button id="update-instagram" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('instagram')">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div-google-plus" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field project_form.google_plus class=" form-control" name='google-plus' id="id_google-plus" style="width: 250px" %}
+                                <button id="update-google-plus" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('google-plus')">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div-pinterest" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field project_form.pinterest class="form-control" name='pinterest' style="width: 250px" %}
+                                <button id="update-pinterest" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('pinterest')">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div-twitter" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field project_form.twitter class="form-control" name='twitter' style="width: 250px" %}
+                                <button id="update-twitter" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('twitter')">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="social-link-error" class="hidden center">
+                        <p class="hidden red" id="social-link-error-facebook">Please enter a valid Facebook link</p>
+                        <p class="hidden red" id="social-link-error-google-plus">Please enter a valid Google Plus link</p>
+                        <p class="hidden red" id="social-link-error-instagram">Please enter a valid Instagram link</p>
+                        <p class="hidden red" id="social-link-error-pinterest">Please enter a valid Pinterest link</p>
+                        <p class="hidden red" id="social-link-error-twitter">Please enter a valid Twitter link</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-12 center">
-                <div class="small-margin-bottom fadeInDown animation-delay-3"
-                     style="margin-top: 20px;">
-                    {% if form.facebook.url %}
-                        <a id='link-facebook' href="#" class="social-icon-ar facebook"
-                           onclick="editSocialURL('facebook', this.val())"><i
-                                class="fa fa-facebook"></i></a>
-                    {% else %}
-                        <a id='link-facebook' href="#" class="social-icon-ar grey"
-                           onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
-                                class="fa fa-facebook"></i></a>
-                    {% endif %}
+            <div class="row">
+                <div class="col-md-9 ">
+                    <h2 class="section-title no-margin-top no-margin-bottom">
+                        Project Pitch
+                    </h2>
 
-                    {% if form.google_plus.url %}
-                        <a id='link-google-plus' href="#" class="social-icon-ar google-plus"
-                           onclick="editSocialURL('google-plus', this.val())"><i
-                                class="fa fa-google-plus"></i></a>
-                    {% else %}
-                        <a id='link-google-plus' href="#" class="social-icon-ar grey"
-                           onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
-                                class="fa fa-google-plus"></i></a>
-                    {% endif %}
+                    {{ project_form.pitch }}
 
-                    {% if form.instagram.url %}
-                        <a id='link-instagram' href="#" class="social-icon-ar instagram"
-                           onclick="editSocialURL('instagram', this.val())"><i
-                                class="fa fa-instagram"></i></a>
-                    {% else %}
-                        <a id='link-instagram' href="#" class="social-icon-ar grey"
-                           onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
-                                class="fa fa-instagram"></i></a>
-                    {% endif %}
+                    <h2 class="section-title">Time Line</h2>
+                    <ul class="timeline-2">
 
-                    {% if form.pinterest.url %}
-                        <a id='link-pinterest' href="#" class="social-icon-ar pinterest"
-                           onclick="editSocialURL('pinterest', this.val())"><i
-                                class="fa fa-pinterest"></i></a>
-                    {% else %}
-                        <a id='link-pinterest' href="#" class="social-icon-ar grey"
-                           onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
-                                class="fa fa-pinterest"></i></a>
-                    {% endif %}
+                        <li class="animated fadeInRight animation-delay-2">
+                            <time class="timeline-time" datetime="">{{ context.date }} <span>{{ context.month }}</span></time>
+                            <i class="timeline-2-point"></i>
 
-                    {% if form.twitter.url %}
-                        <a id='link-twitter' href="#" class="social-icon-ar twitter"
-                           onclick="editSocialURL('twitter', this.val())"><i
-                                class="fa fa-twitter"></i></a>
-                    {% else %}
-                        <a id='link-twitter' href="#" class="social-icon-ar grey"
-                           onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
-                                class="fa fa-twitter"></i></a>
-                    {% endif %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading"
+                                     style="color: white;">{% render_field project_form.new_timeline_post_title style='color: white' %}</div>
+                                {{ project_form.new_timeline_post }}
+                            </div>
+                        </li>
+                    </ul>
                 </div>
+                <div class="col-md-3">
+                    <div class="content-box box-primary animated fadeInDown animation-delay-14">
+                        <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Creators</strong></h4>
 
-                <div id='div-facebook' class="row hidden">
-                    <div class="col-centered">
-                        <div class="input-group" style="margin: 5px; text-align: center;">
-                            {% render_field form.facebook class="form-control" name='facebook' style="width: 250px" %}
-                            <button id="update-facebook" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
-                                Update
-                            </button>
+                    <div id="creators" class="media">
+                        {% for creator in project_creators %}
+                            <div>
+                                <a class="pull-left" href="#">
+                                    {% if user.userprofile.thumbnail %}
+                                        <img src="{{ creator.creator.userprofile.thumbnail.url }}"
+                                             alt="{{ creator.creator.get_full_name }}" class="img-circle">
+                                    {% else %}
+                                        <img src="{% static "images/avatar.jpg" %}"
+                                             alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
+                                    {% endif %}
+                                </a>
+
+                                <div class="media-body" style="padding-left: 10px;">
+                                    <h4 class="media-heading"><a href="#" style="color: white">{{ creator.creator.get_full_name }}</a></h4>
+
+                                    <p>{{ creator.summary }}</p>
+                                </div>
+
+                                <hr style="margin: 0px 0px 0px 0px; color: white;">
+                            </div>
+                        {% endfor %}
+                    </div>
+                        <div class="ui-widget" >
+                            <input id="creatorInput" onkeyup="newCreator()" style="color: black; padding-left: 3px; margin-top: 15px" placeholder="Add a username">
+                            <i id="addCreator" class="fa fa-plus-circle hidden" style="color: white;"
+                               onclick="addCreator()"></i>
+                        </div>
+
+                        <div id="creator-error" class="hidden">
+                            <p id="creator-error-message" style="margin: 10px 0px 0px 0px"></p>
                         </div>
                     </div>
-                </div>
-                <div id="div-instagram" class="row hidden">
-                    <div class="col-centered">
-                        <div class="input-group" style="margin: 5px; text-align: center;">
-                            {% render_field form.instagram class="form-control" name='instagram' style="width: 250px" %}
-                            <button id="update-instagram" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('instagram')">
-                                Update
-                            </button>
+                    <br>
+
+                    <div class="panel panel-default animated fadeInUp animation-delay-12">
+                        <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
+                        <div class="panel-body">
+                            <input type="text" value="New project" class="label-success" data-role="tagsinput"
+                                   style="display: none;">
                         </div>
                     </div>
-                </div>
-                <div id="div-google-plus" class="row hidden">
-                    <div class="col-centered">
-                        <div class="input-group" style="margin: 5px; text-align: center;">
-                            {% render_field form.google_plus class=" form-control" name='google-plus' id="id_google-plus" style="width: 250px" %}
-                            <button id="update-google-plus" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('google-plus')">
-                                Update
-                            </button>
+
+                    <div class="panel panel-default animated fadeInUp animation-delay-12">
+                        <div class="panel-heading"><i class="fa fa-database"></i> Technologies</div>
+                        <div class="panel-body">
+                            <div class="ui-widget">
+                                <input id="technologyInput" onkeyup="newTechnology()">
+                                <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;"
+                                   onclick="addTechnology()">
+                                </i>
+
+                                <p id="technology-error-message" class="hidden" style="color: red;">
+                                    <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                </p>
+
+                                <div id="technologies" style="margin-top: 10px">
+                                     {% for technology in project_technologies %}
+                                        <div id="technology-{{ technology.technology.name }}">
+                                            <p class="addedTechnology" id="technology-{{ technology.technology.name }}-name">
+                                                {{ technology.technology.name }}
+                                                <i id="technology-{{ technology.technology.name }}-icon" class="fa fa-minus-circle"
+                                                   style="color: red; padding-left: 5px;" onclick="removeTechnology('{{ technology.technology.name }}')">
+                                                </i>
+                                            <p>
+                                            <p id="technology-{{ technology.technology.name }}-error-message" class="hidden" style="color: red;">
+                                                <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                            </p>
+                                        </div>
+                                     {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="div-pinterest" class="row hidden">
-                    <div class="col-centered">
-                        <div class="input-group" style="margin: 5px; text-align: center;">
-                            {% render_field form.pinterest class="form-control" name='pinterest' style="width: 250px" %}
-                            <button id="update-pinterest" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('pinterest')">
-                                Update
-                            </button>
+
+                    <div class="panel panel-default animated fadeInUp animation-delay-12">
+                        <div class="panel-heading"><i class="fa fa-desktop"></i> Design and code</div>
+                        <div class="panel-body center">
+                            <p>Link to your project's Github account</p>
+
+                            <a href="{% url 'social:begin' 'github' %}" class="animated fadeIn animation-delay-7 git"
+                               style="color: transparent; padding-top: 20px">
+                                <i class="fa fa-github fa-3x" style="color: #2a2a2a;"></i>
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div id="div-twitter" class="row hidden">
-                    <div class="col-centered">
-                        <div class="input-group" style="margin: 5px; text-align: center;">
-                            {% render_field form.twitter class="form-control" name='twitter' style="width: 250px" %}
-                            <button id="update-twitter" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('twitter')">
-                                Update
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="social-link-error" class="hidden center">
-                    <p class="hidden red" id="social-link-error-facebook">Please enter a valid Facebook link</p>
-                    <p class="hidden red" id="social-link-error-google-plus">Please enter a valid Google Plus link</p>
-                    <p class="hidden red" id="social-link-error-instagram">Please enter a valid Instagram link</p>
-                    <p class="hidden red" id="social-link-error-pinterest">Please enter a valid Pinterest link</p>
-                    <p class="hidden red" id="social-link-error-twitter">Please enter a valid Twitter link</p>
+                    <br>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-9 ">
-                <h2 class="section-title no-margin-top no-margin-bottom">
-                    Project Pitch
-                </h2>
-
-                {{ form.pitch }}
-
-                <h2 class="section-title">Time Line</h2>
-                <ul class="timeline-2">
-
-                    <li class="animated fadeInRight animation-delay-2">
-                        <time class="timeline-time" datetime="">{{ form.date }} <span>{{ form.month }}</span></time>
-                        <i class="timeline-2-point"></i>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading"
-                                 style="color: white;">{% render_field form.new_timeline_post_title style='color: white' %}</div>
-                            {{ form.new_timeline_post }}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <div class="content-box box-primary animated fadeInDown animation-delay-14">
-                    <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Creators</strong></h4>
-
-                <div id="creators" class="media">
-                    <div>
-                        <a class="pull-left" href="#">
-                            {% if user.userprofile.thumbnail %}
-                                <img src="{{ user.userprofile.thumbnail.url }}"
-                                     alt="{{ user.get_full_name }}" class="img-circle">
-                            {% else %}
-                                <img src="{% static "images/avatar.jpg" %}"
-                                     alt="{{ user.get_full_name }}" class="img-circle" style="width: 50px">
-                            {% endif %}
-                        </a>
-
-                        <div class="media-body" style="padding-left: 10px;">
-                            <h4 class="media-heading"><a href="#" style="color: white">{{ user.get_full_name }}</a></h4>
-
-                            <p>Technical Lead - piecing together the MVP</p>
-                        </div>
-
-                        <hr style="margin: 0px 0px 15px 0px; color: white;">
-                    </div>
-                </div>
-                    <div class="ui-widget">
-                        <input id="creatorInput" onkeyup="newCreator()" style="color: black; padding-left: 3px;" placeholder="Add a username">
-                        <i id="addCreator" class="fa fa-plus-circle hidden" style="color: white;"
-                           onclick="addCreator()"></i>
-                    </div>
-
-                    <div id="creator-error" class="hidden">
-                        <p id="creator-error-message" style="margin: 10px 0px 0px 0px"></p>
-                    </div>
-                </div>
-                <br>
-
-                <div class="panel panel-default fadeInUp animation-delay-12">
-                    <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
-                    <div class="panel-body">
-                        <input type="text" value="New project" class="label-success" data-role="tagsinput"
-                               style="display: none;">
-                    </div>
-                </div>
-
-
-                <div class="panel panel-default animated fadeInUp animation-delay-12">
-                    <div class="panel-heading"><i class="fa fa-database"></i> Technologies</div>
-                    <div class="panel-body">
-
-                        <div class="ui-widget">
-                            <input id="technologyInput" onkeyup="newTechnology()">
-                            <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;"
-                               onclick="addTechnology()"></i>
-
-                            <div id="technologies" style="margin-top: 10px"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel panel-default animated fadeInUp animation-delay-12">
-                    <div class="panel-heading"><i class="fa fa-desktop"></i> Design and code</div>
-                    <div class="panel-body center">
-                        <p>Link to your project's Github account</p>
-
-                        <a href="{% url 'social:begin' 'github' %}" class="animated fadeIn animation-delay-7 git"
-                           style="color: transparent; padding-top: 20px">
-                            <i class="fa fa-github fa-3x" style="color: #2a2a2a;"></i>
-                        </a>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
+{#            <input type="submit" value="Save" />#}
+        </form>
     </div>
-
 {% endblock %}
 
 {% block extra_scripts %}
     <script src="{% static "froala_editor/js/froala_editor.min.js" %}"></script>
     <script src="{% static "js/bootstrap-tagsinput.js" %}"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{% static "js/jquery.formset.js" %}"></script>
+
+    <script>
+        (function($){
+            function processForm( e ){
+                $.ajax({
+                    url: '/projects/addCreator/',
+                    dataType: 'text',
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: $(this).serialize(),
+                    success: function( data, textStatus, jQxhr ){
+                        $('#response pre').html( data );
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+
+                e.preventDefault();
+            }
+
+            $('#crators-form').submit( processForm );
+        })(jQuery);
+    </script>
     <script>
         $(function () {
             {% autoescape off %}
-                var availableTags = {{ form.technologies }}
+                var availableTags = {{ context.technologies }}
             {% endautoescape %}
 
             $("#technologyInput").autocomplete({
@@ -279,10 +328,11 @@
 
             if (username.length > 0) {
                 $.ajax({
-                    url: '{{ form.get_user_url }}',
-                    type: 'GET',
+                    url: "{% url 'get_user' %}",
+                    type: 'POST',
                     dataType: 'json',
-                    data: {'username': username},
+                    data: {username: username,
+                           csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
                         if (data.success === true) {
                             $('#creator-error').addClass('hidden');
@@ -340,14 +390,54 @@
         var addTechnology = function () {
             var value = $('#technologyInput').val();
 
-            $('#technologies').append('<p class="addedTechnology" id="technology-' + value + '">' + value + '<i id="technology-' + value + '" class="fa fa-minus-circle" style="color: red; padding-left: 5px;" onclick="removeTechnology(this.id)"></i><p>');
-
-            $('#technologyInput').val('');
-            $('#addTechnology').addClass('hidden');
+            $.ajax({
+                url: "{% url 'add_technology_to_project' %}",
+                type: 'POST',
+                dataType: 'json',
+                data: {technology: value,
+                       project: {{ context.projectId }},
+                       csrfmiddlewaretoken: '{{ csrf_token }}'},
+                success: function (data, textStatus, xhr) {
+                    if (data.content.success === true) {
+                        $('#technology-error-message').addClass('hidden');
+                        $('#technologies').append('<div id="technology-' + value + '"> <p class="addedTechnology" id="technology-' + value + '-name">' + value + '<i id="technology-' + value + '-icon" class="fa fa-minus-circle" style="color: red; padding-left: 5px;" onclick="removeTechnology(&quot;' + value + '&quot;)"></i><p> <p id="technology-' + value + '-error-message" class="hidden" style="color: red;"><i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i> </p></div>');
+                        $('#technologyInput').val('');
+                        $('#addTechnology').addClass('hidden');
+                    }
+                    else {
+                        $('#technology-error-message').removeClass('hidden');
+                        $('#technology-error-message').text(data.content.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#technology-error-message').removeClass('hidden');
+                    $('#technology-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                }
+            });
         };
 
-        var removeTechnology = function (id) {
-            $('#' + id).remove();
+        var removeTechnology = function (value) {
+             $.ajax({
+                url: "{% url 'remove_technology_from_project' %}",
+                type: 'POST',
+                dataType: 'json',
+                data: {technology: value,
+                       project: {{ context.projectId }},
+                       csrfmiddlewaretoken: '{{ csrf_token }}'},
+                success: function (data, textStatus, xhr) {
+                    if (data.content.success === true) {
+                        $('#technology-' + value).remove();
+                    }
+                    else {
+                        $('#technology-' + value + '-error-message').removeClass('hidden');
+                        $('#technology-' + value + '-error-message').text(data.content.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#technology-' + value + '-error-message').removeClass('hidden');
+                    $('#technology-' + value + '-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                }
+            });
         };
 
         var editSocialURL = function (name, link) {

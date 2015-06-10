@@ -167,29 +167,30 @@ def profile_image_upload(request):
 
 @csrf_protect
 def get_user(request):
-    if request.is_ajax():
-        if 'username' in request.REQUEST:
-            username = request.REQUEST['username']
+    if request.method == "POST":
+        if request.is_ajax():
+            if 'username' in request.REQUEST:
+                username = request.REQUEST['username']
 
-            if len(username) == 0:
-                return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
+                if len(username) == 0:
+                    return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
 
-            if username[0] is '@':
-                username = username[1:]
+                if username[0] is '@':
+                    username = username[1:]
 
-            profile = UserProfile.objects.filter(user__username=username)
+                profile = UserProfile.objects.filter(user__username=username)
 
-            if not profile:
-                return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
+                if not profile:
+                    return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
 
-            if not profile[0].thumbnail:
-                thumbnail = static('images/avatar.jpg')
+                if not profile[0].thumbnail:
+                    thumbnail = static('images/avatar.jpg')
+                else:
+                    thumbnail = profile[0].thumbnail.url
+
+                return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile[0].user.get_full_name(),
+                                                'thumbnail': thumbnail, 'slug': profile[0].slug}))
             else:
-                thumbnail = profile[0].thumbnail.url
-
-            return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile[0].user.get_full_name(),
-                                            'thumbnail': thumbnail, 'slug': profile[0].slug}))
-        else:
-            return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
+                return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
 
     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'Invalid request'}))
