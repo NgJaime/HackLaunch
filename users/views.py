@@ -3,15 +3,25 @@ from exceptions import ValueError
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.generic.edit import FormView
+from django.views.generic.base import RedirectView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.templatetags.static import static
+from django.core.urlresolvers import reverse
 from social.apps.django_app.default.models import UserSocialAuth
 from base.views import LoginRequiredMixin
 from forms import UserProfileForm
 
 from models import UserProfile, User
+
+class ProfileEditRedirect(RedirectView):
+    permanent = False
+    query_string = False
+    pattern_name = 'profile-edit-redirect'
+
+    def get_redirect_url(self, *args, **kwargs):
+        return '/users/' + self.request.user.userprofile.slug + '/edit'
 
 
 class ProfileEditView(LoginRequiredMixin, FormView):
@@ -23,7 +33,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
     def get_initial(self):
         initial = super(ProfileEditView, self).get_initial()
 
-        self.profile, created = UserProfile.objects.get_or_create(user_id=self.request.user.id)
+        self.profile = get_object_or_404(UserProfile, user_id=self.request.user.id)
 
         try:
             url = self.profile.image.url

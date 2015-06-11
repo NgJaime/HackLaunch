@@ -43,19 +43,13 @@ def load_extra_data(backend, details, response, uid, user, *args, **kwargs):
 
 
 def set_extra_data(user, extra_data=None):
-    if user is not None and extra_data:
-        try:
-            profile = UserProfile.objects.get(user_id=user.id)
-        except UserProfile.DoesNotExist:
-            profile = None
+    if user is not None:
+        profile = UserProfile.objects.get_or_create(user_id=user.id)
 
-        if 'location' in extra_data:
-            if profile is not None and profile.location is None:
+        if extra_data and 'location' in extra_data:
+            if profile.location is None:
                 # todo need to update for logins other than linked-in
                 profile.location = extra_data['location']['name']
-                profile.save()
-            elif profile is None:
-                profile, created = UserProfile.objects.update_or_create(user_id=user.id, location=extra_data['location']['name'])
                 profile.save()
 
 @partial
