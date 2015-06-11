@@ -117,7 +117,7 @@
                             <div class="dropdown-menu dropdown-menu-right animated fadeInUp">
                                 <div style="margin-left: 10px">
                                     <span class="glyphicon glyphicon-user"></span>
-                                    <a href="/profile" id="top-dropdown-link"><b>Edit profile</b></a>
+                                    <a href="/users/{{ user.userprofile.slug }}/edit" id="top-dropdown-link"><b>Edit profile</b></a>
                                 </div>
                                 <div style="margin-left: 10px">
                                     <span class="glyphicon glyphicon-log-out"></span>
@@ -255,7 +255,7 @@
                         <li class="{% block events-nav %}{% endblock %}"><a href="/events/innovate-or-die">Events</a></li>
                         {% if not user.is_anonymous %}
                             <li class="{% block profile-nav %}{% endblock %}">
-                                <a href="/profile/{{ user.userprofile.slug }}">Profile</a>
+                                <a href="/users/{{ user.userprofile.slug }}">Profile</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -283,7 +283,7 @@
                             <li><a href="/">Home</a></li>
                             <li><a href="/events/innovate-or-die">Events</a></li>
                             {% if not user.is_anonymous %}
-                                <li><a href="/profile/{{ user.userprofile.slug }}">Profile</a></li>
+                                <li><a href="/users/{{ user.userprofile.slug }}">Profile</a></li>
                             {% endif %}
                             <li><a href="/credits">Credits</a></li>
                             <li><a href="/terms">Terms</a></li>
@@ -344,8 +344,8 @@
         <li><a href="/events/innovate-or-die">Events</a></li>
 
         {% if not user.is_anonymous %}
-            <li><a href="/profile/{{ user.userprofile.slug }}">View profile</a></li>
-            <li><a href="/profile">Edit profile</a></li>
+            <li><a href="/users/{{ user.userprofile.slug }}">View profile</a></li>
+            <li><a href="/users/{{ user.userprofile.slug }}/edit">Edit profile</a></li>
             <li><a href="/logout">Logout</a></li>
         {% endif %}
     </ul>
