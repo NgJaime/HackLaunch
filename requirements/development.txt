@@ -3,3 +3,4 @@ mock==1.0.1
 coverage==4.0a5
 django-extensions==1.5.3
 django-debug-toolbar==1.3.0
+git+https://github.com/djsutho/django-debug-toolbar-request-history.git
