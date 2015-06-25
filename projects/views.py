@@ -50,7 +50,7 @@ class ProjectView(DetailView):
 #         form_class = self.get_form_class()
 #         form = self.get_form(form_class)
 #
-#         project = get_object_or_404(Project, id=2)
+#         project = get_object_or_404(Project, id=59)
 #         project_creators = project.projectcreator_set.all()
 #
 #         creator_form = CreatorsFormSet(instance=project)
@@ -139,16 +139,16 @@ class ProjectUpdateView(FormView):
             # todo cache
             context['technologies'] = json.dumps(list(Skill.objects.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
             context['project_id'] = 5
-            context['project_creators'] = ProjectCreator.objects.select_related().filter(project_id=2).order_by('date_joined')
+            context['project_creators'] = ProjectCreator.objects.select_related().filter(project_id=59).order_by('date_joined')
             context['project_technologies'] = self.project.projecttechnologies_set.all()
             context['project_tags'] = json.dumps(list(self.project.tags.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
-            context['project_post_set'] = ProjectPostSet(initial=Post.objects.filter(project_id=2).order_by('-date_added').values())
+            context['project_post_set'] = ProjectPostSet(initial=Post.objects.filter(project_id=59).order_by('-date_added').values())
         return context
 
     def get_initial(self):
         initial = super(ProjectUpdateView, self).get_initial()
 
-        self.project = get_object_or_404(Project, id=2)
+        self.project = get_object_or_404(Project, id=59)
 
         initial['tag_line'] = self.project.tag_line
         initial['pitch'] = self.project.pitch
@@ -217,12 +217,13 @@ class ProjectUpdateView(FormView):
 def projectEdit(request):
     if request.method == "GET":
         # todo check for object below
-        current_project = get_object_or_404(Project, id=2)
+        # todo check ownership
+        current_project = get_object_or_404(Project, id=59)
         # project_form = ProjectForm(instance=current_project)
 
         context = get_project_context(current_project.id)
 
-        creators = ProjectCreator.objects.select_related().filter(project_id=2).order_by('date_joined')
+        creators = ProjectCreator.objects.select_related().filter(project_id=59).order_by('date_joined')
         # creators = current_project.projectcreator_set.values()
         posts = Post.objects.filter(project=current_project).order_by('-date_added')
 
@@ -451,10 +452,9 @@ def image_upload(request):
                     data = {'success': False, 'message': 'Object does not exist'}
                     return HttpResponse(json.dumps(data), content_type="application/json")
 
-                except IntegrityError:
+                except IntegrityError as e:
                     data = {'success': False, 'message': 'Image already assigned to project'}
                     return HttpResponse(json.dumps(data), content_type="application/json")
-
 
     data = {'success': False, 'message': 'Invalid request'}
     return HttpResponse(json.dumps(data), content_type="application/json")
@@ -473,7 +473,7 @@ def image_delete(request):
                     if request_user.is_admin:
                         if 'src' in request.POST:
                             if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
-                                project.delete()
+                                project.logo.delete()
                                 project.save()
                             else:
                                 image = ProjectImage.objects.get(project=project, image=request.POST['src'])

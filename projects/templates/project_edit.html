@@ -22,10 +22,10 @@
             <div class="row">
                 <div class="col-md-12" style="padding-top: 25px;">
                     <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
-                        {% if project.logo.url %}
-                            <img class='logo' src="{{ project.logo.url }}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                        {% if project.logo %}
+                            <img id='logo' class='logo' src="{{ project.logo.url }}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
                         {% else %}
-                            <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                            <img id='logo' class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
                         {% endif %}
                         <div id="project-title" class="project-title">
                             {% autoescape off %} {{ project.title }} {% endautoescape %}
@@ -160,8 +160,8 @@
                         <h2 class="section-title">Time Line
                             <span><p class="btn btn-ar btn-primary pull-right" onclick="addPost()">Create New Post</p></span>
                         </h2>
-
                     </div>
+
                     <ul id="time-line" class="timeline-2">
                         {% for post_form in project_posts %}
                             <li class="animated fadeInRight animation-delay-2">
@@ -211,7 +211,7 @@
                             {% for creator in project_creators %}
                                 <div id="creator-{{ creator.creator.username }}">
                                     <a class="pull-left" href="#">
-                                        {% if user.userprofile.thumbnail %}
+                                        {% if creator.creator.userprofile.thumbnail %}
                                             <img src="{{ creator.creator.userprofile.thumbnail.url }}"
                                                  alt="{{ creator.creator.get_full_name }}" class="img-circle">
                                         {% else %}
@@ -322,8 +322,6 @@
                     <br>
                 </div>
             </div>
-
-            <input type="submit" value="Save" />
         </form>
     </div>
 {% endblock %}
@@ -398,8 +396,8 @@
                 crossDomain: false,
                 placeholder: placeholder,
                 pasteImage: false,
-{#                pastedImagesUploadURL: '{% url 'project_image_upload' %}',#}
-{#                pastedImagesUploadRequestType: 'POST',#}
+                pastedImagesUploadURL: '{% url 'project_image_upload' %}',
+                pastedImagesUploadRequestType: 'POST',
                 imageMove: true,
                 imageUpload: true,
                 imageUploadParam: 'file',
@@ -426,9 +424,8 @@
             })
         };
 
-        var imageEdit = function(element){
-            $(element).editable({
-                imageUpload: true,
+        $(function(){
+            $('.logo').editable({imageUpload: true,
                 imageUploadParam: 'file',
                 imageUploadURL: '{% url 'project_image_upload' %}',
                 imageUploadParams: {
@@ -436,26 +433,41 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     project: {{ context.projectId }},
                 },
-                imageButtons: ['linkImage', 'replaceImage'],
-{#                imageDeleteConfirmation: true,#}
-{#                imageDeleteParams: {#}
-{#                    logo: true,#}
-{#                    csrfmiddlewaretoken: '{{ csrf_token }}',#}
-{#                    project: {{ context.projectId }},#}
-{#                },#}
-{#                imageDeleteURL: '{% url 'project_image_delete' %}',#}
+                imageButtons: ['linkImage', 'replaceImage', 'removeImage'],
+                imageDeleteConfirmation: false,
+                imageDeleteURL: '{% url 'project_image_delete' %}',
+                imageDeleteParams: {
+                    logo: true,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    project: {{ context.projectId }},
+                },
                 placeholder: '{% static "images/add-a-logo.png" %}',
+                crossDomain: false
             })
 
-            // Catch image remove
             .on('editable.afterRemoveImage', function (e, editor, $img) {
+                $img.attr.src = editor.options.placeholder;
+            })
+
+            .on('editable.imageDeleteSuccess', function (e, editor, data) {
+                console.log('lll'   )
+            })
+
+            .on('editable.imageDeleteError', function (e, editor, error) {
+                 console.log('lll');
+            })
+
+            .on('editable.beforeRemoveImage', function (e, editor, $img) {
+                console.log('before');
                 // Set the image source to the image delete params.
                 editor.options.imageDeleteParams.src = $img.attr('src');
 
                 // Make the delete request.
                 editor.deleteImage($img);
-            })
-        };
+
+                $img.attr.src = editor.options.placeholder;
+            });
+        });
 
         var addPost = function () {
             $.ajax({
@@ -999,10 +1011,13 @@
             richEdit($(this), {'field': 'post', 'post': this.id}, "{% url 'update_post' %}", postPlaceholder)
         });
 
-        $('.logo').each(function() {
-           imageEdit($(this));
-        });
+{#        $('.logo').each(function() {#}
+{#           imageEdit($(this));#}
+{#        });#}
 
+{#        $('#logo').keyup(function() {#}
+{#          alert( "Handler for .keyup() called." );#}
+{#        });#}
 
         $('.post-title-edit').find('.fr-placeholder').each(function() {
             $(this).css('color', 'black');
