@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Project{% endblock %}
+
+{% block events-nav %}active{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static "css/project.css" %}" rel="stylesheet" media="screen">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding-top: 25px;">
+                <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
+                    {% if project.logo.url %}
+                        <img class='logo' src="{{ project.logo.url }}" alt="Logo" width="200"
+                             style="padding-bottom: 15px;"/>
+                    {% endif %}
+                    <div id="project-title" class="project-title">
+                        {% autoescape off %} {{ project.title }} {% endautoescape %}
+                    </div>
+
+                    <div id="project-tagline" class="slogan project-tag-line">
+                        {% autoescape off %} {{ project.tag_line }} {% endautoescape %}
+                    </div>
+            </div>
+
+            <div class="col-md-12 center">
+                <div class="slidebar-social-icons center small-margin-bottom fadeInDown animation-delay-3"
+                     style="margin-top: 20px;">
+                    {% if project.facebook %}
+                        <a href="{{ project.facebook }}" class="social-icon-ar facebook"><i
+                                class="fa fa-facebook"></i></a>
+                    {% endif %}
+                    {% if project.google_plus %}
+                        <a href="{{ project.google_plus }}" class="social-icon-ar google-plus"><i
+                                class="fa fa-google-plus"></i></a>
+                    {% endif %}
+                    {% if project.instagram %}
+                        <a href="{{ project.instagram }}" class="social-icon-ar instagram"><i
+                                class="fa fa-instagram"></i></a>
+                    {% endif %}
+                    {% if project.pinterest %}
+                        <a href="{{ project.pinterest }}" class="social-icon-ar pinterest"><i
+                                class="fa fa-pinterest"></i></a>
+                    {% endif %}
+                    {% if project.twitter %}
+                        <a href="{{ project.twitter }}" class="social-icon-ar twitter"><i
+                                class="fa fa-twitter"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 ">
+                <h2 class="section-title no-margin-top no-margin-bottom">
+                    Project Pitch
+                    <p class="button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject($(this))">
+                        <strong>+Follow</strong>
+                    </p>
+                </h2>
+                {% autoescape off %} {{ project.pitch }} {% endautoescape %}
+
+                <div class="margin-top-20">
+                    <h2 class="section-title no-margin-top ">Time Line</h2>
+                    <ul class="timeline-2">
+                        {% for post in posts %}
+                            {% if post.is_published %}
+                                <li class="animated fadeInRight animation-delay-2">
+                                                            todo month
+                                    <time class="timeline-time" datetime="">{{ post.date_added }} </time>
+                                    <i class="timeline-2-point"></i>
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            {% autoescape off %} {{ post.title }} {% endautoescape %}
+                                        </div>
+
+                                        <div>
+                                            {% autoescape off %} {{ post.post }} {% endautoescape %}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    </ul>
+                </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-box box-primary animated fadeInDown animation-delay-14">
+                <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Creators</strong></h4>
+
+                {% for creator in creators %}
+                    {% if not creator.inital.awaiting_confirmation %}
+                        <div id="creator-{{ creator.creator.username }}">
+                            <a class="pull-left" href="#">
+                                {% if creator.creator.userprofile.thumbnail %}
+                                    <img src="{{ creator.creator.userprofile.thumbnail.url }}"
+                                         alt="{{ creator.creator.get_full_name }}" class="img-circle">
+                                {% else %}
+                                    <img src="{% static "images/avatar.jpg" %}"
+                                         alt="{{ creator.creator.get_full_name }}" class="img-circle"
+                                         style="width: 50px">
+                                {% endif %}
+                            </a>
+
+                            <div id='{{ creator.creator.username }}' class="media-body" style="padding-left: 10px;">
+                                <h4 id="{{ creator.creator.username }}" class="media-heading creator-name"><a href="#"
+                                                                                                              style="color: white">{{ creator.creator.get_full_name }}</a>
+                                </h4>
+
+                                {% if creator.summary %}
+                                    <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
+                                         style="margin: 0px;">
+                                        {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                    </div>
+                                {% else %}
+                                    <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
+                                         style="margin: 0px; padding-bottom: 40px; width: 150px;">
+
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <hr style="margin: 10px 0px 10px 0px; color: white;">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <br>
+
+            <div class="panel panel-default fadeInUp animation-delay-12">
+                <div class="panel-heading">Tags</div>
+                <div class="panel-body">
+                    <ul style="padding-left: 0px">
+                        {% for tag in project.tags.all %}
+                            <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
+                                <div><span>{{ tag }}</span></div>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default animated fadeInUp animation-delay-12">
+                <div class="panel-heading">Technologies</div>
+                <div class="panel-body">
+                    <section>
+                        {% for technology in technologies %}
+                            <h5 class="no-margin">{{ technology.technology }}</h5>
+
+                            <div class="progress progress-sm">
+                                <div class="progress-bar progress-bar-success" role="progressbar"
+                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
+                                    <span class="sr-only">65% </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        var followProject = function (followButton) {
+            var follow = false
+
+            if (followButton.val() === '+Follow') {
+                follow = true;
+            }
+
+            $.ajax({
+                url: "{% url 'add_technology_to_project' %}",
+                type: 'POST',
+                dataType: 'json',
+                data: {follow: follow,
+                       project: {{ project.id }},
+                       csrfmiddlewaretoken: '{{ csrf_token }}'},
+                success: function (data, textStatus, xhr) {
+                    if (follow === true) {
+                        followButton.val = 'Unfollow'
+                    }
+                    else {
+                        followButton.val = '+Follow'
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+    {#                todo#}
+                }
+            });
+        };
+    </script>
+{% endblock %}

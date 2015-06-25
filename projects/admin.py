@@ -1,15 +1,16 @@
 from django.contrib import admin
-from projects.models import Project, ProjectCreators, ProjectTechnologies, Technologies, Tags
+from projects.models import Project, ProjectCreator, ProjectTechnologies, Technologies, Tags, Post, ProjectImage
 
-# admin.site.register(Project)
-admin.site.register(ProjectCreators)
+admin.site.register(ProjectCreator)
 admin.site.register(ProjectTechnologies)
 admin.site.register(Technologies)
 admin.site.register(Tags)
+admin.site.register(Post)
+admin.site.register(ProjectImage)
 
 
 class CreatorsInline(admin.TabularInline):
-    model = Project.creators.through
+    model = ProjectCreator
 
 class ProjectAdmin(admin.ModelAdmin):
     inlines = [CreatorsInline,]

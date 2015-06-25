@@ -22,25 +22,19 @@
             <div class="row">
                 <div class="col-md-12" style="padding-top: 25px;">
                     <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
-                        {% if project.logo.url %}
-                            <img class='logo' src="{{ project.logo.url }}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
-                        {% else %}
-                            <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
-                        {% endif %}
-                        <div id="project-title" class="project-title">
-                            {% autoescape off %} {{ project.title }} {% endautoescape %}
-                        </div>
+                        <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                        {% render_field form.title style="margin-bottom: 0px;" %}
                     </div>
-                    <div id="project-tagline" class="slogan text-center no-margin-bottom project-tagline">
-                        {% autoescape off %} {{ project.tag_line }} {% endautoescape %}
-                    </div>
+                    <p class="slogan text-center no-margin-bottom">
+                        {{ project_form.tag_line }}
+                    </p>
                 </div>
 
                 <div class="col-md-12 center">
                     <div class="small-margin-bottom fadeInDown animation-delay-3"
                          style="margin-top: 20px;">
-                        {% if project.facebook %}
-                            <a id='link-facebook' href="{{ project.facebook.url }}" class="social-icon-ar facebook"
+                        {% if form.facebook.url %}
+                            <a id='link-facebook' href="{{ project_form.facebook.url }}" class="social-icon-ar facebook"
                                onclick="editSocialURL('facebook', this.val())"><i
                                     class="fa fa-facebook"></i></a>
                         {% else %}
@@ -49,8 +43,8 @@
                                     class="fa fa-facebook"></i></a>
                         {% endif %}
 
-                        {% if project.google_plus %}
-                            <a id='link-google-plus' href="{{ project.google_plus.url }}" class="social-icon-ar google-plus"
+                        {% if form.google_plus.url %}
+                            <a id='link-google-plus' href="{{ project_form.google_plus.url }}" class="social-icon-ar google-plus"
                                onclick="editSocialURL('google-plus', this.val())"><i
                                     class="fa fa-google-plus"></i></a>
                         {% else %}
@@ -59,8 +53,8 @@
                                     class="fa fa-google-plus"></i></a>
                         {% endif %}
 
-                        {% if project.instagram %}
-                            <a id='link-instagram' href="{{ project.instagram.url }}" class="social-icon-ar instagram"
+                        {% if form.instagram.url %}
+                            <a id='link-instagram' href="{{ project_form.instagram.url }}" class="social-icon-ar instagram"
                                onclick="editSocialURL('instagram', this.val())"><i
                                     class="fa fa-instagram"></i></a>
                         {% else %}
@@ -69,8 +63,8 @@
                                     class="fa fa-instagram"></i></a>
                         {% endif %}
 
-                        {% if project.pinterest %}
-                            <a id='link-pinterest' href="{{ project.pinterest.url }}" class="social-icon-ar pinterest"
+                        {% if form.pinterest.url %}
+                            <a id='link-pinterest' href="{{ project_form.pinterest.url }}" class="social-icon-ar pinterest"
                                onclick="editSocialURL('pinterest', this.val())"><i
                                     class="fa fa-pinterest"></i></a>
                         {% else %}
@@ -79,8 +73,8 @@
                                     class="fa fa-pinterest"></i></a>
                         {% endif %}
 
-                        {% if project.twitter %}
-                            <a id='link-twitter' href="{{ project.twitter.url }}" class="social-icon-ar twitter"
+                        {% if form.twitter.url %}
+                            <a id='link-twitter' href="{{ project_form.twitter.url }}" class="social-icon-ar twitter"
                                onclick="editSocialURL('twitter', this.val())"><i
                                     class="fa fa-twitter"></i></a>
                         {% else %}
@@ -90,50 +84,59 @@
                         {% endif %}
                     </div>
 
-                    <div id='div-facebook' class="row hidden" style="width:100%">
-                        <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_facebook" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.facebook  }}{% endautoescape %}">
-
-                            <button id="update-facebook" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
-                                Update
-                            </button>
+                    <div id='div-facebook' class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field form.facebook class="form-control" name='facebook' style="width: 250px" %}
+                                <button id="update-facebook" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div id="div-instagram" class="row hidden" style="width:100%">
-                        <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_instagram" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.instagram }}{% endautoescape %}">
-                            <button id="update-instagram" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('instagram')">
-                                Update
-                            </button>
+                    <div id="div-instagram" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field form.instagram class="form-control" name='instagram' style="width: 250px" %}
+                                <button id="update-instagram" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('instagram')">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div id="div-google-plus" class="row hidden" style="width:100%">
-                        <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_google-plus" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.google_plus }}{% endautoescape %}">
-                            <button id="update-google-plus" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('google-plus')">
-                                Update
-                            </button>
+                    <div id="div-google-plus" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field form.google_plus class=" form-control" name='google-plus' id="id_google-plus" style="width: 250px" %}
+                                <button id="update-google-plus" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('google-plus')">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div id="div-pinterest" class="row hidden" style="width:100%">
-                        <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_pinterest" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.pinterest }}{% endautoescape %}">
-                            <button id="update-pinterest" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('pinterest')">
-                                Update
-                            </button>
+                    <div id="div-pinterest" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field form.pinterest class="form-control" name='pinterest' style="width: 250px" %}
+                                <button id="update-pinterest" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('pinterest')">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div id="div-twitter" class="row hidden" style="width:100%">
-                        <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_twitter" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.twitter }}{% endautoescape %}">
-                            <button id="update-twitter" type="button" class="btn btn-ar btn-default"
-                                    style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('twitter')">
-                                Update
-                            </button>
+                    <div id="div-twitter" class="row hidden">
+                        <div class="col-centered">
+                            <div class="input-group" style="margin: 5px; text-align: center;">
+                                {% render_field form.twitter class="form-control" name='twitter' style="width: 250px" %}
+                                <button id="update-twitter" type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('twitter')">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div id="social-link-error" class="hidden center">
@@ -152,51 +155,24 @@
                         Project Pitch
                     </h2>
 
-                    <div id="{{ post_form.id }}" class="pitch-edit">
-                        {% autoescape off %} {{ project.pitch }} {% endautoescape %}
-                    </div>
+                    {{ project_form.pitch }}
 
-                    <div>
-                        <h2 class="section-title">Time Line
-                            <span><p class="btn btn-ar btn-primary pull-right" onclick="addPost()">Create New Post</p></span>
-                        </h2>
-
-                    </div>
-                    <ul id="time-line" class="timeline-2">
-                        {% for post_form in project_posts %}
+                    <h2 class="section-title">Time Line</h2>
+                    <ul class="timeline-2">
+                        {{ project_post_set.management_form }}
+                        {% for post_form in project_post_set.forms %}
                             <li class="animated fadeInRight animation-delay-2">
-                                <time class="timeline-time" datetime="">{{ post_form.date_added }} <span>{{ context.month }}</span></time>
+                                <time class="timeline-time" datetime="">{{ date }} <span>{{ month }}</span></time>
                                 <i class="timeline-2-point"></i>
 
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div id="{{ post_form.id }}" class="post-title-edit" style="color: black;">
-                                            {% autoescape off %} {{ post_form.title }} {% endautoescape %}
-                                        </div>
+                                    <div class="panel-heading" style="color: white;">
+                                        {{  post_form.title }}
                                     </div>
+                                    {% render_field post_form.post %}
 
-                                    <div id="{{ post_form.id }}" class="post-edit">
-                                         {% autoescape off %} {{ post_form.post }} {% endautoescape %}
-                                    </div>
-
-                                    <div style="padding: 5px;">
-                                        <div style="display: inline-block">
-                                            <label>Author </label>
-                                            <select class='user-selection' selected="{{ post_form.creator.get_full_name }}" onchange="updatePost('{{ post_form.id }}', 'author', $(this.selectedOptions[0]).val())">
-                                                {% for creator in project_creators %}
-                                                    <option value="{{ creator.creator.username }}">{{ creator.creator.get_full_name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-                                        <div class="pull-right">
-                                            {% if post_form.is_published %}
-                                                <input type="checkbox" name="{{ post_form.id }}-is-adimn" checked onchange="updatePost('{{ post_form.id }}', 'published', this.checked)">Publish post<br>
-                                            {% else %}
-                                                <input type="checkbox" name="{{ post_form.id }}-is-adimn" onchange="updatePost('{{ post_form.id }}', 'published', this.checked)">Publish post<br>
-                                            {% endif %}
-                                        </div>
-                                    </div>
+                                    {% render_field post_form.author %}
+                                    {% render_field p %}
                                 </div>
                             </li>
                         {% endfor %}
@@ -209,38 +185,44 @@
                         <div id="creators" class="media">
 
                             {% for creator in project_creators %}
-                                <div id="creator-{{ creator.creator.username }}">
+                                <div id="creator-{{ creator.user.username }}">
                                     <a class="pull-left" href="#">
                                         {% if user.userprofile.thumbnail %}
-                                            <img src="{{ creator.creator.userprofile.thumbnail.url }}"
-                                                 alt="{{ creator.creator.get_full_name }}" class="img-circle">
+                                            <img src="{{ creator.user.userprofile.thumbnail.url }}"
+                                                 alt="{{ creator.user.get_full_name }}" class="img-circle">
                                         {% else %}
                                             <img src="{% static "images/avatar.jpg" %}"
-                                                 alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
+                                                 alt="{{ creator.user.get_full_name }}" class="img-circle" style="width: 50px">
                                         {% endif %}
                                     </a>
 
-                                    <div id='{{ creator.creator.username }}' class="media-body" style="padding-left: 10px;">
-                                        <h4 id="{{ creator.creator.username }}" class="media-heading creator-name"><a href="#" style="color: white">{{ creator.creator.get_full_name }}</a></h4>
+                                    <div id='{{ creator.user.username }}' class="media-body" style="padding-left: 10px;">
+                                        <h4 class="media-heading"><a href="#" style="color: white">{{ creator.user.get_full_name }}</a></h4>
 
                                         {% if creator.inital.awaiting_confirmation %}
                                             <p style="margin-bottom: 5px;"><strong>Awaiting Confirmation</strong></p>
                                         {% endif %}
 
-                                        <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
-                                            {% autoescape off %} {{ creator.summary }} {% endautoescape %}
-                                        </div>
+                                        {% if creator.summary %}
+                                            <div id="creator-{{ creator.user.username }}-summary" class="creator-summary" style="margin: 0px;">
+                                                {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                            </div>
+                                        {% else %}
+                                            <div id="creator-{{ creator.user.username }}-summary" class="creator-summary" style="margin: 0px;">
+                                                <p>Click to add a summary of {{ creator.user.get_full_name }}'s contribution</p>
+                                            </div>
+                                        {% endif %}
 
                                         {% if not creator.is_owner %}
                                             <div class="checkbox checkbox-inline no-margin-top">
                                                 {% if creator.is_admin %}
-                                                    <input type="checkbox" name="is-adimn" style="color: white" checked onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                                    <input type="checkbox" name="is-adimn" style="color: white" checked onchange="updateCreator('{{ creator.user.username }}', 'admin', this.checked)">Project administrator<br>
                                                 {% else %}
-                                                    <input type="checkbox" name="is-adimn" style="color: white" onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                                    <input type="checkbox" name="is-adimn" style="color: white" onchange="updateCreator('{{ creator.user.username }}', 'admin', this.checked)">Project administrator<br>
                                                 {% endif %}
                                             </div>
 
-                                            <a id="remove-{{ creator.creator.username }}" href="#" onclick="removeCreator('{{ creator.creator.username }}')" style="color: white;"><strong><u>Remove from project</u></strong></a>
+                                            <a id="remove-{{ creator.user.username }}" href="#" onclick="removeCreator('{{ creator.user.username }}')" style="color: white;"><strong><u>Remove from project</u></strong></a>
                                         {% else %}
                                             <p class="no-margin-bottom"><strong>Project Owner</strong></p>
                                         {% endif %}
@@ -330,222 +312,32 @@
 
 {% block extra_scripts %}
     <script src="{% static "froala_editor/js/froala_editor.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/tables.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/lists.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/colors.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/font_family.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/font_size.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/video.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/char_counter.min.js" %}"></script>
     <script src="{% static "js/bootstrap-tagsinput.js" %}"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{% static "js/jquery.formset.js" %}"></script>
 
     <script>
-        var postPlaceholder = 'Create a post for your project it can include images, videos and embeded youtube content.',
-            titlePlaceholder = 'Add a title for your new post';
-
-        var LimitedCharEdit = function(element, data, url, placeholder, charCount){
-            $(element).editable({
-                imageUpload: false,
-                imageLink: false,
-                buttons: ['bold', 'italic', 'underline', 'fontSize', 'sep', 'undo', 'redo'],
-                saveParams: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    data: JSON.stringify(data),
-                    project: {{ context.projectId }},
-                },
-                saveURL: url,
-                autosave: true,
-                autosaveInterval: 2500,
-                crossDomain: false,
-                placeholder: placeholder,
-                maxCharacters: charCount,
-            })};
-
-        var simpleEdit = function(element, data, url, placeholder){
-            $(element).editable({
-                imageUpload: false,
-                imageLink: false,
-                buttons: ['bold', 'italic', 'underline', 'fontSize', 'sep', 'undo', 'redo'],
-                saveParams: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    data: JSON.stringify(data),
-                    project: {{ context.projectId }},
-                },
-                saveURL: url,
-                autosave: true,
-                autosaveInterval: 2500,
-                crossDomain: false,
-                placeholder: placeholder
-            })};
-
-        var richEdit = function(element, data, url, placeholder){
-            $(element).editable({
-                inlineMode: false,
-                buttons: ['save', 'undo', 'redo', 'removeFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'color', 'fontFamily',
-                          'fontSize',  'formatBlock', 'inlineStyle', 'align', 'insertOrderedList',
-                          'insertUnorderedList', 'outdent', 'indent', 'createLink', 'insertImage',
-                          'insertVideo', 'table', 'insertHorizontalRule' ],
-                saveParams: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    data: JSON.stringify(data),
-                    project: {{ context.projectId }},
-                },
-                saveURL: url,
-                autosave: true,
-                autosaveInterval: 2500,
-                crossDomain: false,
-                placeholder: placeholder,
-                pasteImage: false,
-{#                pastedImagesUploadURL: '{% url 'project_image_upload' %}',#}
-{#                pastedImagesUploadRequestType: 'POST',#}
-                imageMove: true,
-                imageUpload: true,
-                imageUploadParam: 'file',
-                imageUploadURL: '{% url 'project_image_upload' %}',
-                imageUploadParams: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    project: {{ context.projectId }},
-                },
-                imageDeleteConfirmation: true,
-                imageDeleteParams: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    project: {{ context.projectId }},
-                },
-                imageDeleteURL: '{% url 'project_image_delete' %}',
-            })
-
-            // Catch image remove
-            .on('editable.afterRemoveImage', function (e, editor, $img) {
-                // Set the image source to the image delete params.
-                editor.options.imageDeleteParams.src = $img.attr('src');
-
-                // Make the delete request.
-                editor.deleteImage($img);
-            })
-        };
-
-        var imageEdit = function(element){
-            $(element).editable({
-                imageUpload: true,
-                imageUploadParam: 'file',
-                imageUploadURL: '{% url 'project_image_upload' %}',
-                imageUploadParams: {
-                    logo: true,
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    project: {{ context.projectId }},
-                },
-                imageButtons: ['linkImage', 'replaceImage'],
-{#                imageDeleteConfirmation: true,#}
-{#                imageDeleteParams: {#}
-{#                    logo: true,#}
-{#                    csrfmiddlewaretoken: '{{ csrf_token }}',#}
-{#                    project: {{ context.projectId }},#}
-{#                },#}
-{#                imageDeleteURL: '{% url 'project_image_delete' %}',#}
-                placeholder: '{% static "images/add-a-logo.png" %}',
-            })
-
-            // Catch image remove
-            .on('editable.afterRemoveImage', function (e, editor, $img) {
-                // Set the image source to the image delete params.
-                editor.options.imageDeleteParams.src = $img.attr('src');
-
-                // Make the delete request.
-                editor.deleteImage($img);
-            })
-        };
-
-        var addPost = function () {
-            $.ajax({
-                    url: "{% url 'add_post' %}",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                            project: {{ context.projectId }},
-                            csrfmiddlewaretoken: '{{ csrf_token }}'
+        (function($){
+            function processForm( e ){
+                $.ajax({
+                    url: "{% url 'project_update' %}",
+                    dataType: 'text',
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: $(this).serialize(),
+                    success: function( data, textStatus, jQxhr ){
+                        $('#response pre').html( data );
                     },
-                    success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
-                            $("#time-line").prepend(
-                                '<li class="animated fadeInRight animation-delay-2">' +
-                                    '<time class="timeline-time" datetime="">' + data.content.date_added + ' <span>' + data.content.month + '</span></time>' +
-                                    '<i class="timeline-2-point"></i>' +
-
-                                    '<div class="panel panel-default">' +
-                                        '<div class="panel-heading">' +
-                                            '<div id="' + data.content.post_id + '" class="new-post-title-edit" style="color: black;"></div>' +
-                                        '</div>' +
-
-                                        '<div id="' + data.content.post_id + '" class="new-post-edit"></div>' +
-
-                                        '<div style="padding: 5px;">' +
-                                            '<div style="display: inline-block">' +
-                                                '<label>Author </label>' +
-                                                '<select id="' + data.content.username + '-user-selection" class="user-selection" selected="' + data.content.username + '" onchange="updatePost(' + data.content.post_id + ', "author", $(this.selectedOptions[0]).val())">' +
-                                                '</select>' +
-                                            '</div>' +
-
-                                            '<div class="pull-right">' +
-                                                '<input type="checkbox" name="' + data.content.post_id + '-is-adimn" onchange="updatePost(' + data.content.post_id + ', &apos;published&apos;, this.checked)">Publish post<br>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</li>'
-                            );
-
-                            var authors = $('#' + data.content.username + '-user-selection');
-                            $('.creator-name').each(function(){
-                                $(authors).append('<option value=' + this.id + '>' + (this.childNodes[0]).text + '</option>')
-                            });
-
-                            $('.new-post-title-edit').each(function() {
-                                simpleEdit($(this), {'field': 'title', 'post': data.content.post_id}, "{% url 'update_post' %}", titlePlaceholder)
-                            });
-                            $('.new-post-edit').each(function() {
-                                richEdit($(this), {'field': 'post', 'post': data.content.post_id}, "{% url 'update_post' %}", postPlaceholder)
-                            });
-
-                            $('.new-post-title-edit').find('.fr-placeholder').each(function() {
-                                $(this).css('color', 'black');
-                            });
-                        }
-                        else {
-                            $('#creator-error').removeClass('hidden');
-                            $('#creator-error-message').text(data.content.message);
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
                     }
                 });
-        };
 
-        var updatePost = function (post, field, value) {
-            $.ajax({
-                    url: "{% url 'update_post' %}",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {data: JSON.stringify({'field': field, 'value': value, 'post':  post}),
-                           project: {{ context.projectId }},
-                           csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
-                            $('#creator-error').addClass('hidden');
-                        }
-                        else {
-                            $('#creator-error').removeClass('hidden');
-                            $('#creator-error-message').text(data.content.message);
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
-                    }
-                });
-        };
+                e.preventDefault();
+            }
+
+            $('#crators-form').submit( processForm );
+        })(jQuery);
 
         var userLookupKeyup = function () {
             $('#user-lookup-add').removeClass('hidden');
@@ -607,7 +399,7 @@
                     data: {username: username,
                            field: field,
                            value: value,
-                           project: {{ context.projectId }},
+                           project: {{ project_id }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
                         if (data.content.success === true) {
@@ -626,21 +418,17 @@
         };
 
         var removeCreator = function (username) {
-{#            todo what about their posts? #}
-{#            todo remove from author list #}
             $.ajax({
                     url: "{% url 'remove_creator_from_project' %}",
                     type: 'POST',
                     dataType: 'json',
                     data: {username: username,
-                           project: {{ context.projectId }},
+                           project: {{ project_id }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
                         if (data.content.success === true) {
                             $('#creator-error').addClass('hidden');
                             $('#creator-' + username).remove();
-
-                            $('.user-selection option[value=' + username +']').remove();
                         }
                         else {
                             $('#creator-error').removeClass('hidden');
@@ -661,7 +449,7 @@
                     type: 'POST',
                     dataType: 'json',
                     data: {username: username,
-                           project: {{ context.projectId }},
+                           project: {{ project_id }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
                         if (data.content.success === true) {
@@ -676,14 +464,16 @@
                                         '</a>' +
 
                                         '<div id="' + username + '" class="media-body" style="padding-left: 10px;">' +
-                                            '<h4 id="' + username + '" class="media-heading creator-name"><a href="#" style="color: white">' + fullName + '</a></h4>' +
+                                            '<h4 class="media-heading"><a href="#" style="color: white">' + fullName + '</a></h4>' +
 
                                             '<p style="margin-bottom: 5px;"><strong>Awaiting Confirmation</strong></p>' +
 
-                                            '<div id="creator-' + username + '-summary" class="creator-edit" name="' + username + '" style="margin-bottom: 0px;"></div>' +
+                                            '<div id="creator-' + username + '-summary" class="creator-summary" name="' + username + '" style="margin-bottom: 0px;">' +
+                                                '<p>Click to add a summary of ' + fullName + '&apos;s contribution</p>' +
+                                            '</div>' +
 
                                             '<div class="checkbox checkbox-inline" style="margin-bottom: 5px;">' +
-                                                '<input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br>' +
+                                                '<input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br>' +
                                             '</div>' +
 
                                             '<a id="remove-' + username + '" href="#" onclick="removeCreator(&quot;' + username + '&quot;)" style="color: white;"><strong><u>Remove from project</u></strong></a>' +
@@ -703,22 +493,13 @@
                                 saveParams: {
                                     csrfmiddlewaretoken: '{{ csrf_token }}',
                                     summary: true,
-                                    project: {{ context.projectId }},
+                                    project: {{ project_id }},
                                     username: username
                                 },
                                 saveURL: "{% url 'update_creator' %}",
                                 autosave: true,
                                 autosaveInterval: 2500,
-                                crossDomain: false,
-                                placeholder: 'Summarise how this creator has contributed'
-                            });
-
-                            $('.user-selection').each(function() {
-                                $(this).append('<option value='+ username + '>' + fullName + '</option>')
-                            })
-
-                            $('.creator-edit').find('.fr-placeholder').each(function() {
-                                $(this).css('color', 'white');
+                                crossDomain: false
                             });
                         }
                         else {
@@ -757,7 +538,7 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {technology: value,
-                       project: {{ context.projectId }},
+                       project: {{ project_id }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
                     if (data.content.success === true) {
@@ -784,7 +565,7 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {technology: value,
-                       project: {{ context.projectId }},
+                       project: {{ project_id }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
                     if (data.content.success === true) {
@@ -809,7 +590,7 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {tag: event.item,
-                       project: {{ context.projectId }},
+                       project: {{ project_id }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
                     if (data.content.success === true) {
@@ -835,7 +616,7 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {tag: event.item,
-                       project: {{ context.projectId }},
+                       project: {{ project_id }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
                     if (data.content.success === true) {
@@ -854,24 +635,6 @@
                 }
             });
         });
-
-        var updateProject = function (data) {
-            $.ajax({
-                    url: "{% url 'update_project' %}",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {data: JSON.stringify(data),
-                           project: {{ context.projectId }},
-                           csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    success: function (data, textStatus, xhr) {
-                     console.log('lll')
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-{#                            todo#}
-                        console.log('lll')
-                    }
-                });
-        };
 
         var editSocialURL = function (name, link) {
             var input = $('#id_' + name);
@@ -917,8 +680,6 @@
                 icon.removeClass('grey');
                 icon.addClass(name);
 
-                updateProject({'field': name, 'value': link})
-
                 inputDiv.removeClass('has-error');
                 errorMesage.addClass('hidden');
             }
@@ -946,9 +707,13 @@
             updateSocialKeyUp('twitter');
         });
 
+        $(function(){
+          $('.logo').editable({})
+        });
+
         $(function () {
             {% autoescape off %}
-                var availableTechnologies = {{ context.technologies }},
+                var availableTechnologies = {{ technologies }},
                     tags = {{ project_tags }};
             {% endautoescape %}
 
@@ -963,7 +728,7 @@
             $('#tags-input').tagsinput({allowDuplicates: false});
         });
 
-        $('.creator-edit').each(function(){
+        $('.creator-summary').each(function(){
             $(this).editable({
                 imageUpload: false,
                 imageLink: false,
@@ -972,7 +737,7 @@
                 saveParams: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     field: 'summary',
-                    project: {{ context.projectId }},
+                    project: {{ project_id }},
                     username: this.parentElement.id
                 },
                 saveURL: "{% url 'update_creator' %}",
@@ -981,37 +746,6 @@
                 crossDomain: false
             });
         });
-
-        $('.pitch-edit').each(function() {
-            richEdit($(this), {'field': 'pitch'}, "{% url 'update_project' %}", 'Create a pitch for your project it can include images, videos and embeded youtube content')
-        });
-        $('.project-tagline').each(function() {
-            LimitedCharEdit($(this),  {'field': 'tagline'}, "{% url 'update_project' %}", 'Provide a tag line for your project', 128)
-        });
-        $('.project-title').each(function() {
-            LimitedCharEdit($(this),  {'field': 'title'}, "{% url 'update_project' %}", 'Name your project', 64)
-        });
-
-        $('.post-title-edit').each(function() {
-            simpleEdit($(this),  {'field': 'title', 'post': this.id}, "{% url 'update_post' %}", titlePlaceholder)
-        });
-        $('.post-edit').each(function() {
-            richEdit($(this), {'field': 'post', 'post': this.id}, "{% url 'update_post' %}", postPlaceholder)
-        });
-
-        $('.logo').each(function() {
-           imageEdit($(this));
-        });
-
-
-        $('.post-title-edit').find('.fr-placeholder').each(function() {
-            $(this).css('color', 'black');
-        });
-
-        $('.creator-edit').find('.fr-placeholder').each(function() {
-            $(this).css('color', 'white');
-        });
-
     </script>
 
 {% endblock %}

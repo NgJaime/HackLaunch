@@ -188,18 +188,18 @@ def get_user(request):
                 if username[0] is '@':
                     username = username[1:]
 
-                profile = UserProfile.objects.filter(user__username=username)
+                profile = UserProfile.objects.get(user__username=username)
 
                 if not profile:
                     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
 
-                if not profile[0].thumbnail:
+                if not profile.thumbnail:
                     thumbnail = static('images/avatar.jpg')
                 else:
-                    thumbnail = profile[0].thumbnail.url
+                    thumbnail = profile.thumbnail.url
 
-                return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile[0].user.get_full_name(),
-                                                'thumbnail': thumbnail, 'slug': profile[0].slug}))
+                return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile.user.get_full_name(),
+                                                'thumbnail': thumbnail, 'slug': profile.slug}))
             else:
                 return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))
 

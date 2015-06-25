@@ -1,0 +1,31 @@
+.project-tag-line {
+    margin: 0px 0px 10px;
+    box-sizing: border-box;
+    color: rgb(102, 102, 102);
+    cursor: text;
+    height: 43.3333358764648px;
+    overflow-wrap: break-word;
+    text-align: center;
+    width: 1140px;
+    word-wrap: break-word;
+    perspective-origin: 570px 21.6666679382324px;
+    transform-origin: 570px 21.6666679382324px;
+    border: 0px none rgb(102, 102, 102);
+    font: normal normal 300 normal 28px/39.2000007629395px Lato, sans-serif;
+    outline: rgb(102, 102, 102) none 0px;
+}
+
+.project-title {
+    box-sizing: border-box;
+    cursor: text;
+    height: 57.7777786254883px;
+    overflow-wrap: break-word;
+    text-align: center;
+    width: 1120px;
+    word-wrap: break-word;
+    perspective-origin: 560px 28.8888893127441px;
+    transform-origin: 560px 28.8888893127441px;
+    font: normal normal 300 normal 42px/58.7999992370606px Muli, Lato, sans-serif;
+    margin: 0px 0px 10px;
+}
+

@@ -13,3 +13,5 @@ def upload_profile_thumbnail(instance, filename):
     name = uuid.uuid1()
 
     return 'profiles-thumbnail/%s%s' % (str(name), filename_ext.lower())
+
+

@@ -4611,6 +4611,10 @@ input.input-lg[type="text"] {
     margin: 10px 0 !important;
 }
 
+.margin-top-20 {
+    margin: 20px 0 !important;
+}
+
 .no-margin {
     margin: 0 !important;
 }
@@ -8831,9 +8835,16 @@ input[type="date"]:focus {
     width: 100%;
 }
 
+.center-in-div {
+    height: 90%;
+    text-align:center;
+    display:table;
+    width:100%;
+}
+
 .col-centered{
-      display: inline-block;;
-      margin: 0 auto;
+    margin: auto;
+    width: 100%
 }
 
 .red{
