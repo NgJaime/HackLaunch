@@ -60,7 +60,7 @@ class Project(models.Model):
 
     def get_slug_seed(self):
         if self.is_active:
-            return self.title
+            return self.title[3:-3]
         else:
             return "new-project"
 
@@ -100,6 +100,7 @@ class ProjectImage(models.Model):
 
     def __unicode__(self):
         return self.image.url
+
 
 class ProjectCreator(models.Model):
     project = models.ForeignKey(Project)

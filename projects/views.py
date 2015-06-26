@@ -1,27 +1,32 @@
 import json
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.template import RequestContext
 from django_ajax.decorators import ajax
-from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import HttpResponse
-
+from django.views.generic import ListView
 
 from datetime import datetime
-from projects.forms import ProjectForm, ProjectPostSet
-from base.views import LoginRequiredMixin
-
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Tags, Post, ProjectImage, Follower
 from users.models import User, Skill
 
 
+class PostListView(ListView):
+    template_name = 'project_list.html'
+    paginate_by = 25
+    context_object_name = 'projects'
+
+    def get_queryset(self):
+        return Project.objects.all()
+
+
 class ProjectTestView(TemplateView):
     template_name = 'project.html'
+
 
 class ProjectView(DetailView):
     template_name = 'project_view.html'
@@ -33,63 +38,6 @@ class ProjectView(DetailView):
         context['technologies'] = self.object.projecttechnologies_set.all()
         context['posts'] = self.object.post_set.all()
         return context
-
-#
-# class ProjectCreateView(CreateView):
-#     template_name = 'project_edit.html'
-#     model = Project
-#     form_class = ProjectForm
-#     success_url = '/'
-#
-#     def get(self, request, *args, **kwargs):
-#         """
-#         Handles GET requests and instantiates blank versions of the form
-#         and its inline formsets.
-#         """
-#         self.object = None
-#         form_class = self.get_form_class()
-#         form = self.get_form(form_class)
-#
-#         project = get_object_or_404(Project, id=59)
-#         project_creators = project.projectcreator_set.all()
-#
-#         creator_form = CreatorsFormSet(instance=project)
-#         return self.render_to_response(self.get_context_data(form=form, creator_form=creator_form))
-#
-#     def post(self, request, *args, **kwargs):
-#         """
-#         Handles POST requests, instantiating a form instance and its inline
-#         formsets with the passed POST variables and then checking them for
-#         validity.
-#         """
-#         self.object = None
-#         form_class = self.get_form_class()
-#         form = self.get_form(form_class)
-#
-#         creator_form = CreatorsFormSet(self.request.POST)
-#         if (form.is_valid() and creator_form.is_valid()):
-#             return self.form_valid(form, creator_form)
-#         else:
-#             return self.form_invalid(form, creator_form)
-#
-#     def form_valid(self, form, creator_form):
-#         """
-#         Called if all forms are valid. Creates a Recipe instance along with
-#         associated Ingredients and Instructions and then redirects to a
-#         success page.
-#         """
-#         self.object = form.save()
-#         creator_form.instance = self.object
-#         creator_form.save()
-#         return HttpResponseRedirect(self.get_success_url())
-#
-#     def form_invalid(self, form, creator_form):
-#         """
-#         Called if a form is invalid. Re-renders the context data with the
-#         data-filled forms and errors.
-#         """
-#         return self.render_to_response(
-#             self.get_context_data(form=form, creator_form=creator_form))
 
 
 def get_project_context(project_id):
@@ -103,138 +51,48 @@ def get_project_context(project_id):
 
 
 @csrf_protect
-def projectCreate(request):
+def project_create(request):
     if request.method == "GET":
         new_project = Project.objects.create()
-        new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True)
-
-        project_form = ProjectForm(instance=new_project)
-
+        new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True, is_owner=True)
         context = get_project_context(new_project.id)
 
         return render_to_response('project_edit.html',
-                                  {'project_form': project_form,
-                                   'project_creators': new_project.projectcreator_set.all(),
-                                   'context': context}, RequestContext(request))
-    else:
-        return Http404()
-
-
-class ProjectUpdateView(FormView):
-    form_class = ProjectForm
-    model = Project
-    template_name = 'project_update.html'
-    success_url = '/'
-    object = None
-    project = None
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectUpdateView, self).get_context_data(**kwargs)
-
-        if self.request.POST:
-            context['project_post_set'] = ProjectPostSet(self.request.POST)
-        else:
-            context['date'] = datetime.now().strftime("%d/%m/%Y")
-            context['month'] = datetime.now().strftime("%B")
-            # todo cache
-            context['technologies'] = json.dumps(list(Skill.objects.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
-            context['project_id'] = 5
-            context['project_creators'] = ProjectCreator.objects.select_related().filter(project_id=59).order_by('date_joined')
-            context['project_technologies'] = self.project.projecttechnologies_set.all()
-            context['project_tags'] = json.dumps(list(self.project.tags.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
-            context['project_post_set'] = ProjectPostSet(initial=Post.objects.filter(project_id=59).order_by('-date_added').values())
-        return context
-
-    def get_initial(self):
-        initial = super(ProjectUpdateView, self).get_initial()
-
-        self.project = get_object_or_404(Project, id=59)
-
-        initial['tag_line'] = self.project.tag_line
-        initial['pitch'] = self.project.pitch
-        initial['title'] = self.project.title
-        initial['logo'] = self.project.logo
-        initial['facebook'] = self.project.facebook
-        initial['google_plus'] = self.project.google_plus
-        initial['instagram'] = self.project.instagram
-        initial['pinterest'] = self.project.pinterest
-        initial['twitter'] = self.project.twitter
-
-        return initial
-
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            project = form.save()
-
-            project_post_formset = ProjectPostSet(request.POST)
-
-            if project_post_formset.is_valid():
-                for form in project_post_formset:
-                    if form.has_changed():
-                        form.save()
-
-            return self.form_valid(form, project_post_formset)
-
-        # todo should this return formset?
-        return self.form_invalid(form)
-
-    # def form_valid(self, form):
-    #     # context = self.get_context_data()
-    #     # project_post_set = context['project_post_set']
-    #     #
-    #     # if project_post_set.is_valid():
-    #     #     self.object = form.save()
-    #     #     project_post_set.instance = self.object
-    #     #     project_post_set.save()
-    #     #     return redirect(self.object.get_absolute_url())
-    #     # else:
-    #     #     return self.render_to_response(self.get_context_data(form=form))
-    #     #
-    #     # form.save()
-    #     # return HttpResponseRedirect("/")
-    #
-    #     project_updated = False
-    #
-    #     for change in form.changed_data:
-    #         setattr(self.project, change, form.cleaned_data[change])
-    #         project_updated = True
-    #
-    #     if project_updated:
-    #         self.project.save()
-    #
-    #     formset = ProjectPostSet(self.request.POST, instance=self.projectt)
-    #     formset.save()
-
-    def form_invalid(self, form):
-        return super(ProjectUpdateView, self).form_invalid(form)
-
-@csrf_protect
-def projectEdit(request):
-    if request.method == "GET":
-        # todo check for object below
-        # todo check ownership
-        current_project = get_object_or_404(Project, id=59)
-        # project_form = ProjectForm(instance=current_project)
-
-        context = get_project_context(current_project.id)
-
-        creators = ProjectCreator.objects.select_related().filter(project_id=59).order_by('date_joined')
-        # creators = current_project.projectcreator_set.values()
-        posts = Post.objects.filter(project=current_project).order_by('-date_added')
-
-        return render_to_response('project_edit.html',
-                                  {'project': current_project,
-                                   'project_creators': creators,
-                                   'project_posts': posts,
-                                   'project_technologies': current_project.projecttechnologies_set.all(),
-                                   'project_tags': json.dumps(list(current_project.tags.values_list('name', flat=True)), ensure_ascii=False).encode('utf8'),
+                                  {'project': new_project,
+                                   'project_creators': [new_creators],
+                                   'project_technologies': [],
+                                   'project_tags': [],
                                    'context': context},
                                   RequestContext(request))
+
+
+@csrf_protect
+def project_edit(request, slug):
+    if request.method == "GET":
+        current_project = get_object_or_404(Project, slug=slug)
+
+        try:
+            creator = ProjectCreator.objects.get(creator=request.user, project=current_project)
+
+            if creator.is_admin:
+                context = get_project_context(current_project.id)
+
+                creators = ProjectCreator.objects.filter(project=current_project.id).order_by('date_joined')
+                posts = Post.objects.filter(project=current_project).order_by('-date_added')
+
+                return render_to_response('project_edit.html',
+                                          {'project': current_project,
+                                           'project_creators': creators,
+                                           'project_posts': posts,
+                                           'project_technologies': current_project.projecttechnologies_set.all(),
+                                           'project_tags': json.dumps(list(current_project.tags.values_list('name', flat=True)), ensure_ascii=False).encode('utf8'),
+                                           'context': context},
+                                          RequestContext(request))
+            else:
+                return redirect('/projects/' + slug)
+        except ObjectDoesNotExist:
+                return redirect('/projects/' + slug)
+
 
 @ajax
 @csrf_protect
@@ -256,6 +114,7 @@ def project_ajax_request(function):
                         return {'success': False, 'message': 'Object does not exist'}
                     except IntegrityError:
                         return {'success': False, 'message': 'User already assigned to project'}
+
 
 @ajax
 @csrf_protect

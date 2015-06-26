@@ -251,6 +251,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+                        {# blocks needed to select active tab #}
                         <li class="{% block home-nav %}{% endblock %}"><a href="/">Home</a></li>
                         <li class="{% block events-nav %}{% endblock %}"><a href="/events/innovate-or-die">Events</a></li>
                         {% if not user.is_anonymous %}
@@ -258,6 +259,7 @@
                                 <a href="/users/{{ user.userprofile.slug }}">Profile</a>
                             </li>
                         {% endif %}
+                        <li class="{% block projects-nav %}{% endblock %}"><a href="{% url 'project_list' %}">Projects</a></li>
                     </ul>
                 </div>
                 <!-- navbar-collapse -->
@@ -282,6 +284,7 @@
                         <ul class="list-unstyled three_cols">
                             <li><a href="/">Home</a></li>
                             <li><a href="/events/innovate-or-die">Events</a></li>
+                            <li><a href="{% url 'project_list' %}">Projects</a></li>
                             {% if not user.is_anonymous %}
                                 <li><a href="/users/{{ user.userprofile.slug }}">Profile</a></li>
                             {% endif %}
@@ -342,6 +345,7 @@
     <ul class="slidebar-menu">
         <li><a href="/">Home</a></li>
         <li><a href="/events/innovate-or-die">Events</a></li>
+        <li><a href="{% url 'project_list' %}">Projects</a></li>
 
         {% if not user.is_anonymous %}
             <li><a href="/users/{{ user.userprofile.slug }}">View profile</a></li>
