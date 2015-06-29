@@ -179,8 +179,8 @@ def profile_image_upload(request):
 def get_user(request):
     if request.method == "POST":
         if request.is_ajax():
-            if 'username' in request.REQUEST:
-                username = request.REQUEST['username']
+            if 'username' in request.POST:
+                username = request.POST['username']
 
                 if len(username) == 0:
                     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No username in request'}))

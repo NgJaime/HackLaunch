@@ -34,9 +34,17 @@ class ProjectView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_anonymous():
+            context['follower'] = False
+        else:
+            follower = Follower.objects.filter(project=self.object, user=self.request.user)
+            context['follower'] = True if len(follower) == 1 else False
+
         context['creators'] = self.object.projectcreator_set.all()
         context['technologies'] = self.object.projecttechnologies_set.all()
         context['posts'] = self.object.post_set.all()
+
         return context
 
 
@@ -181,24 +189,17 @@ def follow_project(request):
     if request.method == "POST":
         if request.is_ajax():
             if 'project' in request.POST:
-                try:
-                    if 'follow' in request.POST and 'project' in request.POST:
-                        follow = json.loads(request.POST['follow'])
-                        project = Project.objects.get(id=request.POST['project'])
-                        request_user = project.projectcreator_set.get(creator_id=request.user.id)
+                if 'follow' in request.POST and 'project' in request.POST:
+                    follow = json.loads(request.POST['follow'])
+                    project = Project.objects.get(id=request.POST['project'])
 
-                        if follow is True:
-                            Follower.objects.get_or_create(project=project, user=request_user, data=datetime.now())
-                        else:
-                            project_follow = Follower.objects.get(project=project, user=request_user)
-                            project_follow.delete()
+                    if follow is True:
+                        follow, created = Follower.objects.get_or_create(project=project, user=request.user)
+                    else:
+                        project_follow = Follower.objects.get(project=project, user=request.user)
+                        project_follow.delete()
 
-                    return {'success': True}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
+                return {'success': True}
 
 
 @ajax

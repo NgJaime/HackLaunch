@@ -58,9 +58,22 @@
             <div class="col-md-9 ">
                 <h2 class="section-title no-margin-top no-margin-bottom">
                     Project Pitch
-                    <p class="button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject($(this))">
-                        <strong>+Follow</strong>
-                    </p>
+
+                    {% if follower %}
+                        <p id="follow" class="hidden button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
+                            <strong><i class="fa fa-plus-circle" style="color: white; padding-right: 5px"></i>Follow</strong>
+                        </p>
+                        <p id="unfollow" class="button button-pill button-small pull-right margin-top-10" onclick="followProject(false)">
+                            <strong><i class="fa fa-minus-circle" style="color: white; padding-right: 5px"></i>Unfollow</strong>
+                        </p>
+                    {% else %}
+                        <p id="follow" class="button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
+                            <strong><i class="fa fa-plus-circle" style="color: white; padding-right: 5px"></i>Follow</strong>
+                        </p>
+                        <p id="unfollow" class="hidden button button-pill button-small pull-right margin-top-10" onclick="followProject(false)">
+                            <strong><i class="fa fa-minus-circle" style="color: white; padding-right: 5px"></i>Unfollow</strong>
+                        </p>
+                    {% endif %}
                 </h2>
                 {% autoescape off %} {{ project.pitch }} {% endautoescape %}
 
@@ -172,15 +185,9 @@
 
 {% block extra_scripts %}
     <script>
-        var followProject = function (followButton) {
-            var follow = false
-
-            if (followButton.val() === '+Follow') {
-                follow = true;
-            }
-
+        var followProject = function (follow) {
             $.ajax({
-                url: "{% url 'add_technology_to_project' %}",
+                url: "{% url 'follow_project' %}",
                 type: 'POST',
                 dataType: 'json',
                 data: {follow: follow,
@@ -188,14 +195,17 @@
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
                     if (follow === true) {
-                        followButton.val = 'Unfollow'
+                        $('#follow').addClass('hidden');
+                        $('#unfollow').removeClass('hidden');
                     }
                     else {
-                        followButton.val = '+Follow'
+                        $('#unfollow').addClass('hidden');
+                        $('#follow').removeClass('hidden');
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
     {#                todo#}
+                    console.log('error')
                 }
             });
         };

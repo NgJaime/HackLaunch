@@ -45,6 +45,7 @@ class Project(models.Model):
     slug = AutoSlugField(populate_from='get_slug_seed', unique=True, always_update=True)
 
     creators = models.ManyToManyField(User, through='ProjectCreator')
+    followers = models.ManyToManyField(User, through='Follower', related_name='project_follower')
     technologies = models.ManyToManyField(Technologies, through='ProjectTechnologies', blank=True)
 
     facebook = models.URLField(blank=True)
@@ -67,8 +68,18 @@ class Project(models.Model):
 
 class Follower(models.Model):
     project = models.ForeignKey(Project)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="follower")
     date_followed = models.DateField()
+
+    class Meta:
+        unique_together = (("project", "user"),)
+
+    def save(self, *args, **kw):
+        self.date_followed = datetime.now()
+        super(Follower, self).save(*args, **kw)
+
+    def __unicode__(self):
+        return self.project.title + ' - ' + self.user.get_full_name()
 
 
 class Post(models.Model):

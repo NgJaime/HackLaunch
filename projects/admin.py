@@ -1,5 +1,5 @@
 from django.contrib import admin
-from projects.models import Project, ProjectCreator, ProjectTechnologies, Technologies, Tags, Post, ProjectImage
+from projects.models import Project, ProjectCreator, ProjectTechnologies, Technologies, Tags, Post, ProjectImage, Follower
 
 admin.site.register(ProjectCreator)
 admin.site.register(ProjectTechnologies)
@@ -7,6 +7,7 @@ admin.site.register(Technologies)
 admin.site.register(Tags)
 admin.site.register(Post)
 admin.site.register(ProjectImage)
+admin.site.register(Follower)
 
 
 class CreatorsInline(admin.TabularInline):
