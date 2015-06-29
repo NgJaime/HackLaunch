@@ -36,6 +36,7 @@ PREREQ_APPS = [
     'widget_tweaks',
     'storages',
     'froala_editor',
+    'taggit',
 ]
 
 PROJECT_APPS = [

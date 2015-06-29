@@ -265,7 +265,7 @@
                     <div class="panel panel-default animated fadeInUp animation-delay-12">
                         <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
                         <div class="panel-body">
-                            <input id="tags-input" type="text" class="label-success" data-role="tagsinput"
+                            <input id="tags-input" type="text" class="label-success" value={{ project_tags }} data-role="tagsinput"
                                    style="display: none;">
 
                             <p id="tags-error-message" class="hidden" style="color: red;">
@@ -338,6 +338,20 @@
     <script src="{% static "js/jquery.formset.js" %}"></script>
 
     <script>
+
+        {% autoescape off %}
+            var availableTechnologies = {{ context.technologies }},
+                tags = "{{ project_tags }}";
+        {% endautoescape %}
+
+        $("#technologyInput").autocomplete({
+            source: availableTechnologies
+        });
+
+        $('#tags-input').tagsinput({
+            allowDuplicates: false,
+        });
+
         var postPlaceholder = 'Create a post for your project it can include images, videos and embeded youtube content.',
             titlePlaceholder = 'Add a title for your new post';
 
@@ -814,29 +828,29 @@
 
         {# todo fix for initialisation #}
         $('#tags-input').on('beforeItemAdd', function(event) {
-            $.ajax({
-                url: "{% url 'add_tag_to_project' %}",
-                type: 'POST',
-                dataType: 'json',
-                data: {tag: event.item,
-                       project: {{ context.projectId }},
-                       csrfmiddlewaretoken: '{{ csrf_token }}'},
-                success: function (data, textStatus, xhr) {
-                    if (data.content.success === true) {
-                        $('#tags-error-message').addClass('hidden')
-                    }
-                    else {
+                $.ajax({
+                    url: "{% url 'add_tag_to_project' %}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {tag: event.item,
+                           project: {{ context.projectId }},
+                           csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success: function (data, textStatus, xhr) {
+                        if (data.content.success === true) {
+                            $('#tags-error-message').addClass('hidden')
+                        }
+                        else {
+                            $('tags-input').tagsinput('remove', event.item);
+                            $('#tags-error-message').removeClass('hidden')
+                            $('#tags-error-message').text(data.content.message);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
                         $('tags-input').tagsinput('remove', event.item);
-                        $('#tags-error-message').removeClass('hidden')
-                        $('#tags-error-message').text(data.content.message);
+                        $('#tags-error-message').removeClass('hidden');
+                        $('#tags-error-message').text(xhr.responseJSON.message);
                     }
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    $('tags-input').tagsinput('remove', event.item);
-                    $('#tags-error-message').removeClass('hidden');
-                    $('#tags-error-message').text(xhr.responseJSON.message);
-                }
-            });
+                });
         });
 
         $('#tags-input').on('beforeItemRemove', function(event) {
@@ -954,23 +968,6 @@
         });
         $("#id_twitter").keyup(function () {
             updateSocialKeyUp('twitter');
-        });
-
-        $(function () {
-            {% autoescape off %}
-                var availableTechnologies = {{ context.technologies }},
-                    tags = {{ project_tags }};
-            {% endautoescape %}
-
-            $("#technologyInput").autocomplete({
-                source: availableTechnologies
-            });
-
-            for (var i = 0; i < tags.length; i++) {
-                $('#tags-input').tagsinput('add', tags[i]);
-            }
-
-            $('#tags-input').tagsinput({allowDuplicates: false});
         });
 
         $('.creator-edit').each(function(){

@@ -4,15 +4,9 @@ from froala_editor.fields import FroalaField
 from django_resized import ResizedImageField
 from users.models import User
 from datetime import datetime
+from taggit.managers import TaggableManager
 
 from projects.s3 import upload_project_image, upload_logo
-
-
-class Tags(models.Model):
-    name = models.CharField(max_length=64)
-
-    def __unicode__(self):
-        return self.name
 
 
 class Technologies(models.Model):
@@ -37,13 +31,11 @@ class Project(models.Model):
     tag_line = FroalaField(options={'inlineMode': True, 'alwaysVisible': True,
                                     'placeholder': 'Provide a tag line for your project.'},
                            plugins=('font_size', 'font_family', 'colors', 'block_styles', 'char_counter'), blank=True)
-    pitch = FroalaField(options={'placeholder': 'Create a pitch for your project it can include images, videos and embeded youtube content.', 'saveURL': '/projects/update_project/', 'autosave': True, 'autosaveInterval': 2500},
+    pitch = FroalaField(options={'placeholder': 'Create a pitch for your project it can include images, videos and embeded youtube content.',
+                                 'saveURL': '/projects/update_project/', 'autosave': True, 'autosaveInterval': 2500},
                         plugins=('font_size', 'font_family', 'colors', 'block_styles', 'video', 'tables', 'lists', 'char_counter', 'urls', 'inline_styles'),
                         blank=True)
-    tags = models.ManyToManyField(Tags, blank=True)
-
-    slug = AutoSlugField(populate_from='get_slug_seed', unique=True, always_update=True)
-
+    tags = TaggableManager()
     creators = models.ManyToManyField(User, through='ProjectCreator')
     followers = models.ManyToManyField(User, through='Follower', related_name='project_follower')
     technologies = models.ManyToManyField(Technologies, through='ProjectTechnologies', blank=True)
@@ -54,10 +46,12 @@ class Project(models.Model):
     pinterest = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
 
+    slug = AutoSlugField(populate_from='get_slug_seed', unique=True, always_update=True)
+
     is_active = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.title + ' - ' + str(self.id)
+        return self.title[3:-3] + ' - ' + str(self.id)
 
     def get_slug_seed(self):
         if self.is_active:

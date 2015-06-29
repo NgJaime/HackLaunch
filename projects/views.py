@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView
 
 from datetime import datetime
-from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Tags, Post, ProjectImage, Follower
+from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
 
 
@@ -93,7 +93,7 @@ def project_edit(request, slug):
                                            'project_creators': creators,
                                            'project_posts': posts,
                                            'project_technologies': current_project.projecttechnologies_set.all(),
-                                           'project_tags': json.dumps(list(current_project.tags.values_list('name', flat=True)), ensure_ascii=False).encode('utf8'),
+                                           'project_tags': ','.join(current_project.tags.values_list('name', flat=True)),
                                            'context': context},
                                           RequestContext(request))
             else:
@@ -501,8 +501,7 @@ def add_tag(request):
                     creator = project.projectcreator_set.get(creator_id=request.user.id)
 
                     if creator.is_admin:
-                        tag, created = Tags.objects.get_or_create(name=request.POST['tag'])
-                        project.tags.add(tag)
+                        project.tags.add(request.POST['tag'])
                         return {'success': True}
                     else:
                         return {'success': False, 'message':  'Only admins can make an update to a project'}
@@ -528,8 +527,7 @@ def remove_tag(request):
                     creator = project.projectcreator_set.get(creator_id=request.user.id)
 
                     if creator.is_admin:
-                        tag = Tags.objects.get(name=request.POST['tag'])
-                        project.tags.remove(tag)
+                        project.tags.remove(request.POST['tag'])
                         return {'success': True}
                     else:
                         return {'success': False, 'message':  'Only admins can make an update to a project'}
