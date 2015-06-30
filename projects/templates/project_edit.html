@@ -249,7 +249,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div>
+                                        <div id="{{ creator.creator.username }}">
                                             <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
                                                 {% autoescape off %} {{ creator.summary }} {% endautoescape %}
                                             </div>
@@ -736,14 +736,14 @@
 
                             $('#new-creator-div').remove()
 
-                             $('#creator-' + username + '-summary').editable({
+                            $('#creator-' + username + '-summary').editable({
                                 imageUpload: false,
                                 imageLink: false,
                                 buttons: ['bold', 'italic', 'underline', 'fontSize', 'sep', 'formatBlock',
                                           'blockStyle', 'align',  'outdent', 'indent', 'sep', 'undo', 'redo'],
                                 saveParams: {
                                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                                    summary: true,
+                                    field: 'summary',
                                     project: {{ context.projectId }},
                                     username: username
                                 },
@@ -751,7 +751,7 @@
                                 autosave: true,
                                 autosaveInterval: 2500,
                                 crossDomain: false,
-                                placeholder: 'Summarise how this creator has contributed'
+                                placeholder: "Add a description of this creator's contribution"
                             });
 
                             $('.user-selection').each(function() {
