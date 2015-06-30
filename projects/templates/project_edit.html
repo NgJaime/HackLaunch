@@ -208,50 +208,65 @@
 
                             {% for creator in project_creators %}
                                 <div id="creator-{{ creator.creator.username }}">
-                                    <a class="pull-left" href="#">
-                                        {% if creator.creator.userprofile.thumbnail %}
-                                            <img src="{{ creator.creator.userprofile.thumbnail.url }}"
-                                                 alt="{{ creator.creator.get_full_name }}" class="img-circle">
-                                        {% else %}
-                                            <img src="{% static "images/avatar.jpg" %}"
-                                                 alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
-                                        {% endif %}
-                                    </a>
-
-                                    <div id='{{ creator.creator.username }}' class="media-body" style="padding-left: 10px;">
-                                        <h4 id="{{ creator.creator.username }}" class="media-heading creator-name"><a href="#" style="color: white">{{ creator.creator.get_full_name }}</a></h4>
-
-                                        {% if creator.inital.awaiting_confirmation %}
-                                            <p style="margin-bottom: 5px;"><strong>Awaiting Confirmation</strong></p>
-                                        {% endif %}
-
-                                        <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
-                                            {% autoescape off %} {{ creator.summary }} {% endautoescape %}
-                                        </div>
-
-                                        {% if not creator.is_owner %}
-                                            <div class="checkbox checkbox-inline no-margin-top">
-                                                {% if creator.is_admin %}
-                                                    <input type="checkbox" name="is-adimn" style="color: white" checked onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <a href="#">
+                                                {% if creator.creator.userprofile.thumbnail %}
+                                                    <img src="{{ creator.creator.userprofile.thumbnail.url }}"
+                                                         alt="{{ creator.creator.get_full_name }}" class="img-circle">
                                                 {% else %}
-                                                    <input type="checkbox" name="is-adimn" style="color: white" onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                                    <img src="{% static "images/avatar.jpg" %}"
+                                                         alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
+                                                <a href="#" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                {% if not creator.is_owner %}
+                                                    <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-minus-circle pull-right"
+                                                       style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}')">
+                                                    </i>
+                                                {% endif %}
+                                            </h4>
+
+                                            <div id='{{ creator.creator.username }}'">
+                                                {% if creator.awaiting_confirmation %}
+                                                    <p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p>
                                                 {% endif %}
                                             </div>
 
-                                            <a id="remove-{{ creator.creator.username }}" href="#" onclick="removeCreator('{{ creator.creator.username }}')" style="color: white;"><strong><u>Remove from project</u></strong></a>
-                                        {% else %}
-                                            <p class="no-margin-bottom"><strong>Project Owner</strong></p>
-                                        {% endif %}
+                                            {% if creator.is_owner %}
+                                                <p style="margin-bottom: 10px;"><strong>Project Owner</strong></p>
+                                            {% else %}
+                                                {% if creator.is_admin %}
+                                                    <input type="checkbox" name="is-adimn" style="color: white; margin-bottom: 15px;" checked onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                                {% else %}
+                                                    <input type="checkbox" name="is-adimn" style="color: white; margin-bottom: 15px;" onchange="updateCreator('{{ creator.creator.username }}', 'admin', this.checked)">Project administrator<br>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div>
+                                            <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
+                                                {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <hr style="margin: 10px 0px 10px 0px; color: white;">
                                 </div>
                             {% endfor %}
                         </div>
-                        <div class="ui-widget">
-                            <input id="creatorInput" onkeyup="userLookupKeyup()" style="color: black; padding-left: 3px; margin-top: 15px" placeholder="Add a username">
-                            <i id="user-lookup-add" class="fa fa-plus-circle hidden" style="color: white;"
-                               onclick="userLookup()"></i>
+                        <div class="ui-widget row">
+                            <div class="col-md-10" style="padding-left: 20px">
+                                <input id="creatorInput" onkeyup="userLookupKeyup()" style="color: black; padding-left: 10px; margin-top: 15px; padding-top: 5px;" placeholder="Add a username">
+                            </div>
+                            <div class="col-md-2" style="padding-left: 5px; padding-top: 3px;">
+                                <h4><i id="user-lookup-add" class="fa fa-plus-circle pull-left" style="color: white;" onclick="userLookup()"></i></h4>
+                            </div>
                         </div>
 
                         <div id="add-creator"></div>
@@ -572,8 +587,6 @@
         };
 
         var userLookupKeyup = function () {
-            $('#user-lookup-add').removeClass('hidden');
-
             if (event.keyCode == 13) {
                 userLookup();
             }
@@ -620,7 +633,6 @@
             }
 
             $('#creatorInput').val('');
-            $('#user-lookup-add').addClass('hidden');
         };
 
         var updateCreator = function (username, field, value) {
@@ -695,25 +707,30 @@
 
                             creators.append(
                                     '<div id="creator-' + username + '">' +
-                                        '<a class="pull-left" href="#">' +
-                                        '<img src="' + thumbnail + '" alt="' + fullName + '" class="img-circle" style="width: 50px">' +
-                                        '</a>' +
-
-                                        '<div id="' + username + '" class="media-body" style="padding-left: 10px;">' +
-                                            '<h4 id="' + username + '" class="media-heading creator-name"><a href="#" style="color: white">' + fullName + '</a></h4>' +
-
-                                            '<p style="margin-bottom: 5px;"><strong>Awaiting Confirmation</strong></p>' +
-
-                                            '<div id="creator-' + username + '-summary" class="creator-edit" name="' + username + '" style="margin-bottom: 0px;"></div>' +
-
-                                            '<div class="checkbox checkbox-inline" style="margin-bottom: 5px;">' +
-                                                '<input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br>' +
+                                         '<div class="row">' +
+                                            '<div class="col-md-3">' +
+                                                '<a class="pull-left" href="#">' +
+                                                '<img src="' + thumbnail + '" alt="' + fullName + '" class="img-circle" style="width: 50px">' +
+                                                '</a>' +
                                             '</div>' +
+                                            '<div class="col-md-9" style="text-align: left;">' +
+                                                '<h4 id="' + username + '" class="media-heading creator-name"><a href="#" style="color: white">' + fullName + '</a>'+
+                                                    '<i id="technology-' + username + '-icon" class="fa fa-minus-circle pull-right"' +
+                                                       'style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;)">' +
+                                                    '</i>' +
+                                                '</h4>' +
 
-                                            '<a id="remove-' + username + '" href="#" onclick="removeCreator(&quot;' + username + '&quot;)" style="color: white;"><strong><u>Remove from project</u></strong></a>' +
+                                                '<p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p>' +
+                                                '<input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br>' +
 
-                                        '</div>' +
-                                        '<hr style="margin: 10px 0px 0px 0px; color: white;">' +
+                                            '</div>' +
+                                         '</div>' +
+
+                                         '<div class="row">' +
+                                            '<div id="creator-' + username + '-summary" class="creator-edit" name="' + username + '" style="margin-bottom: 0px;"></div>' +
+                                         '</div>' +
+
+                                         '<hr style="margin: 10px 0px 0px 0px; color: white;">' +
                                     '</div> '
                             );
 
@@ -985,7 +1002,8 @@
                 saveURL: "{% url 'update_creator' %}",
                 autosave: true,
                 autosaveInterval: 2500,
-                crossDomain: false
+                crossDomain: false,
+                placeholder: "Add a description of this creator's contribution"
             });
         });
 

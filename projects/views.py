@@ -62,7 +62,7 @@ def get_project_context(project_id):
 def project_create(request):
     if request.method == "GET":
         new_project = Project.objects.create()
-        new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True, is_owner=True)
+        new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True, is_owner=True, awaiting_confirmation=False)
         context = get_project_context(new_project.id)
 
         return render_to_response('project_edit.html',
