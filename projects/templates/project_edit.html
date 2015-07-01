@@ -20,11 +20,13 @@
             <div class="row">
                 <div class="col-md-12" style="padding-top: 25px;">
                     <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
-                        {% if project.logo %}
-                            <img id='logo' class='logo' src="{{ project.logo.url }}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
-                        {% else %}
-                            <img id='logo' class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
-                        {% endif %}
+                        <div id="logo-image">
+                            {% if project.logo %}
+                                <img id='logo' class='logo' src="{{ project.logo.url }}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                            {% else %}
+                                <img id='logo' class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>
+                            {% endif %}
+                        </div>
                         <div id="project-title" class="project-title">
                             {% autoescape off %} {{ project.title }} {% endautoescape %}
                         </div>
@@ -451,6 +453,45 @@
             })
         };
 
+        var logoRemoved = function () {
+            $("#logo").remove();
+            $("#logo-image").append('<img id="logo" class="logo" src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200" style="padding-bottom: 15px;"/>');
+
+            $('.logo').editable({imageUpload: true,
+                imageUploadParam: 'file',
+                imageUploadURL: '{% url 'project_image_upload' %}',
+                imageUploadParams: {
+                    logo: true,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    project: {{ context.projectId }},
+                },
+                imageButtons: ['linkImage', 'replaceImage', 'removeImage'],
+                imageDeleteConfirmation: false,
+                imageDeleteURL: '{% url 'project_image_delete' %}',
+                imageDeleteParams: {
+                    logo: true,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    project: {{ context.projectId }},
+                },
+                placeholder: '{% static "images/add-a-logo.png" %}',
+                crossDomain: false
+            })
+
+            .on('editable.beforeRemoveImage', function (e, editor, $img) {
+                console.log('before');
+                // Set the image source to the image delete params.
+                editor.options.imageDeleteParams.src = $img.attr('src');
+
+                // Make the delete request.
+                editor.deleteImage($img);
+
+                $img.attr.src = editor.options.placeholder;
+
+                logoRemoved();
+                $(".logo").on("remove", logoRemoved());
+            });
+        };
+
         $(function(){
             $('.logo').editable({imageUpload: true,
                 imageUploadParam: 'file',
@@ -476,10 +517,6 @@
                 $img.attr.src = editor.options.placeholder;
             })
 
-            .on('editable.imageDeleteSuccess', function (e, editor, data) {
-                console.log('lll'   )
-            })
-
             .on('editable.imageDeleteError', function (e, editor, error) {
                  console.log('lll');
             })
@@ -493,6 +530,13 @@
                 editor.deleteImage($img);
 
                 $img.attr.src = editor.options.placeholder;
+
+                logoRemoved();
+{#                $(".logo").on("remove", logoRemoved());#}
+            })
+
+            .on('editable.imageDeleteSuccess', function (e, editor, data) {
+                console.log('lll'   )
             });
         });
 
@@ -1023,14 +1067,6 @@
         $('.post-edit').each(function() {
             richEdit($(this), {'field': 'post', 'post': this.id}, "{% url 'update_post' %}", postPlaceholder)
         });
-
-{#        $('.logo').each(function() {#}
-{#           imageEdit($(this));#}
-{#        });#}
-
-{#        $('#logo').keyup(function() {#}
-{#          alert( "Handler for .keyup() called." );#}
-{#        });#}
 
         $('.post-title-edit').find('.fr-placeholder').each(function() {
             $(this).css('color', 'black');

@@ -21,6 +21,4 @@ urlpatterns = [ url(r'list/$', views.PostListView.as_view(), name='project_list'
 
                 url(r'^(?P<slug>[^/]+)$', views.ProjectView.as_view(), name='profile_view'),
                 url(r'^(?P<slug>[^/]+)/edit/$', login_required(views.project_edit), name='project_edit'),
-                url(r'create/$', login_required(views.project_create), name='project_create'),
-
-                url(r'project/$', views.ProjectTestView.as_view(), name='project')]
+                url(r'create/$', login_required(views.project_create), name='project_create')]

@@ -10,9 +10,11 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from django.views.generic import ListView
 
+from functools import wraps
 from datetime import datetime
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
+
 
 
 class PostListView(ListView):
@@ -22,10 +24,6 @@ class PostListView(ListView):
 
     def get_queryset(self):
         return Project.objects.all()
-
-
-class ProjectTestView(TemplateView):
-    template_name = 'project.html'
 
 
 class ProjectView(DetailView):
@@ -101,88 +99,6 @@ def project_edit(request, slug):
         except ObjectDoesNotExist:
                 return redirect('/projects/' + slug)
 
-
-@ajax
-@csrf_protect
-def project_ajax_request(function):
-    def wrapper(request, *args, **kwargs):
-        if request.method == "POST":
-            if request.is_ajax():
-                if 'project' in request.POST:
-                    try:
-                        project = Project.objects.get(id=request.POST['project'])
-                        request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                        if request_user.is_admin:
-                            function(request, project, request_user, args, kwargs)
-                        else:
-                            return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                    except ObjectDoesNotExist:
-                        return {'success': False, 'message': 'Object does not exist'}
-                    except IntegrityError:
-                        return {'success': False, 'message': 'User already assigned to project'}
-
-
-@ajax
-@csrf_protect
-def update_project(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        updated = False
-
-                        if 'data' in request.POST:
-                            data = json.loads(request.POST['data'])
-
-                            if 'field' in data:
-                                field = data['field']
-
-                                if field == 'pitch' and 'body' in request.POST:
-                                    project.pitch = request.POST['body']
-                                    updated = True
-                                elif field == 'tagline' and 'body' in request.POST:
-                                    project.tag_line = request.POST['body']
-                                    updated = True
-                                elif field == 'title' and 'body' in request.POST:
-                                    project.title = request.POST['body']
-                                    updated = True
-                                elif 'value' in request.POST['data']:
-                                    if field == 'facebook':
-                                        project.facebook = data['value']
-                                        updated = True
-                                    elif field == 'google-plus':
-                                        project.google_plus = data['value']
-                                        updated = True
-                                    elif field == 'instagram':
-                                        project.instagram = data['value']
-                                        updated = True
-                                    elif field == 'pinterest':
-                                        project.pinterest = data['value']
-                                        updated = True
-                                    elif field == 'twitter':
-                                        project.twitter = data['value']
-                                        updated = True
-
-                                if updated:
-                                    project.save()
-
-                                return {'success': True}
-                        else:
-                                return {'success': False, 'message': 'No data in request'}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
-
 @ajax
 @csrf_protect
 def follow_project(request):
@@ -202,21 +118,19 @@ def follow_project(request):
                 return {'success': True}
 
 
-@ajax
-@csrf_protect
-def add_post(request):
-    if request.method == "POST":
-        if request.is_ajax():
+def project_ajax_request(function):
+    @ajax(mandatory=False)
+    @csrf_protect
+    @wraps(function)
+    def wrapped(request, *args, **kwargs):
+        if request.method == "POST":
             if 'project' in request.POST:
                 try:
                     project = Project.objects.get(id=request.POST['project'])
                     request_user = project.projectcreator_set.get(creator_id=request.user.id)
 
                     if request_user.is_admin:
-                        new_post = Post(author=request.user, project=project)
-                        new_post.save()
-                        return {'success': True, 'post_id': new_post.id, 'date_added': new_post.date_added.strftime("%d/%m/%Y"),
-                                'month': new_post.date_added.strftime("%B")}
+                        return function(request, project, args, kwargs)
                     else:
                         return {'success': False, 'message':  'Only admins can make an update to a project'}
 
@@ -225,317 +139,193 @@ def add_post(request):
                 except IntegrityError:
                     return {'success': False, 'message': 'User already assigned to project'}
 
-@ajax
-@csrf_protect
-def update_post(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        updated = False
-
-                        if 'data' in request.POST:
-                            data = json.loads(request.POST['data'])
-
-                            if 'field' in data and 'post' in data:
-                                post = Post.objects.get(id=data['post'], project=project)
-                                field = data['field']
-
-                                if field == 'post' and 'body' in request.POST:
-                                    post.post = request.POST['body']
-                                    updated = True
-                                elif field == 'title' and 'body' in request.POST:
-                                    post.title = request.POST['body']
-                                    updated = True
-                                elif field == 'published' and 'value' in data:
-                                    post.is_published = data['value']
-                                    updated = True
-                                elif field == 'author' and 'value' in data:
-                                    author = User.objects.get(username=data['value'])
-                                    post.author = author
-                                    updated = True
-
-                                if updated:
-                                    post.save()
-
-                                return {'success': True}
-                        else:
-                            return {'success': False, 'message': 'No data in request'}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
-
-    return {'success': False, 'message': 'Invalid request'}
-
-# @ajax
-# todo looks like this is not being sent as a ajax request
-@csrf_protect
-def image_upload(request):
-    if request.method == "POST":
-        # if request.is_ajax(): todo
-            if 'project' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        if len(request.FILES) == 1:
-                            if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
-                                if project.logo is not None:
-                                    project.logo.delete()
-
-                                project.logo = request.FILES.get('file')
-                                project.save()
-                                data = {'success': True, 'link': project.logo.url}
-                            else:
-                                image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
-                                data = {'success': True, 'link': image.image.url}
-                            return HttpResponse(json.dumps(data), content_type="application/json")
-                            # return {'success': True, 'link': image.image.url}
-                        else:
-                            data = {'success': False, 'message':  'No image in request'}
-                            return HttpResponse(json.dumps(data), content_type="application/json")
-
-                    else:
-                        data = {'success': False, 'message':  'Only admins can make an update to a project'}
-                        return HttpResponse(json.dumps(data), content_type="application/json")
-
-                except ObjectDoesNotExist:
-                    data = {'success': False, 'message': 'Object does not exist'}
-                    return HttpResponse(json.dumps(data), content_type="application/json")
-
-                except IntegrityError as e:
-                    data = {'success': False, 'message': 'Image already assigned to project'}
-                    return HttpResponse(json.dumps(data), content_type="application/json")
-
-    data = {'success': False, 'message': 'Invalid request'}
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return wrapped
 
 
-@ajax
-@csrf_protect
-def image_delete(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        if 'src' in request.POST:
-                            if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
-                                project.logo.delete()
-                                project.save()
-                            else:
-                                image = ProjectImage.objects.get(project=project, image=request.POST['src'])
-                                image.delete()
-
-                            return {'success': True}
-                        else:
-                            return {'success': False, 'message':  'No url in request'}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'Image already assigned to project'}
-
-    return {'success': False, 'message': 'Invalid request'}
+@project_ajax_request
+def add_post(request, project, *args, **kwargs):
+    new_post = Post(author=request.user, project=project)
+    new_post.save()
+    return {'success': True, 'post_id': new_post.id, 'date_added': new_post.date_added.strftime("%d/%m/%Y"),
+            'month': new_post.date_added.strftime("%B")}
 
 
-@ajax
-@csrf_protect
-def add_creator(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'username' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
+@project_ajax_request
+def update_project(request, project, *args, **kwargs):
+    updated = False
 
-                    if request_user.is_admin:
-                        user = User.objects.get(username=request.POST['username'])
-                        ProjectCreator.objects.create(project=project, creator=user)
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
+    if 'data' in request.POST:
+        data = json.loads(request.POST['data'])
 
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
+        if 'field' in data:
+            field = data['field']
 
-    return {'success': False, 'message': 'Invalid request'}
+            if field == 'pitch' and 'body' in request.POST:
+                project.pitch = request.POST['body']
+                updated = True
+            elif field == 'tagline' and 'body' in request.POST:
+                project.tag_line = request.POST['body']
+                updated = True
+            elif field == 'title' and 'body' in request.POST:
+                project.title = request.POST['body']
+                updated = True
+            elif 'value' in request.POST['data']:
+                if field == 'facebook':
+                    project.facebook = data['value']
+                    updated = True
+                elif field == 'google-plus':
+                    project.google_plus = data['value']
+                    updated = True
+                elif field == 'instagram':
+                    project.instagram = data['value']
+                    updated = True
+                elif field == 'pinterest':
+                    project.pinterest = data['value']
+                    updated = True
+                elif field == 'twitter':
+                    project.twitter = data['value']
+                    updated = True
 
+            if updated:
+                project.save()
 
-@ajax
-@csrf_protect
-def remove_creator(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'username' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        user = User.objects.get(username=request.POST['username'])
-                        creator = ProjectCreator.objects.get(project=project, creator=user)
-                        creator.delete()
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
-
-    return {'success': False, 'message': 'Invalid request'}
-
-@ajax
-@csrf_protect
-def update_creator(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'username' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        user = User.objects.get(username=request.POST['username'])
-                        creator = ProjectCreator.objects.get(project=project, creator=user)
-                        updated = False
-
-                        if 'field' in request.POST:
-                            if request.POST['field'] == 'summary' and 'body' in request.POST:
-                                creator.summary = request.POST['body']
-                                updated = True
-                            elif request.POST['field'] == 'admin' and 'value' in request.POST:
-                                creator.is_admin = request.POST['value']
-                                updated = True
-
-                        if updated:
-                            creator.save()
-
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
-
-    return {'success': False, 'message': 'Invalid request'}
-
-# todo refactor the below ajax functions
-@ajax
-@csrf_protect
-def add_technology(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'technology' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    creator = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if creator.is_admin:
-                        technology, created = Technologies.objects.get_or_create(name=request.POST['technology'])
-                        ProjectTechnologies.objects.create(project=project, technology=technology)
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'Technology already assigned to project'}
-
-    return {'success': False, 'message': 'Invalid request'}
+            return {'success': True}
+    else:
+            return {'success': False, 'message': 'No data in request'}
 
 
-@ajax
-@csrf_protect
-def remove_technology(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'technology' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    creator = project.projectcreator_set.get(creator_id=request.user.id)
+@project_ajax_request
+def update_post(request, project, *args, **kwargs):
+    updated = False
 
-                    if creator.is_admin:
-                        technology = Technologies.objects.get(name=request.POST['technology'])
-                        project_technology = ProjectTechnologies.objects.get(project=project, technology=technology)
-                        project_technology.delete()
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
+    if 'data' in request.POST:
+        data = json.loads(request.POST['data'])
 
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
+        if 'field' in data and 'post' in data:
+            post = Post.objects.get(id=data['post'], project=project)
+            field = data['field']
 
-    return {'success': False, 'message': 'Invalid request'}
+            if field == 'post' and 'body' in request.POST:
+                post.post = request.POST['body']
+                updated = True
+            elif field == 'title' and 'body' in request.POST:
+                post.title = request.POST['body']
+                updated = True
+            elif field == 'published' and 'value' in data:
+                post.is_published = data['value']
+                updated = True
+            elif field == 'author' and 'value' in data:
+                author = User.objects.get(username=data['value'])
+                post.author = author
+                updated = True
 
+            if updated:
+                post.save()
 
-@ajax
-@csrf_protect
-def add_tag(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'tag' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    creator = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if creator.is_admin:
-                        project.tags.add(request.POST['tag'])
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'Tag already assigned to project'}
-                except Exception as e:
-                    pass
-
-    return {'success': False, 'message': 'Invalid request'}
+            return {'success': True}
+    else:
+        return {'success': False, 'message': 'No data in request'}
 
 
-@ajax
-@csrf_protect
-def remove_tag(request):
-    if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST and 'tag' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    creator = project.projectcreator_set.get(creator_id=request.user.id)
+@project_ajax_request
+def image_upload(request, project, *args, **kwargs):
+    if len(request.FILES) == 1:
+        if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
+            if project.logo is not None:
+                project.logo.delete()
 
-                    if creator.is_admin:
-                        project.tags.remove(request.POST['tag'])
-                        return {'success': True}
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-
-    return {'success': False, 'message': 'Invalid request'}
+            project.logo = request.FILES.get('file')
+            project.save()
+            data = {'success': True, 'link': project.logo.url}
+        else:
+            image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
+            data = {'success': True, 'link': image.image.url}
+        return HttpResponse(json.dumps(data), content_type="application/json")
+        # return {'success': True, 'link': image.image.url}
+    else:
+        data = {'success': False, 'message':  'No image in request'}
+        return HttpResponse(json.dumps(data), content_type="application/json")
 
 
+@project_ajax_request
+def image_delete(request, project, *args, **kwargs):
+    if 'src' in request.POST:
+        if request.POST['src'] != [u'/static/images/add-a-logo.png'] and\
+                'logo' in request.POST and json.loads(request.POST['logo']) is True:
+            project.logo.delete()
+            project.save()
+        else:
+            image = ProjectImage.objects.get(project=project, image=request.POST['src'])
+            image.delete()
 
+        return {'success': True}
+    else:
+        return {'success': False, 'message': 'No url in request'}
+
+
+@project_ajax_request
+def add_creator(request, project, *args, **kwargs):
+    if 'username' in request.POST:
+        user = User.objects.get(username=request.POST['username'])
+        ProjectCreator.objects.create(project=project, creator=user)
+        return {'success': True}
+
+
+@project_ajax_request
+def remove_creator(request, project, *args, **kwargs):
+    if 'username' in request.POST:
+        user = User.objects.get(username=request.POST['username'])
+        creator = ProjectCreator.objects.get(project=project, creator=user)
+        creator.delete()
+        return {'success': True}
+
+
+@project_ajax_request
+def update_creator(request, project, *args, **kwargs):
+    user = User.objects.get(username=request.POST['username'])
+    creator = ProjectCreator.objects.get(project=project, creator=user)
+    updated = False
+
+    if 'field' in request.POST:
+        if request.POST['field'] == 'summary' and 'body' in request.POST:
+            creator.summary = request.POST['body']
+            updated = True
+        elif request.POST['field'] == 'admin' and 'value' in request.POST:
+            creator.is_admin = request.POST['value']
+            updated = True
+
+    if updated:
+        creator.save()
+
+    return {'success': True}
+
+
+@project_ajax_request
+def add_technology(request, project, *args, **kwargs):
+    if 'technology' in request.POST:
+        technology, created = Technologies.objects.get_or_create(name=request.POST['technology'])
+        ProjectTechnologies.objects.create(project=project, technology=technology)
+        return {'success': True}
+
+
+@project_ajax_request
+def remove_technology(request, project, *args, **kwargs):
+    if 'technology' in request.POST:
+        technology = Technologies.objects.get(name=request.POST['technology'])
+        project_technology = ProjectTechnologies.objects.get(project=project, technology=technology)
+        project_technology.delete()
+        return {'success': True}
+
+
+@project_ajax_request
+def add_tag(request, project, *args, **kwargs):
+    if 'tag' in request.POST:
+        project.tags.add(request.POST['tag'])
+        return {'success': True}
+
+
+@project_ajax_request
+def remove_tag(request, project, *args, **kwargs):
+    if 'tag' in request.POST:
+        project.tags.remove(request.POST['tag'])
+        return {'success': True}
