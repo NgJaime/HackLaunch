@@ -1,0 +1,534 @@
+[
+  {
+    "fields": {
+      "name": "Action Script"
+    },
+    "model": "users.skill",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "ActiveVFP"
+    },
+    "model": "users.skill",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "Ada"
+    },
+    "model": "users.skill",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "name": "ASP"
+    },
+    "model": "users.skill",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "name": "Assembly"
+    },
+    "model": "users.skill",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "name": "C"
+    },
+    "model": "users.skill",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "name": "C#"
+    },
+    "model": "users.skill",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "name": "C++"
+    },
+    "model": "users.skill",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "name": "CSS"
+    },
+    "model": "users.skill",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "name": "Clojure"
+    },
+    "model": "users.skill",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "name": "Cobol"
+    },
+    "model": "users.skill",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "name": "ColdFusion"
+    },
+    "model": "users.skill",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "name": "D"
+    },
+    "model": "users.skill",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "name": "Delphi"
+    },
+    "model": "users.skill",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "name": "Erlang"
+    },
+    "model": "users.skill",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "name": "F#"
+    },
+    "model": "users.skill",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "name": "Forth"
+    },
+    "model": "users.skill",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "name": "Fortran"
+    },
+    "model": "users.skill",
+    "pk": 18
+  },
+  {
+    "fields": {
+      "name": "Go"
+    },
+    "model": "users.skill",
+    "pk": 19
+  },
+  {
+    "fields": {
+      "name": "Graphic design"
+    },
+    "model": "users.skill",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "name": "Groovy"
+    },
+    "model": "users.skill",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "name": "Haskell"
+    },
+    "model": "users.skill",
+    "pk": 22
+  },
+  {
+    "fields": {
+      "name": "Java"
+    },
+    "model": "users.skill",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "name": "JavaScript"
+    },
+    "model": "users.skill",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "name": "Lasso"
+    },
+    "model": "users.skill",
+    "pk": 25
+  },
+  {
+    "fields": {
+      "name": "Lisp"
+    },
+    "model": "users.skill",
+    "pk": 26
+  },
+  {
+    "fields": {
+      "name": "Lua"
+    },
+    "model": "users.skill",
+    "pk": 27
+  },
+  {
+    "fields": {
+      "name": "Matlab"
+    },
+    "model": "users.skill",
+    "pk": 28
+  },
+  {
+    "fields": {
+      "name": "Objective\u00a0C"
+    },
+    "model": "users.skill",
+    "pk": 29
+  },
+  {
+    "fields": {
+      "name": "OCaml"
+    },
+    "model": "users.skill",
+    "pk": 30
+  },
+  {
+    "fields": {
+      "name": "OpenEdge\u00a0ABL"
+    },
+    "model": "users.skill",
+    "pk": 31
+  },
+  {
+    "fields": {
+      "name": "Pascal"
+    },
+    "model": "users.skill",
+    "pk": 32
+  },
+  {
+    "fields": {
+      "name": "Perl"
+    },
+    "model": "users.skill",
+    "pk": 33
+  },
+  {
+    "fields": {
+      "name": "PHP"
+    },
+    "model": "users.skill",
+    "pk": 34
+  },
+  {
+    "fields": {
+      "name": "Prolog"
+    },
+    "model": "users.skill",
+    "pk": 35
+  },
+  {
+    "fields": {
+      "name": "Python"
+    },
+    "model": "users.skill",
+    "pk": 36
+  },
+  {
+    "fields": {
+      "name": "R"
+    },
+    "model": "users.skill",
+    "pk": 37
+  },
+  {
+    "fields": {
+      "name": "Rexx"
+    },
+    "model": "users.skill",
+    "pk": 38
+  },
+  {
+    "fields": {
+      "name": "Ruby"
+    },
+    "model": "users.skill",
+    "pk": 39
+  },
+  {
+    "fields": {
+      "name": "SAS"
+    },
+    "model": "users.skill",
+    "pk": 40
+  },
+  {
+    "fields": {
+      "name": "Scala"
+    },
+    "model": "users.skill",
+    "pk": 41
+  },
+  {
+    "fields": {
+      "name": "Scheme"
+    },
+    "model": "users.skill",
+    "pk": 42
+  },
+  {
+    "fields": {
+      "name": "Shell Script"
+    },
+    "model": "users.skill",
+    "pk": 43
+  },
+  {
+    "fields": {
+      "name": "Smalltalk"
+    },
+    "model": "users.skill",
+    "pk": 44
+  },
+  {
+    "fields": {
+      "name": "SMX"
+    },
+    "model": "users.skill",
+    "pk": 45
+  },
+  {
+    "fields": {
+      "name": "SQL"
+    },
+    "model": "users.skill",
+    "pk": 46
+  },
+  {
+    "fields": {
+      "name": "Swift"
+    },
+    "model": "users.skill",
+    "pk": 47
+  },
+  {
+    "fields": {
+      "name": "Synergy"
+    },
+    "model": "users.skill",
+    "pk": 48
+  },
+  {
+    "fields": {
+      "name": "TCL"
+    },
+    "model": "users.skill",
+    "pk": 49
+  },
+  {
+    "fields": {
+      "name": "UI\/UX"
+    },
+    "model": "users.skill",
+    "pk": 50
+  },
+  {
+    "fields": {
+      "name": "Visual\u00a0Basic"
+    },
+    "model": "users.skill",
+    "pk": 51
+  },
+  {
+    "fields": {
+      "name": "WebDNA"
+    },
+    "model": "users.skill",
+    "pk": 52
+  },
+  {
+    "fields": {
+      "name": "HTML"
+    },
+    "model": "users.skill",
+    "pk": 53
+  },
+  {
+    "fields": {
+      "name": "Full-stack Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Frontend Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "name": "Backend Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "name": "Mobile Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "name": "Games Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "name": "Designer"
+    },
+    "model": "users.makertypes",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "name": "Hardware Developer"
+    },
+    "model": "users.makertypes",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "name": "Other"
+    },
+    "model": "users.makertypes",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "nonSocialAuth": false,
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2015-06-26T16:24:38.041Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "password": "pbkdf2_sha256$20000$Ne8IAQ6QWSuR$M\/npKvAt1E6kA84wTH0ACCMfQ8OxIRwA\/shDDlgOcmw=",
+      "email": "craig@hacklaunch.com",
+      "date_joined": "2015-06-17T07:28:25.957Z"
+    },
+    "model": "users.user",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "username": "CraigBennett",
+      "first_name": "Craig",
+      "last_name": "Bennett",
+      "nonSocialAuth": false,
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2015-06-28T07:11:02.017Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "password": "!IuwWq1ZwSEwoX3rTLAhcpKB3jsrZvqLJ3501q6j9",
+      "email": "craigbennett@hotmail.com",
+      "date_joined": "2015-06-17T07:29:22.407Z"
+    },
+    "model": "users.user",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "username": "sleepingchimp",
+      "first_name": "Bobba",
+      "last_name": "Bobo",
+      "nonSocialAuth": true,
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2015-06-26T16:22:29.876Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "password": "pbkdf2_sha256$20000$Wzl6xJFYyAbf$L6fK1cfosZoTmQm+ANlzvuQJ5iEGgF+cfqKBy5p3Sck=",
+      "email": "sleepingchimp@gmail.com",
+      "date_joined": "2015-06-18T15:36:53.236Z"
+    },
+    "model": "users.user",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "slug": "craigbennett",
+      "maker_type": [
+        
+      ],
+      "skills": [
+        
+      ],
+      "country": null,
+      "image": "profiles\/e62c735e-18ce-11e5-84d2-1040f3809a1c.jpg",
+      "summary": null,
+      "location": null,
+      "thumbnail": "profiles-thumbnail\/e67a23bd-18ce-11e5-a73b-1040f3809a1c.jpg"
+    },
+    "model": "users.userprofile",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "slug": "sleepingchimp",
+      "maker_type": [
+        1
+      ],
+      "skills": [
+        2
+      ],
+      "country": "-1",
+      "image": "",
+      "summary": null,
+      "location": null,
+      "thumbnail": ""
+    },
+    "model": "users.userprofile",
+    "pk": 3
+  }
+]

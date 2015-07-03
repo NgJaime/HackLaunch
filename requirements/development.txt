@@ -4,3 +4,6 @@ coverage==4.0a5
 django-extensions==1.5.3
 django-debug-toolbar==1.3.0
 git+https://github.com/djsutho/django-debug-toolbar-request-history.git
+freezegun==0.3.4
+django-test-plus==1.0.5
+django-nose==1.4.1

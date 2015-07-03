@@ -24,7 +24,7 @@ class Technologies(models.Model):
 #     project =
 #
 
-class Project(models.Model):
+class   Project(models.Model):
     logo = ResizedImageField(size=[125, 100], crop=['middle', 'center'], upload_to=upload_logo, blank=True, null=True)
     title = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Name your project',
                                  'blockStyles': {'p': {'margin': '0px;'}}}, blank=True)
@@ -51,11 +51,11 @@ class Project(models.Model):
     is_active = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.title[3:-3] + ' - ' + str(self.id)
+        return self.title[3:-4] + ' - ' + str(self.id)
 
     def get_slug_seed(self):
         if self.is_active:
-            return self.title[3:-3]
+            return self.title[3:-4]
         else:
             return "new-project"
 
@@ -118,6 +118,7 @@ class ProjectCreator(models.Model):
     is_admin = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
     awaiting_confirmation = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         unique_together = (("project", "creator"),)

@@ -19,6 +19,6 @@ urlpatterns = [ url(r'list/$', views.PostListView.as_view(), name='project_list'
                 url(r'removeTag/$', login_required(views.remove_tag), name='remove_tag_from_project'),
                 url(r'followProject/$', login_required(views.follow_project), name='follow_project'),
 
-                url(r'^(?P<slug>[^/]+)$', views.ProjectView.as_view(), name='profile_view'),
+                url(r'^(?P<slug>[^/]+)$', views.ProjectView.as_view(), name='project_view'),
                 url(r'^(?P<slug>[^/]+)/edit/$', login_required(views.project_edit), name='project_edit'),
                 url(r'create/$', login_required(views.project_create), name='project_create')]

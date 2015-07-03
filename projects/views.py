@@ -1,7 +1,6 @@
 import json
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render_to_response, get_object_or_404, redirect, Http404
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.template import RequestContext
 from django_ajax.decorators import ajax
@@ -14,7 +13,6 @@ from functools import wraps
 from datetime import datetime
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
-
 
 
 class PostListView(ListView):
@@ -70,7 +68,8 @@ def project_create(request):
                                    'project_tags': [],
                                    'context': context},
                                   RequestContext(request))
-
+    else:
+        raise Http404()
 
 @csrf_protect
 def project_edit(request, slug):
@@ -98,24 +97,24 @@ def project_edit(request, slug):
                 return redirect('/projects/' + slug)
         except ObjectDoesNotExist:
                 return redirect('/projects/' + slug)
+    else:
+        raise Http404()
 
 @ajax
 @csrf_protect
 def follow_project(request):
     if request.method == "POST":
-        if request.is_ajax():
-            if 'project' in request.POST:
-                if 'follow' in request.POST and 'project' in request.POST:
-                    follow = json.loads(request.POST['follow'])
-                    project = Project.objects.get(id=request.POST['project'])
+        if 'follow' in request.POST and 'project' in request.POST:
+            follow = json.loads(request.POST['follow'])
+            project = Project.objects.get(id=request.POST['project'])
 
-                    if follow is True:
-                        follow, created = Follower.objects.get_or_create(project=project, user=request.user)
-                    else:
-                        project_follow = Follower.objects.get(project=project, user=request.user)
-                        project_follow.delete()
+            if follow is True:
+                follow, created = Follower.objects.get_or_create(project=project, user=request.user)
+            else:
+                project_follow = Follower.objects.get(project=project, user=request.user)
+                project_follow.delete()
 
-                return {'success': True}
+            return {'success': True}
 
 
 def project_ajax_request(function):
@@ -276,7 +275,8 @@ def remove_creator(request, project, *args, **kwargs):
     if 'username' in request.POST:
         user = User.objects.get(username=request.POST['username'])
         creator = ProjectCreator.objects.get(project=project, creator=user)
-        creator.delete()
+        creator.is_active = False
+        creator.save()
         return {'success': True}
 
 

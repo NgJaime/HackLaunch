@@ -18,7 +18,10 @@ DATABASES = {
 INSTALLED_APPS += (
     'django_extensions',
     'debug_toolbar',
+    'django_nose',
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 ALLOWED_HOSTS = []
 
