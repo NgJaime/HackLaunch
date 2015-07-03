@@ -355,7 +355,9 @@
     <script src="{% static "js/jquery.formset.js" %}"></script>
 
     <script>
-
+        $.Editable.DEFAULTS.key = '9uC-7G-7kmcvjfnD3kfg==';
+    </script>
+    <script>
         {% autoescape off %}
             var availableTechnologies = {{ context.technologies }},
                 tags = "{{ project_tags }}";
