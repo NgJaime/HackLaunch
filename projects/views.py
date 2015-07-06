@@ -3,17 +3,16 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect, Ht
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
 from django.template import RequestContext
-from django_ajax.decorators import ajax
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from django.http import HttpResponse
 from django.views.generic import ListView
+from django_ajax.decorators import ajax
+from django.db import IntegrityError
 
-from functools import wraps
 from datetime import datetime
+
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
-
+from ajax_decorators import project_ajax_request
 
 class PostListView(ListView):
     template_name = 'project_list.html'
@@ -116,31 +115,7 @@ def follow_project(request):
 
             return {'success': True}
 
-
-def project_ajax_request(function):
-    @ajax(mandatory=False)
-    @csrf_protect
-    @wraps(function)
-    def wrapped(request, *args, **kwargs):
-        if request.method == "POST":
-            if 'project' in request.POST:
-                try:
-                    project = Project.objects.get(id=request.POST['project'])
-                    request_user = project.projectcreator_set.get(creator_id=request.user.id)
-
-                    if request_user.is_admin:
-                        return function(request, project, args, kwargs)
-                    else:
-                        return {'success': False, 'message':  'Only admins can make an update to a project'}
-
-                except ObjectDoesNotExist:
-                    return {'success': False, 'message': 'Object does not exist'}
-                except IntegrityError:
-                    return {'success': False, 'message': 'User already assigned to project'}
-
-    return wrapped
-
-
+# todo quite a bit of scope for refacoting in the below ajax end points
 @project_ajax_request
 def add_post(request, project, *args, **kwargs):
     new_post = Post(author=request.user, project=project)
@@ -169,40 +144,59 @@ def update_project(request, project, *args, **kwargs):
                 project.title = request.POST['body']
                 updated = True
             elif 'value' in request.POST['data']:
-                if field == 'facebook':
-                    project.facebook = data['value']
-                    updated = True
-                elif field == 'google-plus':
-                    project.google_plus = data['value']
-                    updated = True
-                elif field == 'instagram':
-                    project.instagram = data['value']
-                    updated = True
-                elif field == 'pinterest':
-                    project.pinterest = data['value']
-                    updated = True
-                elif field == 'twitter':
-                    project.twitter = data['value']
-                    updated = True
+                valid = False
+
+                value = data['value'].encode('utf8')
+
+                if (field == 'google-plus' and (unicode(data['value']).startswith('http://plus.google.com/')
+                    or unicode(data['value']).startswith('https://plus.google.com/')
+                    or unicode(data['value']).startswith('www.plus.google.com/'))
+                    and (not unicode(data['value']).endswith('.com/') and not unicode(data['value']).endswith('.com'))):
+                    valid = True;
+                elif ((unicode(data['value']).startswith('http://www.' + field + '.com/')
+                       or unicode(data['value']).startswith('https://www.' + field + '.com/')
+                       or unicode(data['value']).startswith('www.' + field + '.com/'))
+                       and (not unicode(data['value']).endswith('.com/') and not unicode(data['value']).endswith('.com'))):
+                    valid = True
+
+                if valid:
+                    if field == 'facebook':
+                        project.facebook = data['value']
+                        updated = True
+                    elif field == 'google-plus':
+                        project.google_plus = data['value']
+                        updated = True
+                    elif field == 'instagram':
+                        project.instagram = data['value']
+                        updated = True
+                    elif field == 'pinterest':
+                        project.pinterest = data['value']
+                        updated = True
+                    elif field == 'twitter':
+                        project.twitter = data['value']
+                        updated = True
+                else:
+                    return {'success': False, 'message': 'Invalid social media link'}
 
             if updated:
                 project.save()
 
             return {'success': True}
+        else:
+            return {'success': False, 'message': 'No field in request'}
     else:
             return {'success': False, 'message': 'No data in request'}
 
 
 @project_ajax_request
 def update_post(request, project, *args, **kwargs):
-    updated = False
-
     if 'data' in request.POST:
         data = json.loads(request.POST['data'])
 
         if 'field' in data and 'post' in data:
             post = Post.objects.get(id=data['post'], project=project)
             field = data['field']
+            updated = False
 
             if field == 'post' and 'body' in request.POST:
                 post.post = request.POST['body']
@@ -220,8 +214,9 @@ def update_post(request, project, *args, **kwargs):
 
             if updated:
                 post.save()
+                return {'success': True}
 
-            return {'success': True}
+        return {"message": "Required data missing from request", "success": False}
     else:
         return {'success': False, 'message': 'No data in request'}
 
@@ -235,15 +230,12 @@ def image_upload(request, project, *args, **kwargs):
 
             project.logo = request.FILES.get('file')
             project.save()
-            data = {'success': True, 'link': project.logo.url}
         else:
             image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
-            data = {'success': True, 'link': image.image.url}
-        return HttpResponse(json.dumps(data), content_type="application/json")
-        # return {'success': True, 'link': image.image.url}
+
+        return {'success': True, 'link': image.image.url}
     else:
-        data = {'success': False, 'message':  'No image in request'}
-        return HttpResponse(json.dumps(data), content_type="application/json")
+        return {'success': False, 'message':  'No image in request'}
 
 
 @project_ajax_request
@@ -266,8 +258,14 @@ def image_delete(request, project, *args, **kwargs):
 def add_creator(request, project, *args, **kwargs):
     if 'username' in request.POST:
         user = User.objects.get(username=request.POST['username'])
-        ProjectCreator.objects.create(project=project, creator=user)
-        return {'success': True}
+        creator, created = ProjectCreator.objects.get_or_create(project=project, creator=user)
+
+        if created:
+            return {'success': True}
+        else:
+            return {'success': False, 'message': 'User already assigned to project'}
+
+    return {'success': False, 'message': 'No username in request'}
 
 
 @project_ajax_request
@@ -279,25 +277,29 @@ def remove_creator(request, project, *args, **kwargs):
         creator.save()
         return {'success': True}
 
+    return {'success': False, 'message': 'No username in request'}
+
 
 @project_ajax_request
 def update_creator(request, project, *args, **kwargs):
-    user = User.objects.get(username=request.POST['username'])
-    creator = ProjectCreator.objects.get(project=project, creator=user)
-    updated = False
+    if 'username' in request.POST:
+        user = User.objects.get(username=request.POST['username'])
+        creator = ProjectCreator.objects.get(project=project, creator=user)
+        updated = False
 
-    if 'field' in request.POST:
-        if request.POST['field'] == 'summary' and 'body' in request.POST:
-            creator.summary = request.POST['body']
-            updated = True
-        elif request.POST['field'] == 'admin' and 'value' in request.POST:
-            creator.is_admin = request.POST['value']
-            updated = True
+        if 'field' in request.POST:
+            if request.POST['field'] == 'summary' and 'body' in request.POST:
+                creator.summary = request.POST['body']
+                updated = True
+            elif request.POST['field'] == 'admin' and 'value' in request.POST:
+                creator.is_admin = json.loads(request.POST['value'])
+                updated = True
 
-    if updated:
-        creator.save()
+            if updated:
+                creator.save()
+                return {'success': True}
 
-    return {'success': True}
+    return {"message": "Required data missing from request", "success": False}
 
 
 @project_ajax_request
@@ -306,6 +308,8 @@ def add_technology(request, project, *args, **kwargs):
         technology, created = Technologies.objects.get_or_create(name=request.POST['technology'])
         ProjectTechnologies.objects.create(project=project, technology=technology)
         return {'success': True}
+
+    return {"message": "Required data missing from request", "success": False}
 
 
 @project_ajax_request
@@ -316,6 +320,8 @@ def remove_technology(request, project, *args, **kwargs):
         project_technology.delete()
         return {'success': True}
 
+    return {"message": "Required data missing from request", "success": False}
+
 
 @project_ajax_request
 def add_tag(request, project, *args, **kwargs):
@@ -323,9 +329,12 @@ def add_tag(request, project, *args, **kwargs):
         project.tags.add(request.POST['tag'])
         return {'success': True}
 
+    return {"message": "Required data missing from request", "success": False}
 
 @project_ajax_request
 def remove_tag(request, project, *args, **kwargs):
     if 'tag' in request.POST:
         project.tags.remove(request.POST['tag'])
         return {'success': True}
+
+    return {"message": "Required data missing from request", "success": False}
