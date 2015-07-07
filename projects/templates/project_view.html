@@ -14,8 +14,11 @@
         <div class="row">
             <div class="col-md-12" style="padding-top: 25px;">
                 <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
-                    {% if project.logo.url %}
+                    {% if project.logo %}
                         <img class='logo' src="{{ project.logo.url }}" alt="Logo" width="200"
+                             style="padding-bottom: 15px;"/>
+                    {% else  %}
+                        <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200"
                              style="padding-bottom: 15px;"/>
                     {% endif %}
                     <div id="project-title" class="project-title">

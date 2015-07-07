@@ -48,7 +48,7 @@ class Project(models.Model):
 
     slug = AutoSlugField(populate_from='get_slug_seed', unique=True, always_update=True)
 
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title[3:-4] + ' - ' + str(self.id)
