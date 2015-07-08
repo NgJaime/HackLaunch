@@ -15,6 +15,7 @@ urlpatterns = [ url(r'list/$', views.PostListView.as_view(), name='project_list'
                 url(r'updateCreator/$', login_required(views.update_creator), name='update_creator'),
                 url(r'addTechnology/$', login_required(views.add_technology), name='add_technology_to_project'),
                 url(r'removeTechnology/$', login_required(views.remove_technology), name='remove_technology_from_project'),
+                url(r'updateTechnology/$', login_required(views.update_technology), name='update_project_technology'),
                 url(r'addTag/$', login_required(views.add_tag), name='add_tag_to_project'),
                 url(r'removeTag/$', login_required(views.remove_tag), name='remove_tag_from_project'),
                 url(r'followProject/$', login_required(views.follow_project), name='follow_project'),

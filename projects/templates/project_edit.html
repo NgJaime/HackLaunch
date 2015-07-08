@@ -164,8 +164,9 @@
 
                     <ul id="time-line" class="timeline-2">
                         {% for post_form in project_posts %}
+                            <br/>
                             <li class="animated fadeInRight animation-delay-2">
-                                <time class="timeline-time" datetime="">{{ post_form.date_added }} <span>{{ context.month }}</span></time>
+                                <time class="timeline-time" datetime="">{{ post_form.date_added }}</time>
                                 <i class="timeline-2-point"></i>
 
                                 <div class="panel panel-default">
@@ -334,13 +335,13 @@
                     </div>
 
                     <div class="panel panel-default animated fadeInUp animation-delay-12">
-                        <div class="panel-heading"><i class="fa fa-database"></i> Technologies</div>
+                        <div class="panel-heading"><i class="fa fa-database"></i>Technologies Used</div>
                         <div class="panel-body">
                             <div class="ui-widget">
-                                <input id="technologyInput" onkeyup="newTechnology()">
-                                <i id="addTechnology" class="fa fa-plus-circle hidden" style="color: #8ADE24;"
-                                   onclick="addTechnology()">
-                                </i>
+                                <div class="input-group">
+                                    <input id="technologyInput" placeholder="Add a technology" onkeyup="newTechnology()" style="padding-left: 5px;">
+                                    <span class="input-group-addon"><i class="fa fa-plus-circle" onclick="addTechnology()"></i></span>
+                                </div>
 
                                 <p id="technology-error-message" class="hidden" style="color: red;">
                                     <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
@@ -348,16 +349,21 @@
 
                                 <div id="technologies" style="margin-top: 10px">
                                      {% for technology in project_technologies %}
-                                        <div id="technology-{{ technology.technology.name }}">
-                                            <p class="addedTechnology" id="technology-{{ technology.technology.name }}-name">
-                                                {{ technology.technology.name }}
-                                                <i id="technology-{{ technology.technology.name }}-icon" class="fa fa-minus-circle"
-                                                   style="color: red; padding-left: 5px;" onclick="removeTechnology('{{ technology.technology.name }}')">
-                                                </i>
-                                            <p>
-                                            <p id="technology-{{ technology.technology.name }}-error-message" class="hidden" style="color: red;">
-                                                <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
-                                            </p>
+                                        <div id="technology-{{ technology.technology.name }}" style="margin-bottom: 15px;">
+                                            <div>
+                                                <p class="addedTechnology" id="technology-{{ technology.technology.name }}-name">
+                                                    {{ technology.technology.name }}
+                                                    <i id="technology-{{ technology.technology.name }}-icon" class="fa fa-minus-circle"
+                                                       style="color: black; padding-left: 5px;" onclick="removeTechnology('{{ technology.technology.name }}')">
+                                                    </i>
+                                                <p>
+                                                <p id="technology-{{ technology.technology.name }}-error-message" class="hidden" style="color: red;">
+                                                    <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <div class="technology-slider" data-name="{{ technology.technology.name }}" data-strength="{{ technology.strength }}"></div>
+                                            </div>
                                         </div>
                                      {% endfor %}
                                 </div>
@@ -597,23 +603,19 @@
                         if (data.content.success === true) {
                             $("#time-line").prepend(
                                 '<li class="animated fadeInRight animation-delay-2">' +
-                                    '<time class="timeline-time" datetime="">' + data.content.date_added + ' <span>' + data.content.month + '</span></time>' +
+                                    '<time class="timeline-time" datetime="">' + data.content.date_added + '</time>' +
                                     '<i class="timeline-2-point"></i>' +
-
                                     '<div class="panel panel-default">' +
                                         '<div class="panel-heading">' +
                                             '<div id="' + data.content.post_id + '" class="new-post-title-edit" style="color: black;"></div>' +
                                         '</div>' +
-
                                         '<div id="' + data.content.post_id + '" class="new-post-edit"></div>' +
-
                                         '<div style="padding: 5px;">' +
                                             '<div style="display: inline-block">' +
                                                 '<label>Author </label>' +
                                                 '<select id="' + data.content.username + '-user-selection" class="user-selection" selected="' + data.content.username + '" onchange="updatePost(' + data.content.post_id + ', "author", $(this.selectedOptions[0]).val())">' +
                                                 '</select>' +
                                             '</div>' +
-
                                             '<div class="pull-right">' +
                                                 '<input type="checkbox" name="' + data.content.post_id + '-is-adimn" onchange="updatePost(' + data.content.post_id + ', &apos;published&apos;, this.checked)">Publish post<br>' +
                                             '</div>' +
@@ -931,7 +933,8 @@
         };
 
         var addTechnology = function () {
-            var value = $('#technologyInput').val();
+            var raw = $('#technologyInput').val(),
+                value = raw.substr(0, 1).toUpperCase() + raw.substr(1);
 
             $.ajax({
                 url: "{% url 'add_technology_to_project' %}",
@@ -943,9 +946,30 @@
                 success: function (data, textStatus, xhr) {
                     if (data.content.success === true) {
                         $('#technology-error-message').addClass('hidden');
-                        $('#technologies').append('<div id="technology-' + value + '"> <p class="addedTechnology" id="technology-' + value + '-name">' + value + '<i id="technology-' + value + '-icon" class="fa fa-minus-circle" style="color: red; padding-left: 5px;" onclick="removeTechnology(&quot;' + value + '&quot;)"></i><p> <p id="technology-' + value + '-error-message" class="hidden" style="color: red;"><i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i> </p></div>');
+
+                        $('#technologies').append('<div id="technology-' + value + '" style="margin-bottom: 15px;">' +
+                                                    '<div>' +
+                                                        '<p class="addedTechnology" id="technology-' + value + '-name">' +
+                                                            '' + value + '' +
+                                                            '<i id="technology-' + value + '-icon" class="fa fa-minus-circle" style="color: black; padding-left: 5px;" onclick="removeTechnology(&apos;' + value + '&apos;)"></i>' +
+                                                        '<p>' +
+                                                        '<p id="technology-' + value + '-error-message" class="hidden" style="color: red;">' +
+                                                            '<i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>' +
+                                                        '</p>' +
+                                                    '</div>' +
+                                                    '<div>' +
+                                                        '<div id="' + value + '-slider" class="technology-slider" data-name="' + value + '" data-strength="0"></div>' +
+                                                    '</div>' +
+                                                '</div>');
+                        $('#' + value + '-slider').slider({
+                            min: 0,
+                            max: 100,
+                            value: 0,
+                            change: function (event, ui) {
+                                updateTechnology(value, $(this).slider( "value" ));
+                            }
+                        });
                         $('#technologyInput').val('');
-                        $('#addTechnology').addClass('hidden');
                     }
                     else {
                         $('#technology-error-message').removeClass('hidden');
@@ -972,6 +996,28 @@
                         $('#technology-' + value).remove();
                     }
                     else {
+                        $('#technology-' + value + '-error-message').removeClass('hidden');
+                        $('#technology-' + value + '-error-message').text(data.content.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#technology-' + value + '-error-message').removeClass('hidden');
+                    $('#technology-' + value + '-error-message').text(xhr.responseJSON.message);
+                }
+            });
+        };
+
+        var updateTechnology = function (name, strength) {
+             $.ajax({
+                url: "{% url 'update_project_technology' %}",
+                type: 'POST',
+                dataType: 'json',
+                data: {technology: name,
+                       strength: strength,
+                       project: {{ context.projectId }},
+                       csrfmiddlewaretoken: '{{ csrf_token }}'},
+                success: function (data, textStatus, xhr) {
+                    if (data.content.success !== true) {
                         $('#technology-' + value + '-error-message').removeClass('hidden');
                         $('#technology-' + value + '-error-message').text(data.content.message);
                     }
@@ -1144,6 +1190,17 @@
                 autosaveInterval: 2500,
                 crossDomain: false,
                 placeholder: "Add a description of this creator's contribution"
+            });
+        });
+
+        $('.technology-slider').each(function() {
+            $(this).slider({
+                min: 0,
+                max: 100,
+                value: $(this).data("strength"),
+                change: function (event, ui) {
+                    updateTechnology($(this).data("name"), $(this).slider( "value" ));
+                }
             });
         });
 

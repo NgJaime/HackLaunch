@@ -19,6 +19,10 @@ class Technologies(models.Model):
         verbose_name = 'Technology'
         verbose_name_plural = 'Technologies'
 
+    def save(self, *args, **kw):
+        self.name = self.name.title()
+        super(Technologies, self).save(*args, **kw)
+
 
 # class Views(models.Model):
 #     project =
@@ -136,7 +140,7 @@ class ProjectCreator(models.Model):
 class ProjectTechnologies(models.Model):
     project = models.ForeignKey(Project)
     technology = models.ForeignKey(Technologies)
-    strength = models.SmallIntegerField(blank=True, null=True)
+    strength = models.SmallIntegerField(default=0)
 
     date_added = models.DateField()
 
@@ -144,6 +148,7 @@ class ProjectTechnologies(models.Model):
         unique_together = (("project", "technology"),)
         verbose_name = 'ProjectTechnology'
         verbose_name_plural = 'ProjectTechnologies'
+        ordering = ['technology__name']
 
     def __unicode__(self):
         return self.project.title + ' ' + self.technology.name

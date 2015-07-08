@@ -327,6 +327,17 @@ def remove_technology(request, project, *args, **kwargs):
 
     return {"message": "Required data missing from request", "success": False}
 
+@project_ajax_request
+def update_technology(request, project, *args, **kwargs):
+    if 'technology' in request.POST and 'strength' in request.POST:
+        technology = Technologies.objects.get(name=request.POST['technology'])
+        project_technology = ProjectTechnologies.objects.get(project=project, technology=technology)
+        project_technology.strength = request.POST['strength']
+        project_technology.save()
+        return {'success': True}
+
+    return {"message": "Required data missing from request", "success": False}
+
 
 @project_ajax_request
 def add_tag(request, project, *args, **kwargs):
