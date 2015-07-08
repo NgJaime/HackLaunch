@@ -7,6 +7,7 @@ from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
 from django.conf import settings
+from django.templatetags.static import static
 from autoslug import AutoSlugField
 from s3 import upload_profile_image, upload_profile_thumbnail
 
@@ -98,9 +99,13 @@ class UserProfile(models.Model):
         return ("profile_view", [self.slug])
 
     def get_full_country_name(self):
-        if self.country:
+        if self.country and self.country != u'-1':
             return pycountry.countries.get(alpha2=self.country).name
         else:
             return None
 
-
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            return static('images/avatar.jpg')

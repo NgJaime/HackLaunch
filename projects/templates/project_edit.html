@@ -212,22 +212,17 @@
                                     <div id="creator-{{ creator.creator.username }}">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <a href="#">
-                                                    {% if creator.creator.userprofile.thumbnail %}
-                                                        <img src="{{ creator.creator.userprofile.thumbnail.url }}"
-                                                             alt="{{ creator.creator.get_full_name }}" class="img-circle">
-                                                    {% else %}
-                                                        <img src="{% static "images/avatar.jpg" %}"
-                                                             alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
-                                                    {% endif %}
+                                                <a href="/users/{{ creator.creator.userprofile.slug }}">
+                                                    <img src="{{ creator.creator.userprofile.get_thumbnail }}"
+                                                         alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px; height: 50px;">
                                                 </a>
                                             </div>
                                             <div class="col-md-9" style="text-align: left;">
                                                 <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                                    <a href="#" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                    <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
                                                     {% if not creator.is_owner %}
                                                         <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-minus-circle pull-right"
-                                                           style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}')">
+                                                           style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}')">
                                                         </i>
                                                     {% endif %}
                                                 </h4>
@@ -280,50 +275,51 @@
                     </div>
                     <br>
 
-                    <div class="content-box box-primary animated fadeInDown animation-delay-14">
-                        <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Prior-Contributors</strong></h4>
+                    {% if context.prior_creator %}
+                        <div id="prior-creators-container">
+                    {% else %}
+                        <div id="prior-creators-container" class="hidden">
+                    {% endif %}
+                            <div  class="content-box box-primary animated fadeInDown animation-delay-14">
+                                <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Prior-Contributors</strong></h4>
 
-                        <div id="prior-creators" class="media">
-                            {% for creator in project_creators %}
-                                {% if not creator.is_active %}
-                                    <div id="creator-{{ creator.creator.username }}">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <a href="#">
-                                                    {% if creator.creator.userprofile.thumbnail %}
-                                                        <img src="{{ creator.creator.userprofile.thumbnail.url }}"
-                                                             alt="{{ creator.creator.get_full_name }}" class="img-circle">
-                                                    {% else %}
-                                                        <img src="{% static "images/avatar.jpg" %}"
-                                                             alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px">
-                                                    {% endif %}
-                                                </a>
-                                            </div>
-                                            <div class="col-md-9" style="text-align: left;">
-                                                <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                                    <a href="#" style="color: white">{{ creator.creator.get_full_name }}</a>
-                                                    <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-plus-circle pull-right"
-                                                       style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}')">
-                                                    </i>
-                                                </h4>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div id="{{ creator.creator.username }}">
-                                                <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
-                                                    {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                <div id="prior-creators" class="media">
+                                    {% for creator in project_creators %}
+                                        {% if not creator.is_active %}
+                                            <div id="prior-creator-{{ creator.creator.username }}" class="creator">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <a href="/users/{{ creator.creator.userprofile.slug }}">
+                                                                <img src="{{ creator.creator.userprofile.get_thumbnail }}"
+                                                                     alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px; height: 50px;">
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-9" style="text-align: left;">
+                                                        <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
+                                                            <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                            <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-plus-circle pull-right" style="color: white; padding-left: 5px;"
+                                                                    onclick="reactivateCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}')">
+                                                            </i>
+                                                        </h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <hr style="margin: 10px 0px 10px 0px; color: white;">
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                                <div class="row">
+                                                    <div id="{{ creator.creator.username }}">
+                                                        <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit" style="margin: 0px;">
+                                                            {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr style="margin: 10px 0px 10px 0px; color: white;">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div>
 
                     <div class="panel panel-default animated fadeInUp animation-delay-12">
                         <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
@@ -727,6 +723,73 @@
             $('#creatorInput').val('');
         };
 
+        var getNewCreatorElements = function(username, fullname, thumbnail, parentId) {
+             return '<div id="' + parentId + '" class="creator"> \
+                         <div class="row"> \
+                            <div class="col-md-3"> \
+                                <a class="pull-left" href="#"> \
+                                <img src="' + thumbnail + '" alt="' + fullname + '" class="img-circle" style="width: 50px; height: 50px;"> \
+                                </a> \
+                            </div> \
+                            <div class="col-md-9" style="text-align: left;"> \
+                                <h4 id="' + username + '-heading" class="media-heading creator-name"><a href="#" style="color: white">' + fullname + '</a> \
+                                </h4> \
+                                <p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p> \
+                                <input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br> \
+                            </div> \
+                         </div> \
+                         <div class="row"> \
+                            <div id="creator-' + username + '-summary" class="creator-edit" name="' + username + '" style="margin-bottom: 0px;"></div> \
+                         </div> \
+                         <hr style="margin: 10px 0px 0px 0px; color: white;"> \
+                    </div> ';
+        }
+
+
+        var reactivateCreator = function (username, fullname, thumbnail) {
+            $.ajax({
+                    url: "{% url 'update_creator' %}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {username: username,
+                           field: 'active',
+                           value: true,
+                           project: {{ context.projectId }},
+                           csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success: function (data, textStatus, xhr) {
+                        if (data.content.success === true) {
+                            $('#creator-error').addClass('hidden');
+                            var summary = $('#creator-' + username + '-summary'),
+                                creators = $('#creators');
+
+                            creators.append(getNewCreatorElements(username, fullname, thumbnail, 'creator-' + username));
+                            var header = $('#' + username + '-heading');
+                            header.append('<i id="creator-' + username + '-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
+
+                            var newSummary = creators.find('#creator-' + username + '-summary');
+                            newSummary.append(summary);
+
+                            $('#prior-creator-' + username).remove()
+
+                            var priorCreatorsContainer = $('#prior-creators-container'),
+                                priorCreators = priorCreatorsContainer.find('.creator');
+
+                            if (priorCreators.length === 0 ){
+                                priorCreatorsContainer.addClass('hidden');
+                            }
+                        }
+                        else {
+                            $('#creator-error').removeClass('hidden');
+                            $('#creator-error-message').text(data.content.message);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        $('#creator-error').removeClass('hidden');
+                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                    }
+            });
+        };
+
         var updateCreator = function (username, field, value) {
             $.ajax({
                     url: "{% url 'update_creator' %}",
@@ -750,10 +813,10 @@
                         $('#creator-error').removeClass('hidden');
                         $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
                     }
-                });
+            });
         };
 
-        var removeCreator = function (username) {
+        var removeCreator = function (username, fullname, thumbnail) {
             $.ajax({
                     url: "{% url 'remove_creator_from_project' %}",
                     type: 'POST',
@@ -763,11 +826,21 @@
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
                         if (data.content.success === true) {
-                            $('#creator-error').addClass('hidden');
-                            $('#creator-' + username).clone().apppendTo($('proir-creators'));
-                            $('#creator-' + username).remove();
+                            $('#prior-creators-container').removeClass('hidden');
 
-                            $('.user-selection option[value=' + username +']').remove();
+                            $('#creator-error').addClass('hidden');
+                            var summary = $('#creator-' + username + '-summary'),
+                                creators = $('#prior-creators');
+
+                            creators.append(getNewCreatorElements(username, fullname, thumbnail, 'prior-creator-' + username));
+
+                            var newSummary = creators.find('#creator-' + username + '-summary');
+                            newSummary.append(summary);
+
+                            $('#creator-' + username).remove()
+
+                            var header = $('#' + username + '-heading');
+                            header.append('<i id="creator-' + username + '-icon" class="fa fa-plus-circle pull-right" style="color: white; padding-left: 5px;" onclick="reactivateCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
                         }
                         else {
                             $('#creator-error').removeClass('hidden');
@@ -796,34 +869,10 @@
 
                             var creators = $('#creators');
 
-                            creators.append(
-                                    '<div id="creator-' + username + '">' +
-                                         '<div class="row">' +
-                                            '<div class="col-md-3">' +
-                                                '<a class="pull-left" href="#">' +
-                                                '<img src="' + thumbnail + '" alt="' + fullName + '" class="img-circle" style="width: 50px">' +
-                                                '</a>' +
-                                            '</div>' +
-                                            '<div class="col-md-9" style="text-align: left;">' +
-                                                '<h4 id="' + username + '" class="media-heading creator-name"><a href="#" style="color: white">' + fullName + '</a>'+
-                                                    '<i id="technology-' + username + '-icon" class="fa fa-minus-circle pull-right"' +
-                                                       'style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;)">' +
-                                                    '</i>' +
-                                                '</h4>' +
+                            creators.append(getNewCreatorElements(username, fullName, thumbnail, 'creator-' + username));
 
-                                                '<p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p>' +
-                                                '<input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br>' +
-
-                                            '</div>' +
-                                         '</div>' +
-
-                                         '<div class="row">' +
-                                            '<div id="creator-' + username + '-summary" class="creator-edit" name="' + username + '" style="margin-bottom: 0px;"></div>' +
-                                         '</div>' +
-
-                                         '<hr style="margin: 10px 0px 0px 0px; color: white;">' +
-                                    '</div> '
-                            );
+                            var header = $('#' + username + '-heading');
+                            header.append('<i id="creator-' + username + '-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
 
                             $('#new-creator-div').remove()
 

@@ -84,6 +84,8 @@ def project_edit(request, slug):
                 creators = ProjectCreator.objects.filter(project=current_project.id).order_by('date_joined')
                 posts = Post.objects.filter(project=current_project).order_by('-date_added')
 
+                context['prior_creator'] = any(creator.is_active is False for creator in creators)
+
                 return render_to_response('project_edit.html',
                                           {'project': current_project,
                                            'project_creators': creators,
@@ -293,6 +295,9 @@ def update_creator(request, project, *args, **kwargs):
                 updated = True
             elif request.POST['field'] == 'admin' and 'value' in request.POST:
                 creator.is_admin = json.loads(request.POST['value'])
+                updated = True
+            elif request.POST['field'] == 'active' and 'value' in request.POST:
+                creator.is_active = json.loads(request.POST['value'])
                 updated = True
 
             if updated:
