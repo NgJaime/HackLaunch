@@ -11,7 +11,9 @@ from projects.models import ProjectCreator, Project, Post, Technologies, Project
 from freezegun import freeze_time
 
 from projects.views import add_post, update_project, update_post, image_upload, add_creator, remove_creator, \
-                           update_creator, add_technology, remove_technology, add_tag, remove_tag, project_ajax_request
+                           update_creator, add_technology, remove_technology, update_technology, add_tag, remove_tag, \
+                           project_ajax_request
+
 
 @freeze_time("2012-01-01")
 class AddPostTestCase(TestCase):
@@ -604,6 +606,62 @@ class RemoveTechnologyTestCase(TestCase):
 
         end_technology_count = self.project.technologies.count()
         self.assertEqual(start_technology_count, end_technology_count + 1)
+
+
+class UpdateTechnologyTestCase(TestCase):
+    fixtures = ['initial_project_data.json', 'initial_user_data.json']
+
+    def setUp(self):
+        # todo this ideally should be mocked by patching project_ajax_request
+        self.client = Client(enforce_csrf_checks=False)
+        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        self.client.login(username='someone', password='password')
+
+        self.project = Project.objects.get(id=59)
+        self.creator = ProjectCreator.objects.create(project=self.project, creator=self.user, is_admin=True)
+
+        self.factory = RequestFactory()
+        self.request = self.factory.post('/test/', content_type='application/json')
+        self.request._dont_enforce_csrf_checks = True
+        self.request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        self.request.POST = self.request.POST.copy()
+        self.request.user = self.user
+
+    def test_technology_missing_from_request(self):
+        self.request.POST = {'project': '59', 'strength': '22'}
+
+        response = update_technology(self.request)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "Required data missing from request", "success": false}}')
+
+    def test_strength_missing_from_request(self):
+        self.request.POST = {'project': '59', 'technology': 'something'}
+
+        response = update_technology(self.request)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "Required data missing from request", "success": false}}')
+
+    def test_update_valid_technology(self):
+        technology_name = 'New Technology'
+        self.request.POST = {'project': '59', 'technology': technology_name, 'strength': '22'}
+
+        technology = Technologies.objects.create(name=technology_name)
+        project_technology = ProjectTechnologies.objects.create(technology=technology, project=self.project, strength=100)
+        start_technology_count = self.project.technologies.count()
+
+        response = update_technology(self.request)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
+
+        end_technology_count = self.project.technologies.count()
+        self.assertEqual(start_technology_count, end_technology_count)
+        project_technology = ProjectTechnologies.objects.get(technology=technology, project=self.project)
+        self.assertEqual(project_technology.strength, 22)
+
+
 
 class AddTagTestCase(TestCase):
     fixtures = ['initial_project_data.json', 'initial_user_data.json']

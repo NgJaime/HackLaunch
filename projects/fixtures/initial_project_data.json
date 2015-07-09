@@ -123,7 +123,7 @@
     "fields": {
       "project": 59,
       "date_added": "2015-06-30",
-      "strength": null,
+      "strength": 21,
       "technology": 4
     },
     "model": "projects.projecttechnologies",
@@ -133,7 +133,7 @@
     "fields": {
       "project": 59,
       "date_added": "2015-07-03",
-      "strength": null,
+      "strength": 89,
       "technology": 2
     },
     "model": "projects.projecttechnologies",
