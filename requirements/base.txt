@@ -16,3 +16,4 @@ pycountry==1.10
 django-froala-editor==1.2.7
 djangoajax==2.2.15
 django-taggit==0.15.0
+bleach==1.4.1
