@@ -602,6 +602,7 @@
                     success: function (data, textStatus, xhr) {
                         if (data.content.success === true) {
                             $("#time-line").prepend(
+                                '<br/>' +
                                 '<li class="animated fadeInRight animation-delay-2">' +
                                     '<time class="timeline-time" datetime="">' + data.content.date_added + '</time>' +
                                     '<i class="timeline-2-point"></i>' +
@@ -626,7 +627,7 @@
 
                             var authors = $('#' + data.content.username + '-user-selection');
                             $('.creator-name').each(function(){
-                                $(authors).append('<option value=' + this.id + '>' + (this.childNodes[0]).text + '</option>')
+                                $(authors).append('<option value=' + this.id + '>' + (this.childNodes[1]).text + '</option>')
                             });
 
                             $('.new-post-title-edit').each(function() {
