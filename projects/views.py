@@ -13,6 +13,7 @@ from datetime import datetime
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
 from ajax_decorators import project_ajax_request
+from sanatise_html import clean_rich_html
 
 class PostListView(ListView):
     template_name = 'project_list.html'
@@ -201,7 +202,8 @@ def update_post(request, project, *args, **kwargs):
             updated = False
 
             if field == 'post' and 'body' in request.POST:
-                post.post = request.POST['body']
+                clean_post = clean_rich_html(request.POST['body'])
+                post.post = clean_post
                 updated = True
             elif field == 'title' and 'body' in request.POST:
                 post.title = request.POST['body']
