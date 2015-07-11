@@ -144,41 +144,43 @@
                 <br>
             </div>
 
-            <div class="content-box box-primary animated fadeInDown animation-delay-14">
-                <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Prior Creators</strong></h4>
+            {% if context.prior_creator %}
+                <div class="content-box box-primary animated fadeInDown animation-delay-14">
+                    <h4 class="content-box-title" style="margin-top: 0px; padding: 0px;"><strong>Prior Creators</strong></h4>
 
-                {% for creator in creators %}
-                    {% if not creator.inital.awaiting_confirmation and not creator.is_active %}
-                        <div id="creator-{{ creator.creator.username }}">
-                            <a class="pull-left" href="/users/{{ creator.creator.userprofile.slug }}">
-                                <img src="{{ creator.creator.userprofile.get_thumbnail }}"
-                                     alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px; height: 50px;">
-                            </a>
+                    {% for creator in creators %}
+                        {% if not creator.inital.awaiting_confirmation and not creator.is_active %}
+                            <div id="creator-{{ creator.creator.username }}">
+                                <a class="pull-left" href="/users/{{ creator.creator.userprofile.slug }}">
+                                    <img src="{{ creator.creator.userprofile.get_thumbnail }}"
+                                         alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px; height: 50px;">
+                                </a>
 
-                            <div id='{{ creator.creator.username }}' class="media-body" style="padding-left: 10px;">
-                                <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                    <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
-                                </h4>
+                                <div id='{{ creator.creator.username }}' class="media-body" style="padding-left: 10px;">
+                                    <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
+                                        <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                    </h4>
 
-                                {% if creator.summary %}
-                                    <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
-                                         style="margin: 0px;">
-                                        {% autoescape off %} {{ creator.summary }} {% endautoescape %}
-                                    </div>
-                                {% else %}
-                                    <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
-                                         style="margin: 0px; padding-bottom: 40px; width: 150px;">
+                                    {% if creator.summary %}
+                                        <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
+                                             style="margin: 0px;">
+                                            {% autoescape off %} {{ creator.summary }} {% endautoescape %}
+                                        </div>
+                                    {% else %}
+                                        <div id="creator-{{ creator.creator.username }}-summary" class="creator-edit"
+                                             style="margin: 0px; padding-bottom: 40px; width: 150px;">
 
-                                    </div>
-                                {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <hr style="margin: 10px 0px 10px 0px; color: white;">
                             </div>
-
-                            <hr style="margin: 10px 0px 10px 0px; color: white;">
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                <br>
-            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                </div>
+            {% endif %}
 
 
             <div class="panel panel-default fadeInUp animation-delay-12">

@@ -49,7 +49,8 @@ def get_project_context(project_id):
     month = datetime.now().strftime("%B")
     # todo cache
     technologies = json.dumps(list(Skill.objects.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
-    context = {'date': date, 'month': month, 'technologies': technologies, 'projectId': project_id}
+    prior_creators = any(creator.is_active is False for creator in creators)
+    context = {'date': date, 'month': month, 'technologies': technologies, 'projectId': project_id, 'prior_creator': prior_creators}
 
     return context
 
@@ -84,8 +85,6 @@ def project_edit(request, slug):
 
                 creators = ProjectCreator.objects.filter(project=current_project.id).order_by('date_joined')
                 posts = Post.objects.filter(project=current_project).order_by('-date_added')
-
-                context['prior_creator'] = any(creator.is_active is False for creator in creators)
 
                 return render_to_response('project_edit.html',
                                           {'project': current_project,
