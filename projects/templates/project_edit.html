@@ -152,7 +152,7 @@
                         Project Pitch
                     </h2>
 
-                    <div id="{{ post_form.id }}" class="pitch-edit">
+                    <div id="{{ post_form.id }}" class="pitch-edit" style="margin-top: 10px; ">
                         {% autoescape off %} {{ project.pitch }} {% endautoescape %}
                     </div>
 
@@ -170,8 +170,8 @@
                                 <i class="timeline-2-point"></i>
 
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div id="{{ post_form.id }}" class="post-title-edit" style="color: black;">
+                                    <div class="panel-heading" style="padding-bottom: 0px;">
+                                        <div id="{{ post_form.id }}" class="post-title-edit" style="color: black; padding-bottom: 0px;">
                                             {% autoescape off %} {{ post_form.title }} {% endautoescape %}
                                         </div>
                                     </div>
@@ -426,7 +426,7 @@
             $(element).editable({
                 imageUpload: false,
                 imageLink: false,
-                buttons: ['bold', 'italic', 'underline', 'fontSize', 'sep', 'undo', 'redo'],
+                buttons: [],
                 saveParams: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     data: JSON.stringify(data),
@@ -444,7 +444,7 @@
             $(element).editable({
                 imageUpload: false,
                 imageLink: false,
-                buttons: ['bold', 'italic', 'underline', 'fontSize', 'sep', 'undo', 'redo'],
+                buttons: [],
                 saveParams: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     data: JSON.stringify(data),
@@ -1206,7 +1206,7 @@
         });
 
         $('.pitch-edit').each(function() {
-            richEdit($(this), {'field': 'pitch'}, "{% url 'update_project' %}", 'Create a pitch for your project it can include images, videos and embeded youtube content')
+            simpleEdit($(this), {'field': 'pitch'}, "{% url 'update_project' %}", 'Create a pitch for your project it can include images, videos and embeded youtube content')
         });
         $('.project-tagline').each(function() {
             LimitedCharEdit($(this),  {'field': 'tagline'}, "{% url 'update_project' %}", 'Provide a tag line for your project', 128)
