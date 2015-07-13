@@ -15,13 +15,28 @@ from users.models import User, Skill
 from ajax_decorators import project_ajax_request
 from sanatise_html import clean_rich_html, clean_simple_html
 
-class PostListView(ListView):
+class ProjectListView(ListView):
     template_name = 'project_list.html'
     paginate_by = 25
     context_object_name = 'projects'
 
     def get_queryset(self):
         return Project.objects.all()
+
+
+class UserProjectsListView(ListView):
+    template_name = 'user_projects.html'
+    paginate_by = 25
+    context_object_name = 'project_creator'
+
+    def get_queryset(self):
+        return ProjectCreator.objects.filter(creator__username=self.kwargs['slug'])
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserProjectsListView, self).get_context_data(*args, **kwargs)
+        context['following'] = Follower.objects.filter(user__username=self.kwargs['slug'])
+        context['user'] = self.kwargs['slug']
+        return context
 
 
 class ProjectView(DetailView):

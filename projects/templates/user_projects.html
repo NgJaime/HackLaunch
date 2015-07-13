@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Project List{% endblock %}
+
+{% block projects-nav %}active{% endblock %}
+
+{% block content %}
+    <div class="row  margin-top-20">
+        <h1 style="text-align: center;"><b>{{ project_creator.0.creator.get_full_name }}'s Projects</b></h1>
+
+        <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+            <h2 class="margin-bottom-20  section-title no-margin-top">
+                Projects
+            </h2>
+
+            <div class="row">
+                {%  for creator in project_creator %}
+                    {% if creator.project.title and creator.project.tag_line %}
+                        <div class="col-sm-4 col-md-3" onclick="location.href='/projects/{{ creator.project.slug }}'">
+                            <div class="thumbnail">
+                                {% if creator.project.logo %}
+                                      <img id='logo' class='logo' src="{{ creator.project.logo.url }}" alt="Logo" style="width: 252px; height: 168px;"/>
+                                {% endif %}
+                                <div class="caption">
+                                    {% autoescape off %}
+                                        <h3 class="center"><strong>{{ creator.project.title }}</strong></h3>
+                                        <p>{{ creator.project.tag_line }}</p>
+                                    {% endautoescape %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <h2 class="margin-bottom-20  section-title no-margin-top">
+                Followed Projects
+            </h2>
+            <div class="row">
+                {%  for follower in following %}
+                    {% if follower.project.title and follower.project.tag_line %}
+                        <div class="col-sm-4 col-md-3" onclick="location.href='/projects/{{ follower.project.slug }}'">
+                            <div class="thumbnail">
+                                {% if follower.project.logo %}
+                                      <img id='logo' class='logo' src="{{ follower.project.logo.url }}" alt="Logo" style="width: 252px; height: 168px;"/>
+                                {% endif %}
+                                <div class="caption">
+                                    {% autoescape off %}
+                                        <h3 class="center"><strong>{{ follower.project.title }}</strong></h3>
+                                        <p>{{ follower.project.tag_line }}</p>
+                                    {% endautoescape %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

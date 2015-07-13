@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from . import views
 
 
-urlpatterns = [ url(r'list/$', views.PostListView.as_view(), name='project_list'),
+urlpatterns = [ url(r'list/$', views.ProjectListView.as_view(), name='project_list'),
+                url(r'user/(?P<slug>[^/]+)$', views.UserProjectsListView.as_view(), name='user_projects'),
 
                 url(r'image_upload/$', login_required(views.image_upload), name='project_image_upload'),
                 url(r'image_delete/$', login_required(views.image_delete), name='project_image_delete'),
