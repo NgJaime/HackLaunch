@@ -43,8 +43,11 @@ class User(AbstractUser):
             original = User.objects.get(pk=self.pk)
             if original.nonSocialAuth and original.password != self.password:
                 self.send_password_changed_email()
+
         else:
             self.send_welcome_email()
+
+        self.username = self.username.lower()
 
         super(User, self).save(*args, **kw)
 
