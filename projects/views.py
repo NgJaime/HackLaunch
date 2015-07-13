@@ -6,14 +6,14 @@ from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView
 from django_ajax.decorators import ajax
-from django.db import IntegrityError
 
 from datetime import datetime
+from urlparse import urlparse
 
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
 from ajax_decorators import project_ajax_request
-from sanatise_html import clean_rich_html
+from sanatise_html import clean_rich_html, clean_simple_html
 
 class PostListView(ListView):
     template_name = 'project_list.html'
@@ -44,13 +44,13 @@ class ProjectView(DetailView):
         return context
 
 
-def get_project_context(project_id):
+def get_project_context(project):
     date = datetime.now().strftime("%d/%m/%Y")
     month = datetime.now().strftime("%B")
     # todo cache
     technologies = json.dumps(list(Skill.objects.values_list('name', flat=True)), ensure_ascii=False).encode('utf8')
-    prior_creators = any(creator.is_active is False for creator in creators)
-    context = {'date': date, 'month': month, 'technologies': technologies, 'projectId': project_id, 'prior_creator': prior_creators}
+    prior_creators = any(creator.is_active is False for creator in project.projectcreator_set.all())
+    context = {'date': date, 'month': month, 'technologies': technologies, 'projectId': project.id, 'prior_creator': prior_creators}
 
     return context
 
@@ -60,7 +60,7 @@ def project_create(request):
     if request.method == "GET":
         new_project = Project.objects.create()
         new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True, is_owner=True, awaiting_confirmation=False)
-        context = get_project_context(new_project.id)
+        context = get_project_context(new_project)
 
         return render_to_response('project_edit.html',
                                   {'project': new_project,
@@ -81,7 +81,7 @@ def project_edit(request, slug):
             creator = ProjectCreator.objects.get(creator=request.user, project=current_project)
 
             if creator.is_admin:
-                context = get_project_context(current_project.id)
+                context = get_project_context(current_project)
 
                 creators = ProjectCreator.objects.filter(project=current_project.id).order_by('date_joined')
                 posts = Post.objects.filter(project=current_project).order_by('-date_added')
@@ -117,7 +117,7 @@ def follow_project(request):
 
             return {'success': True}
 
-# todo quite a bit of scope for refacoting in the below ajax end points
+# todo quite a bit of scope for refacoting in the below ajax end-points
 @project_ajax_request
 def add_post(request, project, *args, **kwargs):
     new_post = Post(author=request.user, project=project)
@@ -137,45 +137,47 @@ def update_project(request, project, *args, **kwargs):
             field = data['field']
 
             if field == 'pitch' and 'body' in request.POST:
-                project.pitch = request.POST['body']
+                pitch = clean_simple_html(request.POST['body'])
+                project.pitch = pitch
                 updated = True
             elif field == 'tagline' and 'body' in request.POST:
-                project.tag_line = request.POST['body']
+                tag_line = clean_simple_html(request.POST['body'])
+                project.tag_line = tag_line
                 updated = True
             elif field == 'title' and 'body' in request.POST:
-                project.title = request.POST['body']
+                title = clean_simple_html(request.POST['body'])
+                project.title = title
                 updated = True
             elif 'value' in request.POST['data']:
                 valid = False
 
-                value = data['value'].encode('utf8')
+                url = urlparse(data['value'].encode('utf8'))
 
-                if (field == 'google-plus' and (unicode(data['value']).startswith('http://plus.google.com/')
-                    or unicode(data['value']).startswith('https://plus.google.com/')
-                    or unicode(data['value']).startswith('www.plus.google.com/'))
-                    and (not unicode(data['value']).endswith('.com/') and not unicode(data['value']).endswith('.com'))):
+                if not url.scheme:
+                    url = urlparse('http://' + data['value'].encode('utf8'))
+
+                if (field == 'google-plus' and url.netloc == 'plus.google.com' or url.netloc == 'www.plus.google.com') \
+                    and url.path != '' and url.path != '/':
                     valid = True;
-                elif ((unicode(data['value']).startswith('http://www.' + field + '.com/')
-                       or unicode(data['value']).startswith('https://www.' + field + '.com/')
-                       or unicode(data['value']).startswith('www.' + field + '.com/'))
-                       and (not unicode(data['value']).endswith('.com/') and not unicode(data['value']).endswith('.com'))):
+                elif (url.netloc == 'www.' + field + '.com' or url.netloc == field + '.com') \
+                    and url.path != '' and url.path != '/':
                     valid = True
 
                 if valid:
                     if field == 'facebook':
-                        project.facebook = data['value']
+                        project.facebook = url.geturl()
                         updated = True
                     elif field == 'google-plus':
-                        project.google_plus = data['value']
+                        project.google_plus = url.geturl()
                         updated = True
                     elif field == 'instagram':
-                        project.instagram = data['value']
+                        project.instagram = url.geturl()
                         updated = True
                     elif field == 'pinterest':
-                        project.pinterest = data['value']
+                        project.pinterest = url.geturl()
                         updated = True
                     elif field == 'twitter':
-                        project.twitter = data['value']
+                        project.twitter = url.geturl()
                         updated = True
                 else:
                     return {'success': False, 'message': 'Invalid social media link'}
@@ -205,7 +207,8 @@ def update_post(request, project, *args, **kwargs):
                 post.post = clean_post
                 updated = True
             elif field == 'title' and 'body' in request.POST:
-                post.title = request.POST['body']
+                clean_title = clean_simple_html(request.POST['body'])
+                post.title = clean_title
                 updated = True
             elif field == 'published' and 'value' in data:
                 post.is_published = data['value']
@@ -292,7 +295,8 @@ def update_creator(request, project, *args, **kwargs):
 
         if 'field' in request.POST:
             if request.POST['field'] == 'summary' and 'body' in request.POST:
-                creator.summary = request.POST['body']
+                summary = clean_simple_html(request.POST['body'])
+                creator.summary = summary
                 updated = True
             elif request.POST['field'] == 'admin' and 'value' in request.POST:
                 creator.is_admin = json.loads(request.POST['value'])

@@ -123,7 +123,7 @@ class UpdateProjectTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
         project = Project.objects.get(id=59)
-        self.assertEqual(project.facebook, 'www.facebook.com/test')
+        self.assertEqual(project.facebook, 'http://www.facebook.com/test')
 
     def test_update_valid_google_plus(self):
         self.request.POST = {'project': '59', 'data': '{"field": "google-plus", "value": "www.plus.google.com/test"}'}
@@ -134,7 +134,7 @@ class UpdateProjectTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
         project = Project.objects.get(id=59)
-        self.assertEqual(project.google_plus, 'www.plus.google.com/test')
+        self.assertEqual(project.google_plus, 'http://www.plus.google.com/test')
 
     def test_update_valid_instagram(self):
         self.request.POST = {'project': '59', 'data': '{"field": "instagram", "value": "www.instagram.com/test"}'}
@@ -145,7 +145,7 @@ class UpdateProjectTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
         project = Project.objects.get(id=59)
-        self.assertEqual(project.instagram, 'www.instagram.com/test')
+        self.assertEqual(project.instagram, 'http://www.instagram.com/test')
 
     def test_update_valid_pinterest(self):
         self.request.POST = {'project': '59', 'data': '{"field": "pinterest", "value": "www.pinterest.com/test"}'}
@@ -156,7 +156,7 @@ class UpdateProjectTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
         project = Project.objects.get(id=59)
-        self.assertEqual(project.pinterest, 'www.pinterest.com/test')
+        self.assertEqual(project.pinterest, 'http://www.pinterest.com/test')
 
     def test_update_valid_twitter_www(self):
         self.request.POST = {'project': '59', 'data': '{"field": "twitter", "value": "www.twitter.com/test"}'}
@@ -167,7 +167,7 @@ class UpdateProjectTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
         project = Project.objects.get(id=59)
-        self.assertEqual(project.twitter, 'www.twitter.com/test')
+        self.assertEqual(project.twitter, 'http://www.twitter.com/test')
 
     def test_update_valid_http(self):
         self.request.POST = {'project': '59', 'data': '{"field": "twitter", "value": "http://www.twitter.com/test"}'}
@@ -560,7 +560,7 @@ class AddTechnologyTestCase(TestCase):
         self.response_200(response=response)
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
 
-        technology = Technologies.objects.get(name='new_technology')
+        technology = Technologies.objects.get(name='New_Technology')
         project_technology = ProjectTechnologies.objects.get(technology=technology, project=self.project)
 
 
@@ -592,12 +592,11 @@ class RemoveTechnologyTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "Required data missing from request", "success": false}}')
 
     def test_delete_valid_technology(self):
-        technology_name = 'new_technology'
-        self.request.POST = {'project': '59', 'technology': technology_name}
-
-        technology = Technologies.objects.create(name=technology_name)
+        technology = Technologies.objects.create(name='new_technology')
         project_technology = ProjectTechnologies.objects.create(technology=technology, project=self.project)
         start_technology_count = self.project.technologies.count()
+
+        self.request.POST = {'project': '59', 'technology': technology.name}
 
         response = remove_technology(self.request)
 

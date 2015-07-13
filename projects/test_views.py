@@ -12,7 +12,6 @@ from projects.models import Project, ProjectCreator, Follower
 from users.models import Skill, User
 from projects.views import PostListView, get_project_context, project_ajax_request
 
-
 class PostListViewTestCase(TestCase):
 
     def test_get_queryset(self):
@@ -42,18 +41,48 @@ class ProjectViewTestCase(TestCase):
         self.assertEqual(len(self.context['posts']), 3)
 
 
+@freeze_time("2012-01-01")
 class GetProjectContextTestCase(TestCase):
-    @freeze_time("2012-01-01")
+
+    def setUp(self):
+        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+
     def test_context(self):
         Skill.objects.create(name='something')
-        project_id = '1'
+        project = Project.objects.create()
 
-        context = get_project_context(project_id)
+        context = get_project_context(project)
 
         self.assertEqual(context['date'], '01/01/2012')
         self.assertEqual(context['month'], 'January')
-        self.assertEqual(context['projectId'], project_id)
+        self.assertEqual(context['projectId'], project.id)
         self.assertEqual(context['technologies'], '["something"]')
+
+    def test_context_with_active_creator(self):
+        Skill.objects.create(name='something')
+        project = Project.objects.create()
+        ProjectCreator.objects.create(project=project, creator=self.user, is_active=True)
+
+        context = get_project_context(project)
+
+        self.assertEqual(context['date'], '01/01/2012')
+        self.assertEqual(context['month'], 'January')
+        self.assertEqual(context['projectId'], project.id)
+        self.assertEqual(context['technologies'], '["something"]')
+        self.assertEqual(context['prior_creator'], False)
+
+    def test_context_with_prior_creator(self):
+        Skill.objects.create(name='something')
+        project = Project.objects.create()
+        ProjectCreator.objects.create(project=project, creator=self.user, is_active=False)
+
+        context = get_project_context(project)
+
+        self.assertEqual(context['date'], '01/01/2012')
+        self.assertEqual(context['month'], 'January')
+        self.assertEqual(context['projectId'], project.id)
+        self.assertEqual(context['technologies'], '["something"]')
+        self.assertEqual(context['prior_creator'], True)
 
 
 class ProjectEditTestCase(TestCase):

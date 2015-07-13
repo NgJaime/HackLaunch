@@ -68,3 +68,18 @@ def clean_rich_html(text):
                               styles=RICH_ALLOWED_STYLES, strip=True, strip_comments=True)
 
     return clean_html
+
+
+SIMPLE_ALLOWED_TAGS = [
+    'p',
+]
+
+SIMPLE_ALLOWED_STYLES = []
+
+SIMPLE_ALLOWED_ATTRIBUTES = {}
+
+def clean_simple_html(text):
+    clean_html = bleach.clean(text, tags=SIMPLE_ALLOWED_TAGS, attributes=SIMPLE_ALLOWED_ATTRIBUTES,
+                              styles=SIMPLE_ALLOWED_STYLES, strip=True, strip_comments=True)
+
+    return clean_html
