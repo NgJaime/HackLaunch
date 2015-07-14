@@ -102,6 +102,30 @@
             <div class="col-md-7">
                 <h2 class="right-line">Latest Activity</h2>
                 <ul class="timeline-2">
+                    {% for activity in activities %}
+                        <li class="wow fadeInRight">
+                            <time class="timeline-time" datetime="">
+                                {{ activity.get_activity_date }}
+                            </time>
+                            <i class="timeline-2-point"></i>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    {% if activity.event_type == '2' or activity.event_type == '3' %}
+                                        <i class="fa fa-plus-circle"></i>
+                                    {% else %}
+                                        <i class="fa fa-info-circle"></i>
+                                    {% endif %}
+                                    {{ activity.get_title }}
+                                </div>
+                                <div class="panel-body">
+                                    <a href="{% url 'project_view' slug=activity.project.slug %}">{{ activity.get_body }}</a>
+                                </div>
+                            </div>
+                        </li>
+                        <br>
+                    {% endfor %}
+
                     <li class="wow fadeInRight">
                         <time class="timeline-time" datetime="">
                             {{ profile.user.getDateJoinedDayMonthYear }}

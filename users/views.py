@@ -14,6 +14,7 @@ from base.views import LoginRequiredMixin
 from forms import UserProfileForm
 
 from models import UserProfile, User
+from user_activity_models import UserActivity
 
 class ProfileEditRedirect(RedirectView):
     permanent = False
@@ -123,8 +124,9 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
 def profile_view(request, slug):
     profile = get_object_or_404(UserProfile, slug=slug)
+    activities = UserActivity.objects.filter(user=profile.user)
 
-    return render(request, 'profile_view.html', {"profile": profile})
+    return render(request, 'profile_view.html', {"profile": profile, "activities": activities})
 
 
 def require_email(request):

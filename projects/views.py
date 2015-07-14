@@ -12,8 +12,10 @@ from urlparse import urlparse
 
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
 from users.models import User, Skill
+from users.user_activity_models import UserActivity
 from ajax_decorators import project_ajax_request
 from sanatise_html import clean_rich_html, clean_simple_html
+
 
 class ProjectListView(ListView):
     template_name = 'project_list.html'
@@ -75,6 +77,9 @@ def project_create(request):
     if request.method == "GET":
         new_project = Project.objects.create()
         new_creators = ProjectCreator.objects.create(project=new_project, creator=request.user, is_admin=True, is_owner=True, awaiting_confirmation=False)
+
+        user_activity = UserActivity.objects.create(user=request.user, project=new_project, event_type=UserActivity.CREATED_PROJECT_EVENT)
+
         context = get_project_context(new_project)
 
         return render_to_response('project_edit.html',
@@ -280,6 +285,8 @@ def add_creator(request, project, *args, **kwargs):
     if 'username' in request.POST:
         user = User.objects.get(username=request.POST['username'])
         creator, created = ProjectCreator.objects.get_or_create(project=project, creator=user)
+
+        user_activity = UserActivity.objects.create(user=request.user, project=project, event_type=UserActivity.JOINED_PROJECT_EVENT)
 
         if created:
             return {'success': True}
