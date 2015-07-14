@@ -5184,11 +5184,11 @@ input.input-lg[type="text"] {
 }
 .bx-wrapper .bx-prev {
   left: 0px;
-  background: url("../img/controls.png") no-repeat 0 -32px;
+  background: url("../images/controls.png") no-repeat 0 -32px;
 }
 .bx-wrapper .bx-next {
   right: 10px;
-  background: url("../img/controls.png") no-repeat -43px -32px;
+  background: url("../images/controls.png") no-repeat -43px -32px;
 }
 .bx-wrapper .bx-viewport {
   box-shadow: none;
@@ -8590,11 +8590,11 @@ input[type="date"]:focus {
 }
 .bx-wrapper .bx-prev {
   left: 0px;
-  background: url("../img/controls.png") no-repeat 0 -32px;
+  background: url("../images/controls.png") no-repeat 0 -32px;
 }
 .bx-wrapper .bx-next {
   right: 10px;
-  background: url("../img/controls.png") no-repeat -43px -32px;
+  background: url("../images/controls.png") no-repeat -43px -32px;
 }
 .bx-wrapper .bx-viewport {
   box-shadow: none;

@@ -24,5 +24,12 @@ $(document).ready(function () {
         tickerHover: true,
         useCSS: false
     });
+
+    $('.bx-horizontal-click').bxSlider({
+        minSlides: 2,
+        maxSlides: 5,
+        slideWidth: 300,
+        slideMargin: 10
+    });
 });
 
