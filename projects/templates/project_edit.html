@@ -8,7 +8,7 @@
     <link href="{% static "froala_editor/css/font-awesome.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{% static "froala_editor/css/froala_editor.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{% static "froala_editor/css/froala_style.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
     <script src="{% static "js/jquery.min.js" %}"></script>
 {% endblock %}
 
@@ -40,9 +40,9 @@
                     <div class="small-margin-bottom fadeInDown animation-delay-3"
                          style="margin-top: 20px;">
                         {% if project.facebook %}
-                            <a id='link-facebook' href="{{ project.facebook.url }}" class="social-icon-ar facebook"
-                               onclick="editSocialURL('facebook', this.val())"><i
-                                    class="fa fa-facebook"></i></a>
+                            <a id='link-facebook' href="#" class="social-icon-ar facebook" data-link="{{ project.facebook }}"
+                               onclick="editSocialURL('facebook', $(this).data('link'))" >
+                                <i class="fa fa-facebook"></i></a>
                         {% else %}
                             <a id='link-facebook' href="#" class="social-icon-ar grey"
                                onclick="editSocialURL('facebook', 'http://www.facebook.com/')"><i
@@ -50,9 +50,9 @@
                         {% endif %}
 
                         {% if project.google_plus %}
-                            <a id='link-google-plus' href="{{ project.google_plus.url }}" class="social-icon-ar google-plus"
-                               onclick="editSocialURL('google-plus', this.val())"><i
-                                    class="fa fa-google-plus"></i></a>
+                            <a id='link-google-plus' href="#" class="social-icon-ar google-plus" data-link="{{ project.google_plus.url }}"
+                               onclick="editSocialURL('google-plus', $(this).data('link'))">
+                                    <i class="fa fa-google-plus"></i></a>
                         {% else %}
                             <a id='link-google-plus' href="#" class="social-icon-ar grey"
                                onclick="editSocialURL('google-plus', 'http://plus.google.com/')"><i
@@ -60,9 +60,9 @@
                         {% endif %}
 
                         {% if project.instagram %}
-                            <a id='link-instagram' href="{{ project.instagram.url }}" class="social-icon-ar instagram"
-                               onclick="editSocialURL('instagram', this.val())"><i
-                                    class="fa fa-instagram"></i></a>
+                            <a id='link-instagram' href="#" class="social-icon-ar instagram" data-link="{{ project.instagram.url }}"
+                               onclick="editSocialURL('instagram', $(this).data('link'))">
+                                    <i class="fa fa-instagram"></i></a>
                         {% else %}
                             <a id='link-instagram' href="#" class="social-icon-ar grey"
                                onclick="editSocialURL('instagram', 'http://www.instagram.com/')"><i
@@ -70,9 +70,9 @@
                         {% endif %}
 
                         {% if project.pinterest %}
-                            <a id='link-pinterest' href="{{ project.pinterest.url }}" class="social-icon-ar pinterest"
-                               onclick="editSocialURL('pinterest', this.val())"><i
-                                    class="fa fa-pinterest"></i></a>
+                            <a id='link-pinterest' href="#" class="social-icon-ar pinterest" data-link="{{ project.pinterest.url }}"
+                               onclick="editSocialURL('pinterest', $(this).data('link'))">
+                                    <i class="fa fa-pinterest"></i></a>
                         {% else %}
                             <a id='link-pinterest' href="#" class="social-icon-ar grey"
                                onclick="editSocialURL('pinterest', 'http://www.pinterest.com/')"><i
@@ -80,9 +80,9 @@
                         {% endif %}
 
                         {% if project.twitter %}
-                            <a id='link-twitter' href="{{ project.twitter.url }}" class="social-icon-ar twitter"
-                               onclick="editSocialURL('twitter', this.val())"><i
-                                    class="fa fa-twitter"></i></a>
+                            <a id='link-twitter' href="#" class="social-icon-ar twitter" data-link="{{ project.twitter.url }}"
+                               onclick="editSocialURL('twitter', $(this).data('link'))">
+                                    <i class="fa fa-twitter"></i></a>
                         {% else %}
                             <a id='link-twitter' href="#" class="social-icon-ar grey"
                                onclick="editSocialURL('twitter', 'http://www.twitter.com/')"><i
@@ -92,7 +92,7 @@
 
                     <div id='div-facebook' class="row hidden" style="width:100%">
                         <div class="input-group" style="margin: 0 auto;">
-                            <input id="id_facebook" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.facebook  }}{% endautoescape %}">
+                            <input id="id_facebook" class="form-control" type="text" style="width: 250px; margin-bottom: 5px" value="{% autoescape off %}{{ project.facebook }}{% endautoescape %}">
 
                             <button id="update-facebook" type="button" class="btn btn-ar btn-default"
                                     style="height: 35px; margin-left: 5px;" onclick="updateSocialURL('facebook')">
@@ -143,6 +143,12 @@
                         <p class="hidden red" id="social-link-error-pinterest">Please enter a valid Pinterest link</p>
                         <p class="hidden red" id="social-link-error-twitter">Please enter a valid Twitter link</p>
                     </div>
+                    <div id="social-link-error-main" class="hidden">
+                        <p style="text-align: center; color: red;">
+                            <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                            <span id="social-link-error-main-message"></span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -160,6 +166,13 @@
                         <h2 class="section-title">Time Line
                             <span><p class="btn btn-ar btn-primary pull-right" onclick="addPost()">Create New Post</p></span>
                         </h2>
+                    </div>
+
+                    <div id="add-post-errors" class="hidden">
+                        <p style="text-align: center; color: red;">
+                            <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                            <span id="add-post-errors-message"></span>
+                        </p>
                     </div>
 
                     <ul id="time-line" class="timeline-2">
@@ -196,6 +209,13 @@
                                             {% else %}
                                                 <input type="checkbox" name="{{ post_form.id }}-is-adimn" onchange="updatePost('{{ post_form.id }}', 'published', this.checked)">Publish post<br>
                                             {% endif %}
+                                        </div>
+
+                                        <div id="update-post-errors" class="hidden">
+                                            <p style="text-align: center; color: red;">
+                                                <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                                                <span id="update-post-errors-message"></span>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +291,10 @@
                         <div id="add-creator"></div>
 
                         <div id="creator-error" class="hidden">
-                            <p id="creator-error-message" style="margin: 10px 0px 0px 0px"></p>
+                            <p style="text-align: center; color: white; margin: 10px 0px 0px 0px">
+                                <i class="fa fa-exclamation-circle" style="color: white;"></i>
+                                <span id="creator-error-message"></span>
+                            </p>
                         </div>
                     </div>
                     <br>
@@ -318,6 +341,13 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
+
+                                <div id="prior-creator-error" class="hidden">
+                                    <p style="text-align: center; color: white; margin: 10px 0px 0px 0px">
+                                        <i class="fa fa-exclamation-circle" style="color: white;"></i>
+                                        <span id="prior-creator-error-message"></span>
+                                    </p>
+                                </div>
                             </div>
                             <br>
                         </div>
@@ -328,8 +358,9 @@
                             <input id="tags-input" type="text" class="label-success" value={{ project_tags }} data-role="tagsinput"
                                    style="display: none;">
 
-                            <p id="tags-error-message" class="hidden" style="color: red;">
+                            <p id="tags-error" class="hidden">
                                 <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                <span id="tags-error-message" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -343,9 +374,12 @@
                                     <span class="input-group-addon"><i class="fa fa-plus-circle" onclick="addTechnology()"></i></span>
                                 </div>
 
-                                <p id="technology-error-message" class="hidden" style="color: red;">
-                                    <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
-                                </p>
+                                <div>
+                                    <p id="technology-error" class="hidden" style="color: red;">
+                                        <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                        <span id="technology-error-message"></span>
+                                    </p>
+                                </div>
 
                                 <div id="technologies" style="margin-top: 10px">
                                      {% for technology in project_technologies %}
@@ -357,8 +391,9 @@
                                                        style="color: black; padding-left: 5px;" onclick="removeTechnology('{{ technology.technology.name }}')">
                                                     </i>
                                                 <p>
-                                                <p id="technology-{{ technology.technology.name }}-error-message" class="hidden" style="color: red;">
+                                                <p id="technology-{{ technology.technology.name }}-error" class="hidden" style="color: red;">
                                                     <i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>
+                                                    <span id="technology-{{ technology.technology.name }}-error-message"></span>
                                                 </p>
                                             </div>
                                             <div>
@@ -563,14 +598,7 @@
                 crossDomain: false
             })
 
-            .on('editable.afterRemoveImage', function (e, editor, $img) {
-                $img.attr.src = editor.options.placeholder;
-            })
-
-            .on('editable.imageDeleteError', function (e, editor, error) {
-                 console.log('lll');
-            })
-
+{#           Todo get aftre remove image working and refactor logo removed #}
             .on('editable.beforeRemoveImage', function (e, editor, $img) {
                 console.log('before');
                 // Set the image source to the image delete params.
@@ -582,12 +610,7 @@
                 $img.attr.src = editor.options.placeholder;
 
                 logoRemoved();
-{#                $(".logo").on("remove", logoRemoved());#}
             })
-
-            .on('editable.imageDeleteSuccess', function (e, editor, data) {
-                console.log('lll'   )
-            });
         });
 
         var addPost = function () {
@@ -600,7 +623,16 @@
                             csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#add-post-errors').removeClass('hidden');
+                            $('#add-post-errors-message').html('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
+                            $('#add-post-errors').addClass('hidden');
+
                             $("#time-line").prepend(
                                 '<br/>' +
                                 '<li class="animated fadeInRight animation-delay-2">' +
@@ -619,6 +651,12 @@
                                             '</div>' +
                                             '<div class="pull-right">' +
                                                 '<input type="checkbox" name="' + data.content.post_id + '-is-adimn" onchange="updatePost(' + data.content.post_id + ', &apos;published&apos;, this.checked)">Publish post<br>' +
+                                            '</div>' +
+                                            '<div id="update-post-errors" class="hidden">' +
+                                                '<p style="text-align: center; color: red;">' +
+                                                    '<i class="fa fa-exclamation-circle" style="color: red;"></i>' +
+                                                    '<span id="update-post-errors-message"></span>' +
+                                                '</p>' +
                                             '</div>' +
                                         '</div>' +
                                     '</div>' +
@@ -642,13 +680,13 @@
                             });
                         }
                         else {
-                            $('#creator-error').removeClass('hidden');
-                            $('#creator-error-message').text(data.content.message);
+                            $('#add-post-errors').removeClass('hidden');
+                            $('#add-post-errors-message').text(data.content.message);
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#add-post-errors').removeClass('hidden');
+                        $('#add-post-errors-message').text(xhr.responseJSON.message);
                     }
                 });
         };
@@ -662,17 +700,24 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
-                            $('#creator-error').addClass('hidden');
+                        if (data.status === 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#update-post-errors').removeClass('hidden');
+                            $('#update-post-errors-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
+                            $('#update-post-errors').addClass('hidden');
                         }
                         else {
-                            $('#creator-error').removeClass('hidden');
-                            $('#creator-error-message').text(data.content.message);
+                            $('#update-post-errors').removeClass('hidden');
+                            $('#update-post-errors-message').text(data.content.message);
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#update-post-errors').removeClass('hidden');
+                        $('#update-post-errors-message').text(xhr.responseJSON.message);
                     }
                 });
         };
@@ -694,7 +739,14 @@
                     data: {username: username,
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.success === true) {
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#creator-error').removeClass('hidden');
+                            $('#creator-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.success === true) {
                             $('#creator-error').addClass('hidden');
 
                             var new_creators = $('#add-creator');
@@ -714,13 +766,13 @@
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#creator-error-message').text(xhr.responseJSON.message);
                     }
                 });
             }
             else {
                 $('#creator-error').removeClass('hidden');
-                $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> Please provide a username');
+                $('#creator-error-message').html('Please provide a username');
             }
 
             $('#creatorInput').val('');
@@ -760,8 +812,15 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
-                            $('#creator-error').addClass('hidden');
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#prior-creator-error').removeClass('hidden');
+                            $('#prior-creator-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
+                            $('#prior-creator-error').addClass('hidden');
                             var summary = $('#creator-' + username + '-summary'),
                                 creators = $('#creators');
 
@@ -782,13 +841,13 @@
                             }
                         }
                         else {
-                            $('#creator-error').removeClass('hidden');
-                            $('#creator-error-message').text(data.content.message);
+                            $('#prior-creator-error').removeClass('hidden');
+                            $('#prior-creator-error-message').text(data.content.message);
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#prior-creator-error').removeClass('hidden');
+                        $('#prior-creator-error-message').text(xhr.responseJSON.message);
                     }
             });
         };
@@ -804,7 +863,14 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#creator-error').removeClass('hidden');
+                            $('#creator-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
                             $('#creator-error').addClass('hidden');
                         }
                         else {
@@ -814,7 +880,7 @@
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#creator-error-message').text(xhr.responseJSON.message);
                     }
             });
         };
@@ -828,7 +894,14 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#creator-error').removeClass('hidden');
+                            $('#creator-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
                             $('#prior-creators-container').removeClass('hidden');
 
                             $('#creator-error').addClass('hidden');
@@ -852,7 +925,7 @@
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#creator-error-message').text(xhr.responseJSON.message);
                     }
                 });
         };
@@ -867,7 +940,14 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                         else if (data.status === 500) {
+                            $('#creator-error').removeClass('hidden');
+                            $('#creator-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
                             $('#creator-error').addClass('hidden');
 
                             var creators = $('#creators');
@@ -912,13 +992,13 @@
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('#creator-error').removeClass('hidden');
-                        $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                        $('#creator-error-message').text(xhr.responseJSON.message);
                     }
                 });
             }
             else {
                 $('#creator-error').removeClass('hidden');
-                $('#creator-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> Please provide a username');
+                $('#creator-error-message').text('Please provide a username');
             }
 
             $('#creatorInput').val('');
@@ -945,7 +1025,14 @@
                        project: {{ context.projectId }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
-                    if (data.content.success === true) {
+                    if (data.status == 401) {
+                            location.href = data.redirect
+                    }
+                    else if (data.status === 500) {
+                        $('#technology-error').removeClass('hidden');
+                        $('#technology-error-message').text('Internal server error, please try again later.');
+                    }
+                    else if (data.content.success === true) {
                         $('#technology-error-message').addClass('hidden');
 
                         $('#technologies').append('<div id="technology-' + value + '" style="margin-bottom: 15px;">' +
@@ -954,8 +1041,9 @@
                                                             '' + value + '' +
                                                             '<i id="technology-' + value + '-icon" class="fa fa-minus-circle" style="color: black; padding-left: 5px;" onclick="removeTechnology(&apos;' + value + '&apos;)"></i>' +
                                                         '<p>' +
-                                                        '<p id="technology-' + value + '-error-message" class="hidden" style="color: red;">' +
-                                                            '<i class="fa fa-exclamation-circle" style="color: red; margin-right: 3px;"></i>' +
+                                                        '<p id="technology-' + value + '-error" style="text-align: center; color: red;">' +
+                                                            '<i class="fa fa-exclamation-circle" style="color: red;"></i>' +
+                                                            '<span id="technology-' + value + '-error-message"></span>' +
                                                         '</p>' +
                                                     '</div>' +
                                                     '<div>' +
@@ -973,13 +1061,13 @@
                         $('#technologyInput').val('');
                     }
                     else {
-                        $('#technology-error-message').removeClass('hidden');
+                        $('#technology-error').removeClass('hidden');
                         $('#technology-error-message').text(data.content.message);
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#technology-error-message').removeClass('hidden');
-                    $('#technology-error-message').html('<i class="fa fa-exclamation-circle" style="color: white; margin-right: 3px;"></i> ' + xhr.responseJSON.message);
+                    $('#technology-error').removeClass('hidden');
+                    $('#technology-error-message').text(xhr.responseJSON.message);
                 }
             });
         };
@@ -993,16 +1081,23 @@
                        project: {{ context.projectId }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
-                    if (data.content.success === true) {
+                    if (data.status == 401) {
+                        window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                    }
+                    else if (data.status === 500) {
+                        $('#technology-' + value + '-error').removeClass('hidden');
+                        $('#technology-' + value + '-error-message').text('Internal server error, please try again later.');
+                    }
+                    else if (data.content.success === true) {
                         $('#technology-' + value).remove();
                     }
                     else {
-                        $('#technology-' + value + '-error-message').removeClass('hidden');
+                        $('#technology-' + value + '-error').removeClass('hidden');
                         $('#technology-' + value + '-error-message').text(data.content.message);
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#technology-' + value + '-error-message').removeClass('hidden');
+                    $('#technology-' + value + '-error').removeClass('hidden');
                     $('#technology-' + value + '-error-message').text(xhr.responseJSON.message);
                 }
             });
@@ -1018,19 +1113,25 @@
                        project: {{ context.projectId }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
-                    if (data.content.success !== true) {
-                        $('#technology-' + value + '-error-message').removeClass('hidden');
-                        $('#technology-' + value + '-error-message').text(data.content.message);
+                    if (data.status == 401) {
+                        window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                    }
+                    else if (data.status === 500) {
+                        $('#technology-' + name + '-error').removeClass('hidden');
+                        $('#technology-' + name + '-error-message').text('Internal server error, please try again later.');
+                    }
+                    else if (data.content.success !== true) {
+                        $('#technology-' + name + '-error').removeClass('hidden');
+                        $('#technology-' + name + '-error-message').text(data.content.message);
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#technology-' + value + '-error-message').removeClass('hidden');
-                    $('#technology-' + value + '-error-message').text(xhr.responseJSON.message);
+                    $('#technology-' + name + '-error').removeClass('hidden');
+                    $('#technology-' + name + '-error-message').text(xhr.responseJSON.message);
                 }
             });
         };
 
-        {# todo fix for initialisation #}
         $('#tags-input').on('beforeItemAdd', function(event) {
                 $.ajax({
                     url: "{% url 'add_tag_to_project' %}",
@@ -1040,18 +1141,25 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                        if (data.content.success === true) {
-                            $('#tags-error-message').addClass('hidden')
+                        if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                        }
+                        else if (data.status === 500) {
+                            $('#tags-error').removeClass('hidden');
+                            $('#tags-error-message').text('Internal server error, please try again later.');
+                        }
+                        else if (data.content.success === true) {
+                            $('#tags-error').addClass('hidden')
                         }
                         else {
                             $('tags-input').tagsinput('remove', event.item);
-                            $('#tags-error-message').removeClass('hidden')
+                            $('#tags-error').removeClass('hidden')
                             $('#tags-error-message').text(data.content.message);
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('tags-input').tagsinput('remove', event.item);
-                        $('#tags-error-message').removeClass('hidden');
+                        $('#tags-error').removeClass('hidden');
                         $('#tags-error-message').text(xhr.responseJSON.message);
                     }
                 });
@@ -1066,12 +1174,19 @@
                        project: {{ context.projectId }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
-                    if (data.content.success === true) {
-                        $('#tags-error-message').addClass('hidden')
+                    if (data.status == 401) {
+                        window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                    }
+                    else if (data.status === 500) {
+                        $('#tags-error').removeClass('hidden');
+                        $('#tags-error-message').text('Internal server error, please try again later.');
+                    }
+                    else if (data.content.success === true) {
+                        $('#tags-error').addClass('hidden')
                     }
                     else {
                         $('tags-input').tagsinput('add', event.item);
-                        $('#tags-error-message').removeClass('hidden')
+                        $('#tags-error').removeClass('hidden')
                         $('#tags-error-message').text(data.content.message);
                     }
                 },
@@ -1092,11 +1207,24 @@
                            project: {{ context.projectId }},
                            csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (data, textStatus, xhr) {
-                     console.log('lll')
+                       if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                       }
+                       else if (data.status === 500) {
+                            $('#social-link-error-main').removeClass('hidden');
+                            $('#social-link-error-main-message').text('Internal server error, please try again later.');
+                       }
+                       else if (data.content.success === true) {
+                            $('#social-link-error-main').addClass('hidden')
+                       }
+                       else {
+                            $('#social-link-error-main').removeClass('hidden')
+                            $('#social-link-error-main-message').text(data.content.message);
+                       }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-{#                            todo#}
-                        console.log('lll')
+                        $('#social-link-error-main').removeClass('hidden')
+                        $('#social-link-error-main-message').text(xhr.responseJSON.message);
                     }
                 });
         };

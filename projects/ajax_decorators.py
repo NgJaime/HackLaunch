@@ -1,10 +1,13 @@
+import json
 from functools import wraps
 from django_ajax.decorators import ajax
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.http import HttpResponse
 
 from projects.models import Project
+from urlparse import urlparse
+
 
 def project_ajax_request(function):
     @ajax(mandatory=False)
@@ -26,3 +29,15 @@ def project_ajax_request(function):
             else:
                 {"message": "Required data missing from request", "success": False}
     return wrapped
+
+
+def ajax_login_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return view_func(request, *args, **kwargs)
+
+        referer = urlparse(request.META['HTTP_REFERER'])
+        json_data = json.dumps({'status': 401, 'message': 'Login required', 'redirect': 'login/?next=' + referer.path})
+        return HttpResponse(json_data, content_type='application/json')
+    return wrapper

@@ -19,20 +19,20 @@
 
                                 <div id="logincontainer" style="background-color: transparent; border-width: 0px;">
                                     <ul style="background-color: transparent; font-size: 25px; margin-top: 0px; margin-bottom: 10px;">
-                                        <li><a href="{% url 'social:begin' 'github' %}"
+                                        <li><a href="{% url 'social:begin' 'github' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}"
                                                class="animated fadeIn animation-delay-7 git"
                                                style="color: transparent; padding-top: 20px">
                                             <i class="fa fa-github fa-2x" style="color: #2a2a2a;"></i>
                                         </a>
                                         </li>
-                                        <li><a href="{% url 'social:begin' 'facebook' %}"
+                                        <li><a href="{% url 'social:begin' 'facebook' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}"
                                                class="animated fadeIn animation-delay-7 facebook"
                                                style="color: transparent; padding-top: 20px">
                                             <i class="fa fa-facebook fa-2x" style="color: #2a2a2a;"></i>
                                         </a>
                                         </li>
                                         <li>
-                                            <a href="{% url 'social:begin' 'linkedin-oauth2' %}"
+                                            <a href="{% url 'social:begin' 'linkedin-oauth2' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}"
                                                class="animated fadeIn animation-delay-7 linkedin"
                                                style="color: transparent; padding-top: 20px">
                                                 <i class="fa fa-linkedin fa-2x"
