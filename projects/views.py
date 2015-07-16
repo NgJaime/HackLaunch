@@ -54,9 +54,19 @@ class ProjectView(DetailView):
             follower = Follower.objects.filter(project=self.object, user=self.request.user)
             context['follower'] = True if len(follower) == 1 else False
 
-        context['creators'] = self.object.projectcreator_set.all()
+        creators = self.object.projectcreator_set.all()
+        context['creators'] = creators
         context['technologies'] = self.object.projecttechnologies_set.all()
         context['posts'] = self.object.post_set.all()
+        context['prior_creators'] =  any(creator.is_active is False for creator in creators)
+
+        try:
+            self.object.projectcreator_set.get(creator=self.request.user, is_active=True,
+                                               is_admin=True, awaiting_confirmation=False)
+        except Exception as e:
+            context['project_admin'] = False
+        else:
+            context['project_admin'] = True
 
         return context
 
