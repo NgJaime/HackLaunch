@@ -85,6 +85,12 @@
                         {% endif %}
                     {% endif %}
                 </h2>
+                <div id="follow-error" class="hidden">
+                    <p style="text-align: center; color: red;">
+                        <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                        <span id="follow-error-message"></span>
+                    </p>
+                </div>
                 {% autoescape off %} {{ project.pitch }} {% endautoescape %}
 
                 <div class="margin-top-20">
@@ -252,18 +258,36 @@
                        project: {{ project.id }},
                        csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function (data, textStatus, xhr) {
-                    if (follow === true) {
-                        $('#follow').addClass('hidden');
-                        $('#unfollow').removeClass('hidden');
+                    if (data.status == 401) {
+                        window.location.href = window.location.pathname.substring( 0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                    }
+                    else if (data.status === 500) {
+                        var error = $('#follow-error'),
+                            errorMessage = $('#follow-error-message')
+
+                        error.removeClass('hidden');
+                        errorMessage.text('Internal server error, please try again later.')
                     }
                     else {
-                        $('#unfollow').addClass('hidden');
-                        $('#follow').removeClass('hidden');
+                        var error = $('#follow-error');
+                        error.addClass('hidden');
+
+                        if (follow === true) {
+                            $('#follow').addClass('hidden');
+                            $('#unfollow').removeClass('hidden');
+                        }
+                        else {
+                            $('#unfollow').addClass('hidden');
+                            $('#follow').removeClass('hidden');
+                        }
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-    {#                todo#}
-                    console.log('error')
+                    var error = $('#follow-error'),
+                        errorMessage = $('#follow-error-message')
+
+                    error.removeClass('hidden');
+                    errorMessage.text('Internal server error, please try again later.')
                 }
             });
         };
