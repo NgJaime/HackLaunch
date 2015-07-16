@@ -10,6 +10,7 @@ urlpatterns = [ url(r'list/$', views.ProjectListView.as_view(), name='project_li
                 url(r'image_upload/$', ajax_login_required(views.image_upload), name='project_image_upload'),
                 url(r'image_delete/$', ajax_login_required(views.image_delete), name='project_image_delete'),
                 url(r'update_project/$', ajax_login_required(views.update_project), name='update_project'),
+                url(r'update_repo/$', ajax_login_required(views.update_repo), name='update_repo'),
                 url(r'add_post/$', ajax_login_required(views.add_post), name='add_post'),
                 url(r'update_post/$', ajax_login_required(views.update_post), name='update_post'),
                 url(r'addCreator/$', ajax_login_required(views.add_creator), name='add_creator_to_project'),

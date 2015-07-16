@@ -211,6 +211,41 @@ def update_project(request, project, *args, **kwargs):
     else:
             return {'success': False, 'message': 'No data in request'}
 
+@project_ajax_request
+def update_repo(request, project, *args, **kwargs):
+    if 'data' in request.POST:
+        data = json.loads(request.POST['data'])
+
+        if 'field' in data and 'value' in data:
+            updated = False
+            valid = False
+
+            url = urlparse(data['value'].encode('utf8'))
+
+            if not url.scheme:
+                url = urlparse('http://' + data['value'].encode('utf8'))
+
+            field = data['field']
+
+            if (url.netloc == 'www.' + field + '.com' or url.netloc == field + '.com') \
+                and url.path != '' and url.path != '/':
+                valid = True
+
+            if valid:
+                if field == 'github':
+                    project.github_repo = url.geturl()
+                    updated = True
+            else:
+                return {'success': False, 'message': 'Invalid ' + field + ' link'}
+
+            if updated:
+                project.save()
+
+            return {'success': True}
+        else:
+            return {'success': False, 'message': 'No repo in request'}
+    else:
+            return {'success': False, 'message': 'No data in request'}
 
 @project_ajax_request
 def update_post(request, project, *args, **kwargs):

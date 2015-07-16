@@ -409,12 +409,29 @@
                     <div class="panel panel-default animated fadeInUp animation-delay-12">
                         <div class="panel-heading"><i class="fa fa-desktop"></i> Design and code</div>
                         <div class="panel-body center">
-                            <p>Link to your project's Github account</p>
+                            <p>Click to link to your project's Github account</p>
 
-                            <a href="{% url 'social:begin' 'github' %}" class="animated fadeIn animation-delay-7 git"
-                               style="color: transparent; padding-top: 20px">
+                            <p class="animated fadeIn animation-delay-7 git" data-link=("{{ project.github_repo }}")
+                               style="color: transparent;" onclick="editRepoURL('github', $(this).data('link'))">
                                 <i class="fa fa-github fa-3x" style="color: #2a2a2a;"></i>
-                            </a>
+                            </p>
+
+                            <div id="div-github-repo" class="input-group hidden" style="margin-top: 15px;">
+                                <input id="github-input" class="form-control" type="text" style="margin-bottom: 5px" value="{% autoescape off %}{{ project.github_repo }}{% endautoescape %}">
+                                <button type="button" class="btn btn-ar btn-default"
+                                        style="height: 35px; margin-left: 5px;" onclick="updateRepoURL($('#github-input').val(), 'github')">
+                                    Update
+                                </button>
+                            </div>
+                            <div id="github-repo-error" class="hidden" style="margin-top: 15px;">
+                                <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                                <span id="github-repo-error-message" style="color: red"></span>
+                            </div>
+
+                            <div id="repo-link-error-main" class="hidden" style="margin-top: 15px;">
+                                <i class="fa fa-exclamation-circle" style="color: red;"></i>
+                                <span id="repo-link-error-main-message" style="color: red"></span>
+                            </div>
                         </div>
                     </div>
                     <br>
@@ -1229,13 +1246,94 @@
                 });
         };
 
+        var editRepoURL = function (name, link) {
+            var input = $('#' + name + '-input');
+
+            if (input.val() == '') {
+                if (link === '("")') {
+                    input.val('https://github.com/')
+                }
+                else {
+                    input.val(link);
+                }
+            }
+
+            $('#div-' + name + '-repo').removeClass('hidden');
+        };
+
+        var updateRepoURL = function (link, name) {
+            var input = $('#id_' + name),
+                icon = $('#link-' + name),
+                inputDiv = $('#div-' + name + '-repo'),
+                errorMessageDiv = $('#' + name + '-repo-error'),
+                valid = false;
+
+            if ((link.startsWith('http://www.' + name + '.com/')
+                        || link.startsWith('https://www.' + name + '.com/')
+                        || link.startsWith('www.' + name + '.com/'))
+                        || (link.startsWith('http://' + name + '.com/')
+                        || link.startsWith('https://' + name + '.com/')
+                        || link.startsWith(name + '.com/'))
+                      && (!link.endsWith('.com/') && !link.endsWith('.com'))){
+                valid = true;
+            }
+
+            if (valid) {
+                inputDiv.addClass('hidden');
+
+                updateRepo({'field': name, 'value': link})
+
+                inputDiv.removeClass('has-error');
+                errorMessageDiv.addClass('hidden');
+            }
+            else {
+                inputDiv.addClass('has-error');
+
+                var errorMessage = $('#' + name + '-repo-error-message');
+                errorMessage.text('Please enter a valid ' + name + ' link')
+
+                errorMessageDiv.removeClass('hidden');
+            }
+        };
+
+        var updateRepo = function (data) {
+            $.ajax({
+                    url: "{% url 'update_repo' %}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {data: JSON.stringify(data),
+                           project: {{ context.projectId }},
+                           csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success: function (data, textStatus, xhr) {
+                       if (data.status == 401) {
+                            window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf( '/' ) + 1 ) + data.redirect
+                       }
+                       else if (data.status === 500) {
+                            $('#repo-link-error-main').removeClass('hidden');
+                            $('#repo-link-error-main-message').text('Internal server error, please try again later.');
+                       }
+                       else if (data.content.success === true) {
+                            $('#repo-link-error-main').addClass('hidden')
+                       }
+                       else {
+                            $('#repo-link-error-main').removeClass('hidden')
+                            $('#repo-link-error-main-message').text(data.content.message);
+                       }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        $('#repo-link-error-main').removeClass('hidden')
+                        $('#repo-link-error-main-message').text(xhr.responseJSON.message);
+                    }
+                });
+        };
+
         var editSocialURL = function (name, link) {
             var input = $('#id_' + name);
             if (input.val() == '') {
                 input.val(link);
             }
 
-            $('#div-' + name).removeClass('hidden');
+            $('#div-' + name ).removeClass('hidden');
         };
 
         var updateSocialKeyUp = function (name) {

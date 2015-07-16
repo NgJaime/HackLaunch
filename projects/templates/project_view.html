@@ -215,6 +215,21 @@
                     </section>
                 </div>
             </div>
+
+            {% if project.github_repo %}
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-desktop"></i> Design and code</div>
+
+                    <div class="panel-body center">
+                        <p>Project's Github repository</p>
+
+                        <a class="animated fadeIn animation-delay-7 git" href="{{ project.github_repo }}")
+                           style="color: transparent;">
+                            <i class="fa fa-github fa-3x" style="color: #2a2a2a;"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 

@@ -50,6 +50,8 @@ class Project(models.Model):
     pinterest = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
 
+    github_repo = models.URLField(blank=True)
+
     slug = AutoSlugField(populate_from='get_slug_seed', unique=True, always_update=True)
 
     is_active = models.BooleanField(default=True)
