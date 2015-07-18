@@ -6,11 +6,17 @@ from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView
 from django_ajax.decorators import ajax
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.template import Context
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
 
 from datetime import datetime
 from urlparse import urlparse
 
-from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower
+from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower,\
+    ProjectCreatorInitialisation
 from users.models import User, Skill
 from users.user_activity_models import UserActivity
 from ajax_decorators import project_ajax_request
@@ -132,6 +138,7 @@ def project_edit(request, slug):
         raise Http404()
 
 @ajax
+@csrf_protect
 @csrf_protect
 def follow_project(request):
     if request.method == "POST":
@@ -331,7 +338,25 @@ def add_creator(request, project, *args, **kwargs):
         user = User.objects.get(username=request.POST['username'])
         creator, created = ProjectCreator.objects.get_or_create(project=project, creator=user)
 
-        user_activity = UserActivity.objects.create(user=request.user, project=project, event_type=UserActivity.JOINED_PROJECT_EVENT)
+        if created:
+            try:
+                creator_initialisation = ProjectCreatorInitialisation.initialise(creator)
+
+                verification_url = request.get_host() + reverse('validate_creator', kwargs={'code': creator_initialisation.code})
+
+                context = {
+                    'verification_url': verification_url,
+                    'project_url': request.get_host() + reverse('project_view', kwargs={'slug': project.slug}),
+                    'project_title': project.title[3:-4]
+                }
+
+                html_message = get_template('creator_verification_email.html').render(Context(context))
+                email = EmailMessage('You have been assigned to a project on Hacklaunch', html_message,
+                                     to=[user.email], from_email=settings.EMAIL_FROM)
+                email.content_subtype = 'html'
+                email.send()
+            except Exception as e:
+                pass
 
         if created:
             return {'success': True}
@@ -339,6 +364,23 @@ def add_creator(request, project, *args, **kwargs):
             return {'success': False, 'message': 'User already assigned to project'}
 
     return {'success': False, 'message': 'No username in request'}
+
+
+def validate_creator(request, code):
+    creator_initialisation = get_object_or_404(ProjectCreatorInitialisation, code=code)
+
+    user_activity = UserActivity.objects.create(user=creator_initialisation.creator.creator,
+                                                project=creator_initialisation.creator.project,
+                                                event_type=UserActivity.JOINED_PROJECT_EVENT)
+
+    creator_initialisation.creator.awaiting_confirmation = False
+    creator_initialisation.creator.save()
+
+    slug = creator_initialisation.creator.project.slug
+
+    creator_initialisation.delete()
+
+    return redirect('project_view', slug=slug)
 
 
 @project_ajax_request

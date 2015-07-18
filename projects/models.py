@@ -5,6 +5,7 @@ from django_resized import ResizedImageField
 from users.models import User
 from datetime import datetime
 from taggit.managers import TaggableManager
+from uuid import uuid4
 
 from projects.s3 import upload_project_image, upload_logo
 
@@ -137,6 +138,31 @@ class ProjectCreator(models.Model):
             self.date_joined = datetime.now()
 
         super(ProjectCreator, self).save(*args, **kw)
+
+
+class ProjectCreatorInitialisation(models.Model):
+    creator = models.ForeignKey(ProjectCreator)
+    code = models.CharField(max_length=32, db_index=True)
+    date_added = models.DateField()
+
+    class Meta:
+        unique_together = ('creator', 'code')
+
+    def __unicode__(self):
+        return self.creator.creator.get_full_name() + ' - ' + self.creator.project.title[3:-4]
+
+    @classmethod
+    def generate_code(cls):
+        return uuid4().hex
+
+    @classmethod
+    def initialise(cls, creator):
+        code = cls()
+        code.creator = creator
+        code.code = cls.generate_code()
+        code.date_added = datetime.now()
+        code.save()
+        return code
 
 
 class ProjectTechnologies(models.Model):
