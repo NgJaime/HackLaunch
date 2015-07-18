@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.templatetags.static import static
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from social.apps.django_app.default.models import UserSocialAuth
 from base.views import LoginRequiredMixin
 from forms import UserProfileForm
@@ -190,9 +191,9 @@ def get_user(request):
                 if username[0] is '@':
                     username = username[1:]
 
-                profile = UserProfile.objects.get(user__username=username)
-
-                if not profile:
+                try:
+                    profile = UserProfile.objects.get(user__username=username)
+                except ObjectDoesNotExist:
                     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
 
                 if not profile.thumbnail:
