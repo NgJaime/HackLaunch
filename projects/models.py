@@ -58,13 +58,16 @@ class Project(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return self.title[3:-4] + ' - ' + str(self.id)
+        return self.get_title_text() + ' - ' + str(self.id)
 
     def get_slug_seed(self):
         if self.is_active:
-            return self.title[3:-4]
+            return self.get_title_text()
         else:
             return "new-project"
+
+    def get_title_text(self):
+        return self.title[3:-4]
 
 
 class Follower(models.Model):
@@ -149,7 +152,7 @@ class ProjectCreatorInitialisation(models.Model):
         unique_together = ('creator', 'code')
 
     def __unicode__(self):
-        return self.creator.creator.get_full_name() + ' - ' + self.creator.project.title[3:-4]
+        return self.creator.creator.get_full_name() + ' - ' + self.creator.project.get_title_text()
 
     @classmethod
     def generate_code(cls):

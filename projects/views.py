@@ -347,7 +347,7 @@ def add_creator(request, project, *args, **kwargs):
                 context = {
                     'verification_url': verification_url,
                     'project_url': request.get_host() + reverse('project_view', kwargs={'slug': project.slug}),
-                    'project_title': project.title[3:-4]
+                    'project_title': project.get_title_text()
                 }
 
                 html_message = get_template('creator_verification_email.html').render(Context(context))

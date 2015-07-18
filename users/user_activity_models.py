@@ -52,13 +52,13 @@ class UserActivity(models.Model):
             project_title = self.project.title
 
             if project_title:
-                return 'Created the project ' + self.project.title[3:-4]
+                return 'Created the project ' + self.project.get_title_text()
             else:
                 return 'Created a new project'
         elif self.event_type == self.JOINED_PROJECT_EVENT:
             project_title = self.project.title
 
             if project_title:
-                return 'Joined the project ' + self.project.title[3:-4]
+                return 'Joined the project ' + self.project.get_title_text()
             else:
                 return 'Joined a new project'
