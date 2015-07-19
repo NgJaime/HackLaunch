@@ -25,10 +25,6 @@ class Technologies(models.Model):
         super(Technologies, self).save(*args, **kw)
 
 
-# class Views(models.Model):
-#     project =
-#
-
 class Project(models.Model):
     logo = ResizedImageField(size=[125, 100], crop=['middle', 'center'], upload_to=upload_logo, blank=True, null=True)
     title = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Name your project',
@@ -44,6 +40,8 @@ class Project(models.Model):
     creators = models.ManyToManyField(User, through='ProjectCreator')
     followers = models.ManyToManyField(User, through='Follower', related_name='project_follower')
     technologies = models.ManyToManyField(Technologies, through='ProjectTechnologies', blank=True)
+
+    cumulative_view_count = models.IntegerField(default=0)
 
     facebook = models.URLField(blank=True)
     google_plus = models.URLField(blank=True)
@@ -68,6 +66,17 @@ class Project(models.Model):
 
     def get_title_text(self):
         return self.title[3:-4]
+
+
+class Views(models.Model):
+    project = models.ForeignKey(Project)
+    date = models.DateField()
+    count = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = (("project", "date"),)
+        verbose_name = 'Views'
+        verbose_name_plural = 'Views'
 
 
 class Follower(models.Model):

@@ -11,12 +11,13 @@ from django.core.urlresolvers import reverse
 from django.template import Context
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
+from django.db.models import F
 
 from datetime import datetime
 from urlparse import urlparse
 
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower,\
-    ProjectCreatorInitialisation
+    ProjectCreatorInitialisation, Views
 from users.models import User, Skill
 from users.user_activity_models import UserActivity
 from ajax_decorators import project_ajax_request
@@ -64,7 +65,7 @@ class ProjectView(DetailView):
         context['creators'] = creators
         context['technologies'] = self.object.projecttechnologies_set.all()
         context['posts'] = self.object.post_set.all()
-        context['prior_creators'] =  any(creator.is_active is False for creator in creators)
+        context['prior_creators'] = any(creator.is_active is False for creator in creators)
 
         try:
             self.object.projectcreator_set.get(creator=self.request.user, is_active=True,
@@ -73,6 +74,14 @@ class ProjectView(DetailView):
             context['project_admin'] = False
         else:
             context['project_admin'] = True
+
+        # Add to the view count
+        project_view, created = Views.objects.get_or_create(project=self.object, date=datetime.now())
+        project_view.count = F('count') + 1
+        project_view.save()
+
+        self.object.cumulative_view_count = F('cumulative_view_count') + 1
+        self.object.save()
 
         return context
 
@@ -308,6 +317,8 @@ def image_upload(request, project, *args, **kwargs):
 
             project.logo = request.FILES.get('file')
             project.save()
+
+            return {'success': True, 'link': project.logo.url}
         else:
             image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
 
