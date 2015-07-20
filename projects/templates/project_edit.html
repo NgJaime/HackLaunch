@@ -5,6 +5,7 @@
 
 {% block extra_css %}
     <link href="{% static "css/bootstrap-tagsinput.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{% static "css/toastr.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{% static "froala_editor/css/font-awesome.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{% static "froala_editor/css/froala_editor.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{% static "froala_editor/css/froala_style.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
@@ -439,13 +440,16 @@
             </div>
         </form>
     </div>
+
+    <div id="toast"></div>
+
 {% endblock %}
 
 {% block extra_scripts %}
     <script src="{% static "froala_editor/js/froala_editor.min.js" %}"></script>
     <script src="{% static "froala_editor/js/plugins/tables.min.js" %}"></script>
     <script src="{% static "froala_editor/js/plugins/lists.min.js" %}"></script>
-    <script src="{% static "froala_editor/js/plugins/colors.min.js" %}"></script>
+    <script src="{% static "froala_editor/js/plugins/colors.min.js" %}"></script>,
     <script src="{% static "froala_editor/js/plugins/font_family.min.js" %}"></script>
     <script src="{% static "froala_editor/js/plugins/font_size.min.js" %}"></script>
     <script src="{% static "froala_editor/js/plugins/video.min.js" %}"></script>
@@ -453,11 +457,26 @@
     <script src="{% static "js/bootstrap-tagsinput.js" %}"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{% static "js/jquery.formset.js" %}"></script>
+    <script src="{% static "js/toastr.min.js" %}"></script>
 
     <script>
         $.Editable.DEFAULTS.key = '9uC-7G-7kmcvjfnD3kfg==';
     </script>
     <script>
+        var showSaveToast = function(message) {
+            toastr.options.timeOut = 2000;
+            toastr.options.fadeOut = 250;
+            toastr.options.fadeIn = 250;
+            toastr.options.positionClass = 'toast-bottom-right'
+
+            if (message !== undefined) {
+                toastr['success'](message + ' saved successful');
+            }
+            else {
+                toastr['success']('Save successful');
+            }
+        };
+
         {% autoescape off %}
             var availableTechnologies = {{ context.technologies }},
                 tags = "{{ project_tags }}";
@@ -490,7 +509,9 @@
                 crossDomain: false,
                 placeholder: placeholder,
                 maxCharacters: charCount,
-            })};
+            }).on('editable.afterSave', function (e, editor, data) {
+                showSaveToast();
+            });};
 
         var simpleEdit = function(element, data, url, placeholder){
             $(element).editable({
@@ -507,7 +528,9 @@
                 autosaveInterval: 2500,
                 crossDomain: false,
                 placeholder: placeholder
-            })};
+            }).on('editable.afterSave', function (e, editor, data) {
+                showSaveToast();
+            });};
 
         var richEdit = function(element, data, url, placeholder){
             $(element).editable({
@@ -553,6 +576,10 @@
                 // Make the delete request.
                 editor.deleteImage($img);
             })
+
+            .on('editable.afterSave', function (e, editor, data) {
+                showSaveToast();
+            });
         };
 
         var logoRemoved = function () {
@@ -567,7 +594,7 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     project: {{ context.projectId }},
                 },
-                imageButtons: ['linkImage', 'replaceImage', 'removeImage'],
+                imageButtons: ['replaceImage', 'removeImage'],
                 imageDeleteConfirmation: false,
                 imageDeleteURL: '{% url 'project_image_delete' %}',
                 imageDeleteParams: {
@@ -577,9 +604,7 @@
                 },
                 placeholder: '{% static "images/add-a-logo.png" %}',
                 crossDomain: false
-            })
-
-            .on('editable.beforeRemoveImage', function (e, editor, $img) {
+            }).on('editable.beforeRemoveImage', function (e, editor, $img) {
                 console.log('before');
                 // Set the image source to the image delete params.
                 editor.options.imageDeleteParams.src = $img.attr('src');
@@ -591,6 +616,8 @@
 
                 logoRemoved();
                 $(".logo").on("remove", logoRemoved());
+            }).on('editable.afterSave', function (e, editor, data) {
+                showSaveToast('Logo');
             });
         };
 
@@ -603,7 +630,7 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     project: {{ context.projectId }},
                 },
-                imageButtons: ['linkImage', 'replaceImage', 'removeImage'],
+                imageButtons: ['replaceImage', 'removeImage'],
                 imageDeleteConfirmation: false,
                 imageDeleteURL: '{% url 'project_image_delete' %}',
                 imageDeleteParams: {
@@ -613,10 +640,8 @@
                 },
                 placeholder: '{% static "images/add-a-logo.png" %}',
                 crossDomain: false
-            })
-
-{#           Todo get aftre remove image working and refactor logo removed #}
-            .on('editable.beforeRemoveImage', function (e, editor, $img) {
+            }).on('editable.beforeRemoveImage', function (e, editor, $img) {
+    {#           Todo get aftre remove image working and refactor logo removed #}
                 console.log('before');
                 // Set the image source to the image delete params.
                 editor.options.imageDeleteParams.src = $img.attr('src');
@@ -627,7 +652,9 @@
                 $img.attr.src = editor.options.placeholder;
 
                 logoRemoved();
-            })
+            }).on('editable.afterSave', function (e, editor, data) {
+                showSaveToast('Logo');
+            });
         });
 
         var addPost = function () {
@@ -726,6 +753,7 @@
                         }
                         else if (data.content.success === true) {
                             $('#update-post-errors').addClass('hidden');
+                            showSaveToast('Post');
                         }
                         else {
                             $('#update-post-errors').removeClass('hidden');
@@ -856,6 +884,8 @@
                             if (priorCreators.length === 0 ){
                                 priorCreatorsContainer.addClass('hidden');
                             }
+
+                            showSaveToast('Creator');
                         }
                         else {
                             $('#prior-creator-error').removeClass('hidden');
@@ -889,6 +919,7 @@
                         }
                         else if (data.content.success === true) {
                             $('#creator-error').addClass('hidden');
+                            showSaveToast('Creator');
                         }
                         else {
                             $('#creator-error').removeClass('hidden');
@@ -934,6 +965,8 @@
 
                             var header = $('#' + username + '-heading');
                             header.append('<i id="creator-' + username + '-icon" class="fa fa-plus-circle pull-right" style="color: white; padding-left: 5px;" onclick="reactivateCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
+
+                            showSaveToast('Creator');
                         }
                         else {
                             $('#creator-error').removeClass('hidden');
@@ -1001,6 +1034,8 @@
                             $('.creator-edit').find('.fr-placeholder').each(function() {
                                 $(this).css('color', 'white');
                             });
+
+                            showSaveToast('Creator');
                         }
                         else {
                             $('#creator-error').removeClass('hidden');
@@ -1058,7 +1093,7 @@
                                                             '' + value + '' +
                                                             '<i id="technology-' + value + '-icon" class="fa fa-minus-circle" style="color: black; padding-left: 5px;" onclick="removeTechnology(&apos;' + value + '&apos;)"></i>' +
                                                         '<p>' +
-                                                        '<p id="technology-' + value + '-error" style="text-align: center; color: red;">' +
+                                                        '<p id="technology-' + value + '-error" class="hidden" style="text-align: center; color: red;">' +
                                                             '<i class="fa fa-exclamation-circle" style="color: red;"></i>' +
                                                             '<span id="technology-' + value + '-error-message"></span>' +
                                                         '</p>' +
@@ -1081,6 +1116,8 @@
                         $('#technology-error').removeClass('hidden');
                         $('#technology-error-message').text(data.content.message);
                     }
+
+                    showSaveToast('Technology');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#technology-error').removeClass('hidden');
@@ -1107,6 +1144,7 @@
                     }
                     else if (data.content.success === true) {
                         $('#technology-' + value).remove();
+                        showSaveToast('Technology');
                     }
                     else {
                         $('#technology-' + value + '-error').removeClass('hidden');
@@ -1141,6 +1179,7 @@
                         $('#technology-' + name + '-error').removeClass('hidden');
                         $('#technology-' + name + '-error-message').text(data.content.message);
                     }
+                    showSaveToast('Technology');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#technology-' + name + '-error').removeClass('hidden');
@@ -1173,6 +1212,8 @@
                             $('#tags-error').removeClass('hidden')
                             $('#tags-error-message').text(data.content.message);
                         }
+
+                        showSaveToast('Tag');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         $('tags-input').tagsinput('remove', event.item);
@@ -1206,6 +1247,8 @@
                         $('#tags-error').removeClass('hidden')
                         $('#tags-error-message').text(data.content.message);
                     }
+
+                    showSaveToast('Tag');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('tags-input').tagsinput('add', event.item);
@@ -1232,15 +1275,15 @@
                             $('#social-link-error-main-message').text('Internal server error, please try again later.');
                        }
                        else if (data.content.success === true) {
-                            $('#social-link-error-main').addClass('hidden')
+                           $('#social-link-error-main').addClass('hidden');
                        }
                        else {
-                            $('#social-link-error-main').removeClass('hidden')
+                            $('#social-link-error-main').removeClass('hidden');
                             $('#social-link-error-main-message').text(data.content.message);
                        }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        $('#social-link-error-main').removeClass('hidden')
+                        $('#social-link-error-main').removeClass('hidden');
                         $('#social-link-error-main-message').text(xhr.responseJSON.message);
                     }
                 });
@@ -1313,10 +1356,11 @@
                             $('#repo-link-error-main-message').text('Internal server error, please try again later.');
                        }
                        else if (data.content.success === true) {
-                            $('#repo-link-error-main').addClass('hidden')
+                           $('#repo-link-error-main').addClass('hidden')
+                           showSaveToast('Repository');
                        }
                        else {
-                            $('#repo-link-error-main').removeClass('hidden')
+                            $('#repo-link-error-main').removeClass('hidden');
                             $('#repo-link-error-main-message').text(data.content.message);
                        }
                     },
