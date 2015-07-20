@@ -65,7 +65,7 @@ class ProjectView(DetailView):
         creators = self.object.projectcreator_set.all()
         context['creators'] = creators
         context['technologies'] = self.object.projecttechnologies_set.all()
-        context['posts'] = self.object.post_set.all()
+        context['posts'] = self.object.post_set.all().order_by('-date_added')
         context['prior_creators'] = any(creator.is_active is False for creator in creators)
 
         try:
