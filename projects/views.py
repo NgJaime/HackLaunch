@@ -12,6 +12,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.db.models import F
+from django.http import HttpResponse
 
 from datetime import datetime
 from urlparse import urlparse
@@ -307,24 +308,41 @@ def update_post(request, project, *args, **kwargs):
     else:
         return {'success': False, 'message': 'No data in request'}
 
+# todo django ajax placing all json in content dictionary which is not expected by froala
+@csrf_protect
+def image_upload(request):
+    response_data = {}
+    if request.method == "POST":
+        if 'project' in request.POST:
+            try:
+                project = Project.objects.get(id=request.POST['project'])
+                request_user = project.projectcreator_set.get(creator_id=request.user.id)
 
-@project_ajax_request
-def image_upload(request, project, *args, **kwargs):
-    if len(request.FILES) == 1:
-        if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
-            if project.logo is not None:
-                project.logo.delete()
+                if request_user.is_admin:
+                    if len(request.FILES) == 1:
+                        if 'logo' in request.POST and json.loads(request.POST['logo']) is True:
+                            if project.logo is not None:
+                                project.logo.delete()
 
-            project.logo = request.FILES.get('file')
-            project.save()
+                            project.logo = request.FILES.get('file')
+                            project.save()
 
-            return {'success': True, 'link': project.logo.url}
+                            response_data['link'] = project.logo.url
+                        else:
+                            image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
+                            response_data['link'] = image.image.url
+                    else:
+                        response_data['error'] = 'No image in request'
+                else:
+                    response_data['error'] = 'Only admins can make an update to a project'
+            except ObjectDoesNotExist:
+                response_data['error'] = 'Object does not exist'
         else:
-            image = ProjectImage.objects.create(project=project, image=request.FILES.get('file'))
-
-        return {'success': True, 'link': image.image.url}
+            response_data['error'] = "Required data missing from request"
     else:
-        return {'success': False, 'message':  'No image in request'}
+        response_data['error'] = 'method not supported'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @project_ajax_request
