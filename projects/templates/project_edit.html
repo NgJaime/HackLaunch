@@ -464,6 +464,7 @@
     </script>
     <script>
         var showSaveToast = function(message) {
+            toastr.options.closeButton = false;
             toastr.options.timeOut = 2000;
             toastr.options.fadeOut = 250;
             toastr.options.fadeIn = 250;
@@ -1499,6 +1500,13 @@
         $('.creator-edit').find('.fr-placeholder').each(function() {
             $(this).css('color', 'white');
         });
+
+        toastr.options.closeButton = true;
+        toastr.options.timeOut = 10000;
+        toastr.options.fadeOut = 250;
+        toastr.options.fadeIn = 250;
+        toastr.options.positionClass = 'toast-bottom-right';
+        toastr['info']("To edit your project simply click on the element you would like to change and start making your update.", "Updating you project");
 
     </script>
 
