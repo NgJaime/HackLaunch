@@ -20,14 +20,18 @@
                     {%  for project in projects %}
                         {% if project.title and project.tag_line %}
                             <li onclick="location.href='/projects/{{ project.slug }}'">
-                                <div class="thumbnail">
+                                <div class="thumbnail shadow" style="height: 300px; background-color: #83E11C">
                                     {% if project.logo %}
-                                          <img id='logo' class='logo' src="{{ project.logo.url }}" alt="Logo" style="width: 252px; height: 168px;"/>
+                                        <img id='logo' class='logo white-border' src="{{ project.logo.url }}" alt="Logo" style="width: 150px; height: 150px;"/>
+                                    {% else %}
+                                        <img id='logo' class='logo white-border' src="{{ project.projectcreator_set.first.creator.userprofile.image.url }}" alt="Logo" style="width: 150px; height: 150px;"/>
                                     {% endif %}
-                                    <div class="caption">
+                                    <div class="caption" style="padding: 0px;">
                                         {% autoescape off %}
-                                            <h3 class="center"><strong>{{ project.title }}</strong></h3>
-                                            <p>{{ project.tag_line }}</p>
+                                            <h3 class="center" style="margin: 15px 0px 10px 0px; color: white;"><strong>{{ project.title }}</strong></h3>
+                                            <div class="center" style="margin: 15px 30px 0px 15px; padding: 0px 30px 0px 15px; color: white;">
+                                                {{ project.tag_line }}
+                                            </div>
                                         {% endautoescape %}
                                     </div>
                                 </div>

@@ -19,14 +19,18 @@
                     {%  for creator in project_creator %}
                         {% if creator.project.title and creator.project.tag_line %}
                             <li onclick="location.href='/projects/{{ creator.project.slug }}'">
-                                <div class="thumbnail">
+                                <div class="thumbnail shadow" style="height: 300px; background-color: #83E11C">
                                     {% if creator.project.logo %}
-                                          <img id='logo' class='logo' src="{{ creator.project.logo.url }}" alt="Logo" style="width: 252px; height: 168px;"/>
+                                        <img id='logo' class='logo white-border' src="{{ creator.project.logo.url }}" alt="Logo" style="width: 150px; height: 150px;"/>
+                                    {% else %}
+                                        <img id='logo' class='logo white-border' src="{{ creator.creator.userprofile.image.url }}" alt="Logo" style="width: 150px; height: 150px;"/>
                                     {% endif %}
-                                    <div class="caption">
+                                    <div class="caption" style="padding: 0px;">
                                         {% autoescape off %}
-                                            <h3 class="center"><strong>{{ creator.project.title }}</strong></h3>
-                                            <p>{{ creator.project.tag_line }}</p>
+                                            <h3 class="center" style="margin: 15px 0px 10px 0px; color: white;"><strong>{{ creator.project.title }}</strong></h3>
+                                            <div class="center" style="margin: 15px 30px 0px 15px; padding: 0px 30px 0px 15px; color: white;">
+                                            	<p>{{ creator.project.tag_line }}</p>
+                                            </div>
                                         {% endautoescape %}
                                     </div>
                                 </div>
@@ -44,14 +48,18 @@
                     {% for follower in following %}
                         {% if follower.project.title and follower.project.tag_line %}
                             <li onclick="location.href='/projects/{{ follower.project.slug }}'">
-                                <div class="thumbnail">
+                                <div class="thumbnail shadow" style="height: 300px; background-color: #83E11C">
                                     {% if follower.project.logo %}
-                                          <img id='logo' class='logo' src="{{ follower.project.logo.url }}" alt="Logo" style="width: 252px; height: 168px;"/>
+                                          <img id='logo' class='logo white-border' src="{{ follower.project.logo.url }}" alt="Logo" style="width: 150px; height: 150px;"/>
+                                    {% else %}
+                                        <img id='logo' class='logo white-border' src="{{ follower.project.creators.first.userprofile.get_thumbnail }}" alt="Logo" style="width: 150px; height: 150px;"/>
                                     {% endif %}
-                                    <div class="caption">
+                                    <div class="caption" style="padding: 0px;">
                                         {% autoescape off %}
-                                            <h3 class="center"><strong>{{ follower.project.title }}</strong></h3>
-                                            <p>{{ follower.project.tag_line }}</p>
+                                            <h3 class="center" style="margin: 15px 0px 10px 0px; color: white;"><strong>{{ follower.project.title }}</strong></h3>
+                                            <div class="center" style="margin: 15px 30px 0px 15px; padding: 0px 30px 0px 15px; color: white;">
+                                                <p>{{ follower.project.tag_line }}</p>
+                                            </div>
                                         {% endautoescape %}
                                     </div>
                                 </div>
