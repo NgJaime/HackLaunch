@@ -26,7 +26,7 @@ class Technologies(models.Model):
 
 
 class Project(models.Model):
-    logo = ResizedImageField(size=[125, 100], crop=['middle', 'center'], upload_to=upload_logo, blank=True, null=True)
+    logo = ResizedImageField(size=[250, 250], crop=['middle', 'center'], upload_to=upload_logo, blank=True, null=True)
     title = FroalaField(options={'inlineMode': True, 'alwaysVisible': True, 'placeholder': 'Name your project',
                                  'blockStyles': {'p': {'margin': '0px;'}}}, blank=True)
     tag_line = FroalaField(options={'inlineMode': True, 'alwaysVisible': True,

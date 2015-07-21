@@ -37,6 +37,7 @@ PREREQ_APPS = [
     'storages',
     'froala_editor',
     'taggit',
+    'django_gravatar',
 ]
 
 PROJECT_APPS = [
@@ -262,3 +263,8 @@ DJANGORESIZED_DEFAULT_QUALITY = 99
 DJANGORESIZED_DEFAULT_KEEP_META = True
 MAX_IMAGE_SIZE = 5*1024*1024
 
+
+#############################
+# django-gravatar
+#############################
+GRAVATAR_DEFAULT_IMAGE = 'identicon'

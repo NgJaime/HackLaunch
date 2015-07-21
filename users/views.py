@@ -37,10 +37,7 @@ class ProfileEditView(LoginRequiredMixin, FormView):
 
         self.profile = get_object_or_404(UserProfile, user_id=self.request.user.id)
 
-        try:
-            url = self.profile.image.url
-        except ValueError:
-            url = static('images/avatar.jpg')
+        url = self.profile.get_thumbnail()
 
         initial['first_name'] = self.request.user.first_name
         initial['last_name'] = self.request.user.last_name
@@ -196,10 +193,7 @@ def get_user(request):
                 except ObjectDoesNotExist:
                     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
 
-                if not profile.thumbnail:
-                    thumbnail = static('images/avatar.jpg')
-                else:
-                    thumbnail = profile.thumbnail.url
+                    thumbnail = profile.get_thumbnail()
 
                 return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile.user.get_full_name(),
                                                 'thumbnail': thumbnail, 'slug': profile.slug}))

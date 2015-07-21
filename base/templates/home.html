@@ -147,12 +147,8 @@
                                             <div class="row" style="margin: 0px;">
                                                 <div class="col-md-4 vertical-center white-border-right" style=" height: 140px;">
                                                         <img class="img-responsive img-circle card-head center-block text-center white-border"
-                                                             style="border-width: 3px;"
-                                                             {% if user.userprofile.thumbnail %}
-                                                                src="{{ user.userprofile.thumbnail.url }}" alt="{{ user.get_full_name }}"
-                                                             {% else %}
-                                                                src="{% static "images/avatar.jpg" %}" class="avatar img-circle" alt="avatar"
-                                                             {% endif %} >
+                                                             style="border-width: 3px;" alt="{{ user.get_full_name }}"
+                                                             src="{{ user.userprofile.get_thumbnail }}" >
                                                 </div>
                                                 <div class="col-md-8 text-center vertical-center" style="height: 140px; margin-bottom: 0px;">
                                                     <div style="width: 100%">

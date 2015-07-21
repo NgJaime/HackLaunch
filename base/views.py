@@ -13,7 +13,7 @@ class HomeView(FormView):
     success_url = 'profile_edit'
 
     def get_context_data(self, **kwargs):
-        new_users = User.objects.order_by('-date_joined')[:10]
+        new_users = User.objects.exclude(is_staff = True).order_by('-date_joined')[:10]
         kwargs['new_users'] = new_users
         return super(HomeView, self).get_context_data(**kwargs)
 

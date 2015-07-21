@@ -1,5 +1,3 @@
-import pycountry
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_resized import ResizedImageField
@@ -8,9 +6,14 @@ from django.core.mail import EmailMessage
 from django.template import Context
 from django.conf import settings
 from django.templatetags.static import static
+from django.core.files.temp import NamedTemporaryFile
+
+from django_gravatar.helpers import get_gravatar_url
 from autoslug import AutoSlugField
 from s3 import upload_profile_image, upload_profile_thumbnail
+from urllib2 import urlopen
 
+import pycountry
 
 COUNTRIES = [[c.alpha2, c.name] for c in pycountry.countries]
 
@@ -80,7 +83,7 @@ class UserProfile(models.Model):
     skills = models.ManyToManyField(Skill)
     maker_type = models.ManyToManyField(MakerTypes)
 
-    image = ResizedImageField(size=[230, 230], crop=['middle', 'center'], upload_to=upload_profile_image, blank=True)
+    image = ResizedImageField(size=[250, 250], crop=['middle', 'center'], upload_to=upload_profile_image, blank=True)
     thumbnail = ResizedImageField(size=[50, 50], crop=['middle', 'center'], upload_to=upload_profile_thumbnail,
                                   blank=True)
 
@@ -92,6 +95,13 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    def save(self, *args, **kw):
+        if self.pk is None:
+            if self.image is None:
+                self.get_gravatar_profile_image()
+
+        super(UserProfile, self).save(*args, **kw)
 
     def get_slug_name(self):
         name = self.user.username
@@ -107,8 +117,30 @@ class UserProfile(models.Model):
         else:
             return None
 
+    def get_gravatar_profile_image(self):
+        url = get_gravatar_url(self.user.email, size=230)
+        image_request_result = urlopen(url)
+
+        temp_file = NamedTemporaryFile(delete=True)
+        temp_file.write(image_request_result.read())
+        temp_file.flush()
+
+        extension = image_request_result.headers.subtype
+        thumbnail_file_name = upload_profile_thumbnail(None, self.user.username + '.' + extension)
+        image_file_name = upload_profile_image(None, self.user.username + '.' + extension)
+
+        self.thumbnail.save(thumbnail_file_name, temp_file)
+        self.image.save(image_file_name, temp_file)
+
     def get_thumbnail(self):
         if self.thumbnail:
             return self.thumbnail.url
+        elif self.user.email:
+            self.get_gravatar_profile_image()
+            return self.thumbnail.url
         else:
             return static('images/avatar.jpg')
+
+
+
+
