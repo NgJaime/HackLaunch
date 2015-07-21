@@ -158,9 +158,13 @@ def follow_project(request):
 
             if follow is True:
                 follow, created = Follower.objects.get_or_create(project=project, user=request.user)
+                project.cumulative_followers_count = F('cumulative_followers_count') + 1
+                project.save()
             else:
                 project_follow = Follower.objects.get(project=project, user=request.user)
                 project_follow.delete()
+                project.cumulative_followers_count = F('cumulative_followers_count') - 1
+                project.save()
 
             return {'success': True}
 

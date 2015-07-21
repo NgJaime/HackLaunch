@@ -20,7 +20,7 @@
                     {%  for project in projects %}
                         {% if project.title and project.tag_line %}
                             <li onclick="location.href='/projects/{{ project.slug }}'">
-                                <div class="thumbnail shadow" style="height: 300px; background-color: #83E11C">
+                                <div class="thumbnail shadow" style="height: 330px; background-color: #333333">
                                     {% if project.logo %}
                                         <img id='logo' class='logo white-border' src="{{ project.logo.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
                                     {% else %}
@@ -33,6 +33,13 @@
                                                 {{ project.tag_line }}
                                             </div>
                                         {% endautoescape %}
+                                    </div>
+
+                                    <div class="center" style=" position: absolute; bottom: 0; left: 0; height: 25px; background-color: #F0EFED; color: #615F5A">
+                                        <p style="font-size: 1.2em;">
+                                            <i class="fa fa-heart" style="color: #BFBEBA"></i> {{ project.cumulative_followers_count }}
+                                            <i class="fa fa-eye" style="padding-left: 10px; color: #BFBEBA"></i> {{ project.cumulative_view_count }}
+                                        </p>
                                     </div>
                                 </div>
                             </li>

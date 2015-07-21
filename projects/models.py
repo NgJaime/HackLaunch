@@ -42,6 +42,7 @@ class Project(models.Model):
     technologies = models.ManyToManyField(Technologies, through='ProjectTechnologies', blank=True)
 
     cumulative_view_count = models.IntegerField(default=0)
+    cumulative_followers_count = models.IntegerField(default=0)
 
     facebook = models.URLField(blank=True)
     google_plus = models.URLField(blank=True)
