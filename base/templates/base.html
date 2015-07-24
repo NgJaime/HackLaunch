@@ -225,7 +225,22 @@
                             </div>
                         </div>
                     {% endif %}
-                    <!-- dropdown -->
+                    <div class="dropdown animated fadeInDown animation-delay-13">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-search-box animated fadeInUp">
+                            <form role="form" action="{% url 'haystack_search' %}">
+                                <div class="input-group">
+                                    <input type="search" name="q" class="form-control" placeholder="What would you like to find?">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-ar btn-primary" type="submit">
+                                            <i class="fa fa-search" style="margin: 0px;"></i>
+                                        </button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </form>
+                        </div>
+                    </div>
+                 <!-- dropdown -->
                 </nav>
             </div>
             <!-- container -->
@@ -275,7 +290,6 @@
         <!-- FOOTER -->
 
         <!-- WIDGETS -->
-
         <aside id="footer-widgets">
             <div class="container">
                 <div class="row">
@@ -290,6 +304,7 @@
                             {% endif %}
                             <li><a href="/credits">Credits</a></li>
                             <li><a href="/terms">Terms</a></li>
+                            <li><a href="{% url 'haystack_search' %}">Search</a></li>
                         </ul>
 
                         <!-- /input-group -->
@@ -346,6 +361,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/events/innovate-or-die">Events</a></li>
         <li><a href="{% url 'project_list' %}">Projects</a></li>
+        <li><a href="{% url 'haystack_search' %}">Search</a></li>
 
         {% if not user.is_anonymous %}
             <li><a href="/users/{{ user.userprofile.slug }}">View profile</a></li>

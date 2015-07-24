@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from autoslug import AutoSlugField
 from froala_editor.fields import FroalaField
 from django_resized import ResizedImageField
@@ -58,6 +59,9 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.get_title_text() + ' - ' + str(self.id)
+
+    def get_absolute_url(self):
+        return reverse('project_view', kwargs={'slug': self.slug})
 
     def get_slug_seed(self):
         if self.is_active:

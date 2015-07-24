@@ -1,0 +1,2 @@
+{{ object.summary }}
+{% for skill in object.skills.all %} {{ skill.name }} {% endfor %}

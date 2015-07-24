@@ -46,7 +46,8 @@ urlpatterns = [
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete',
         {'template_name': 'password_reset_complete.html'}, name='password_reset_complete'),
 
-    url(r'', include('social.apps.django_app.urls', namespace='social'))
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^search/', include('haystack.urls'), name='search')
 ]
 
 from django.conf import settings

@@ -31,6 +31,7 @@ PREREQ_APPS = [
     'django.contrib.sitemaps',
     'bootstrap_admin', # always before django.contrib.admin
     'django.contrib.admin',
+    'haystack',
     'social.apps.django_app.default',
     'zxcvbn_password',
     'widget_tweaks',
@@ -268,3 +269,10 @@ MAX_IMAGE_SIZE = 5*1024*1024
 # django-gravatar
 #############################
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
+
+
+#############################
+# django-haystack
+#############################
+# realtime update to the elastic search server
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

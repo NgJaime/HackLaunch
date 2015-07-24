@@ -61,3 +61,15 @@ DEBUG_TOOLBAR_CONFIG = {
 DEBUG_TOOLBAR_CONFIG = {
     'RESULTS_STORE_SIZE': 100,
 }
+
+
+#############################
+# Django Haystack
+#############################
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': BONSAI_URL,
+        'INDEX_NAME': 'haystack'
+    },
+}

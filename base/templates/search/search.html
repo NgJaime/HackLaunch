@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Search{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 class="center"><strong>Search</strong></h1>
+
+            <form method="get" action=".">
+                <div class="center row" style="width: 100%;">
+                    <div class="input-group col-md-6 col-md-offset-3" width="500">
+                            <input type="search" name="q" class="form-control" placeholder="What would you like to find?" >
+                            <span class="input-group-btn">
+                                <button class="btn btn-ar btn-primary" type="submit">
+                                     <i class="fa fa-search" style="margin: 0px;"></i>
+                                </button>
+                            </span>
+                    </div>
+                </div>
+            </form>
+
+            {% if query %}
+                <div>
+                    <h2 class="section-title">
+                        Results
+                    </h2>
+                    {% for result in page.object_list %}
+                        {% if result.verbose_name == 'Project' %}
+                            <div>
+                                <div>
+                                    <h3 style="margin-bottom: 5px; display: inline-block;"><a href="{{ result.object.get_absolute_url }}">{{ result.object.get_title_text }}</a></h3>
+                                    <p style="display: inline-block;"><i> - Project</i></p>
+                                </div>
+                                {% autoescape off %} {{ result.object.pitch }} {% endautoescape %}
+                            </div>
+                        {% elif result.verbose_name == 'User profile' %}
+                            <div>
+                                <div>
+                                    <h3 style="margin-bottom: 5px; display: inline-block;"><a href="{{ result.object.get_absolute_url }}">{{ result.object.user.get_full_name }}</a></h3>
+                                    <p style="display: inline-block;"><i> - User</i></p>
+                                </div>
+                                {% autoescape off %} {{ result.object.summary }} {% endautoescape %}
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <p>No results found.</p>
+                    {% endfor %}
+
+                    {% if page.has_previous or page.has_next %}
+                        <div>
+                            {% if page.has_previous %}
+                                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo;
+                            Previous
+                            {% if page.has_previous %}</a>{% endif %}
+                            |
+                            {% if page.has_next %}
+                                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}
+                            Next &raquo;{% if page.has_next %}</a>{% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
