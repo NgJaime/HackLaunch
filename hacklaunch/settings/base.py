@@ -276,3 +276,14 @@ GRAVATAR_DEFAULT_IMAGE = 'identicon'
 #############################
 # realtime update to the elastic search server
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+#############################
+# Django Haystack
+#############################
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': BONSAI_URL,
+        'INDEX_NAME': 'haystack'
+    },
+}
