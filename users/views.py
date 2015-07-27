@@ -193,7 +193,7 @@ def get_user(request):
                 except ObjectDoesNotExist:
                     return HttpResponseBadRequest(json.dumps({'success': False, 'message': 'No user with username: ' + username}))
 
-                    thumbnail = profile.get_thumbnail()
+                thumbnail = profile.get_thumbnail()
 
                 return HttpResponse(json.dumps({'success': True, 'username': username, 'full_name': profile.user.get_full_name(),
                                                 'thumbnail': thumbnail, 'slug': profile.slug}))
