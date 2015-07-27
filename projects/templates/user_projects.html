@@ -7,7 +7,11 @@
 
 {% block content %}
     <div class="row  margin-top-20">
-        <h1 style="text-align: center;"><b>{{ project_creator.0.creator.get_full_name }}'s Projects</b></h1>
+        {% if project_creator.0.creator.get_full_name != '' %}
+            <h1 style="text-align: center;"><b>{{ project_creator.0.creator.get_full_name }}'s Projects</b></h1>
+        {% else %}
+            <h1 style="text-align: center;"><b>@{{ project_creator.0.creator.username }}'s Projects</b></h1>
+        {% endif %}
 
         <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
             <h2 class="margin-bottom-20 section-title no-margin-top">
@@ -16,7 +20,7 @@
 
             <div class="row">
                 <ul class="bx-horizontal-click">
-                    {%  for creator in project_creator %}
+                    {% for creator in project_creator %}
                         {% if creator.project.title and creator.project.tag_line %}
                             <li onclick="location.href='/projects/{{ creator.project.slug }}'">
                                 <div class="thumbnail shadow" style="height: 330px; background-color: #333333">
