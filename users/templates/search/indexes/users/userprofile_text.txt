@@ -1,2 +1,4 @@
+{{object.user.get_full_name}}
+{{object.user.username}}
 {{ object.summary }}
 {% for skill in object.skills.all %} {{ skill.name }} {% endfor %}
