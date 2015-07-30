@@ -71,18 +71,18 @@
                         </a>
                     {%  else %}
                         {% if follower %}
-                            <p id="follow" class="hidden button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
-                                <strong><i class="fa fa-plus-circle" style="color: white; padding-right: 5px"></i>Follow</strong>
+                            <p id="like" class="hidden button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
+                                <strong><i class="fa fa-heart" style="color: white; padding-right: 5px"></i>Like</strong>
                             </p>
-                            <p id="unfollow" class="button button-pill button-small pull-right margin-top-10" onclick="followProject(false)">
-                                <strong><i class="fa fa-minus-circle" style="color: white; padding-right: 5px"></i>Unfollow</strong>
+                            <p id="liked" class="button-action button-pill button-small pull-right margin-top-10" onclick="followProject(false)" onmouseover="displayUnlike()" onmouseout="displayLiked()">
+                                <i class="fa fa-heart" style="padding-right: 5px"></i><strong><span id="likedText">Liked</span></strong>
                             </p>
                         {% else %}
-                            <p id="follow" class="button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
-                                <strong><i class="fa fa-plus-circle" style="color: white; padding-right: 5px"></i>Follow</strong>
+                            <p id="Like" class="button button-highlight button-pill button-small pull-right margin-top-10" onclick="followProject(true)">
+                                <strong><i class="fa fa-heart" style="color: white; padding-right: 5px"></i>Like</strong>
                             </p>
-                            <p id="unfollow" class="hidden button button-pill button-small pull-right margin-top-10" onclick="followProject(false)">
-                                <strong><i class="fa fa-minus-circle" style="color: white; padding-right: 5px"></i>Unfollow</strong>
+                            <p id="liked" class="hidden button-action button-pill button-small pull-right margin-top-10" onclick="followProject(false)" onmouseover="displayUnlike()" onmouseout="displayLiked()">
+                                <strong><i class="fa fa-heart" style="padding-right: 5px"></i><strong><span id="likedText">Liked</span></strong>
                             </p>
                         {% endif %}
                     {% endif %}
@@ -256,7 +256,13 @@
 
 {% block extra_scripts %}
     <script>
-        var followProject = function (follow) {
+        var displayUnlike = function() {
+            $('#likedText').html('Unlike');
+        },
+        displayLiked = function() {
+            $('#likedText').html('Liked');
+        },
+        followProject = function (follow) {
             $.ajax({
                 url: "{% url 'follow_project' %}",
                 type: 'POST',
@@ -280,12 +286,12 @@
                         error.addClass('hidden');
 
                         if (follow === true) {
-                            $('#follow').addClass('hidden');
-                            $('#unfollow').removeClass('hidden');
+                            $('#like').addClass('hidden');
+                            $('#liked').removeClass('hidden');
                         }
                         else {
-                            $('#unfollow').addClass('hidden');
-                            $('#follow').removeClass('hidden');
+                            $('#liked').addClass('hidden');
+                            $('#like').removeClass('hidden');
                         }
                     }
                 },
