@@ -11,7 +11,6 @@ from django.core.urlresolvers import reverse
 from django.template import Context
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
-from django.db.models import F
 from django.http import HttpResponse
 
 from datetime import datetime
@@ -77,11 +76,11 @@ class ProjectView(DetailView):
             context['project_admin'] = True
 
         # Add to the view count
-        project_view, created = Views.objects.get_or_create(project=self.object, date=datetime.now())
-        project_view.count = F('count') + 1
+        project_view, created = Views.objects.get_or_create(project=self.object, date=datetime.date(datetime.now()))
+        project_view.count +=  1
         project_view.save()
 
-        self.object.cumulative_view_count = F('cumulative_view_count') + 1
+        self.object.cumulative_view_count += 1
         self.object.save()
 
         return context
@@ -158,12 +157,12 @@ def follow_project(request):
 
             if follow is True:
                 follow, created = Follower.objects.get_or_create(project=project, user=request.user)
-                project.cumulative_followers_count = F('cumulative_followers_count') + 1
+                project.cumulative_followers_count += 1
                 project.save()
             else:
                 project_follow = Follower.objects.get(project=project, user=request.user)
                 project_follow.delete()
-                project.cumulative_followers_count = F('cumulative_followers_count') - 1
+                project.cumulative_followers_count -= 1
                 project.save()
 
             return {'success': True}
