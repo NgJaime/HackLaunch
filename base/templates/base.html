@@ -225,21 +225,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    <div class="dropdown animated fadeInDown animation-delay-13">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-search-box animated fadeInUp">
-                            <form role="form" action="{% url 'haystack_search' %}">
-                                <div class="input-group">
-                                    <input type="search" name="q" class="form-control" placeholder="What would you like to find?">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-ar btn-primary" type="submit" style="padding-bottom: 7px; ">
-                                            <i class="fa fa-search" style="margin: 0px;"></i>
-                                        </button>
-                                    </span>
-                                </div><!-- /input-group -->
-                            </form>
-                        </div>
-                    </div>
                  <!-- dropdown -->
                 </nav>
             </div>
@@ -260,9 +245,32 @@
                 </div>
                 <!-- navbar-header -->
 
+                <h1 class="animated fadeInRight hidden-lg hidden-md hidden-sm" style="margin: 0px; padding-top: 6px; padding-bottom: 5px;">
+                        <a href="/" style="font-family: virgo; color: white; text-decoration: none;">
+                            H<span style="color: #84E21D">a</span>ckl<span style="color: #84E21D">a</span>unch
+                        </a>
+                </h1>
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="pull-right">
-                    <a href="javascript:void(0);" class="sb-icon-navbar sb-toggle-right"><i class="fa fa-bars"></i></a>
+                    <div class="dropdown animated fadeInDown animation-delay-13">
+                        <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown">
+                            <h2 style="margin-top: 5px; margin-bottom: 0px;"><i class="fa fa-search fa-3" style="color: white;"></i></h2>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-search-box animated fadeInUp" style="width: 30%;">
+                            <form role="form" action="{% url 'haystack_search' %}">
+                                <div class="input-group">
+                                    <input type="search" name="q" class="form-control" placeholder="Search projects and users ...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-ar btn-primary" type="submit" style="padding-bottom: 7px; ">
+                                            <i class="fa fa-search" style="margin: 0px;"></i>
+                                        </button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </form>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0);" class="sb-icon-navbar sb-toggle-right hidden-lg hidden-md hidden-sm"><i class="fa fa-bars"></i></a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -358,10 +366,10 @@
 <div class="sb-slidebar sb-right">
     <h2 class="slidebar-header" style="margin-bottom: 0px;">Navigation</h2>
     <ul class="slidebar-menu">
+        <li><a href="{% url 'haystack_search' %}">Search</a></li>
         <li><a href="/">Home</a></li>
         <li><a href="/events/innovate-or-die">Events</a></li>
         <li><a href="{% url 'project_list' %}">Projects</a></li>
-        <li><a href="{% url 'haystack_search' %}">Search</a></li>
 
         {% if not user.is_anonymous %}
             <li><a href="/users/{{ user.userprofile.slug }}">View profile</a></li>
