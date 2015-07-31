@@ -260,7 +260,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#add-post-errors').removeClass('hidden');
-                    $('#add-post-errors-message').text(xhr.responseJSON.message);
+                    $('#add-post-errors-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     };
@@ -292,7 +292,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#update-post-errors').removeClass('hidden');
-                    $('#update-post-errors-message').text(xhr.responseJSON.message);
+                    $('#update-post-errors-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     };
@@ -341,7 +341,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#creator-error').removeClass('hidden');
-                    $('#creator-error-message').text(xhr.responseJSON.message);
+                    $('#creator-error-message').text('An error has occurred, we are working to fix it.');
                 }
             });
         }
@@ -424,7 +424,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#prior-creator-error').removeClass('hidden');
-                    $('#prior-creator-error-message').text(xhr.responseJSON.message);
+                    $('#prior-creator-error-message').text('An error has occurred, we are working to fix it.');
                 }
         });
     };
@@ -458,7 +458,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#creator-error').removeClass('hidden');
-                    $('#creator-error-message').text(xhr.responseJSON.message);
+                    $('#creator-error-message').text('An error has occurred, we are working to fix it.');
                 }
         });
     };
@@ -491,7 +491,7 @@
                         var newSummary = creators.find('#creator-' + username + '-summary');
                         newSummary.append(summary);
 
-                        $('#creator-' + username).remove()
+                        $('#creator-' + username).remove();
 
                         var header = $('#' + username + '-heading');
                         header.append('<i id="creator-' + username + '-icon" class="fa fa-plus-circle pull-right" style="color: white; padding-left: 5px;" onclick="reactivateCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
@@ -505,7 +505,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#creator-error').removeClass('hidden');
-                    $('#creator-error-message').text(xhr.responseJSON.message);
+                    $('#creator-error-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     };
@@ -537,7 +537,7 @@
                         var header = $('#' + username + '-heading');
                         header.append('<i id="creator-' + username + '-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;, &apos;' + fullName + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
 
-                        $('#new-creator-div').remove()
+                        $('#new-creator-div').remove();
 
                         $('#creator-' + username + '-summary').editable({
                             imageUpload: false,
@@ -574,7 +574,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#creator-error').removeClass('hidden');
-                    $('#creator-error-message').text(xhr.responseJSON.message);
+                    $('#creator-error-message').text('An error has occurred, we are working to fix it.');
                 }
             });
         }
@@ -651,7 +651,7 @@
             },
             error: function (xhr, textStatus, errorThrown) {
                 $('#technology-error').removeClass('hidden');
-                $('#technology-error-message').text(xhr.responseJSON.message);
+                $('#technology-error-message').text('An error has occurred, we are working to fix it.');
             }
         });
     };
@@ -683,7 +683,7 @@
             },
             error: function (xhr, textStatus, errorThrown) {
                 $('#technology-' + value + '-error').removeClass('hidden');
-                $('#technology-' + value + '-error-message').text(xhr.responseJSON.message);
+                $('#technology-' + value + '-error-message').text('An error has occurred, we are working to fix it.');
             }
         });
     };
@@ -713,7 +713,7 @@
             },
             error: function (xhr, textStatus, errorThrown) {
                 $('#technology-' + name + '-error').removeClass('hidden');
-                $('#technology-' + name + '-error-message').text(xhr.responseJSON.message);
+                $('#technology-' + name + '-error-message').text('An error has occurred, we are working to fix it.');
             }
         });
     };
@@ -739,7 +739,7 @@
                     }
                     else {
                         $('tags-input').tagsinput('remove', event.item);
-                        $('#tags-error').removeClass('hidden')
+                        $('#tags-error').removeClass('hidden');
                         $('#tags-error-message').text(data.content.message);
                     }
 
@@ -748,7 +748,7 @@
                 error: function (xhr, textStatus, errorThrown) {
                     $('tags-input').tagsinput('remove', event.item);
                     $('#tags-error').removeClass('hidden');
-                    $('#tags-error-message').text(xhr.responseJSON.message);
+                    $('#tags-error-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     });
@@ -774,7 +774,7 @@
                 }
                 else {
                     $('tags-input').tagsinput('add', event.item);
-                    $('#tags-error').removeClass('hidden')
+                    $('#tags-error').removeClass('hidden');
                     $('#tags-error-message').text(data.content.message);
                 }
 
@@ -783,7 +783,7 @@
             error: function (xhr, textStatus, errorThrown) {
                 $('tags-input').tagsinput('add', event.item);
                 $('#tags-error-message').removeClass('hidden');
-                $('#tags-error-message').text(xhr.responseJSON.message);
+                $('#tags-error-message').text('An error has occurred, we are working to fix it.');
             }
         });
     });
@@ -814,7 +814,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#social-link-error-main').removeClass('hidden');
-                    $('#social-link-error-main-message').text(xhr.responseJSON.message);
+                    $('#social-link-error-main-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     };
@@ -854,7 +854,7 @@
         if (valid) {
             inputDiv.addClass('hidden');
 
-            saveRepoUpdate({'field': name, 'value': link})
+            saveRepoUpdate({'field': name, 'value': link});
 
             inputDiv.removeClass('has-error');
             errorMessageDiv.addClass('hidden');
@@ -863,7 +863,7 @@
             inputDiv.addClass('has-error');
 
             var errorMessage = $('#' + name + '-repo-error-message');
-            errorMessage.text('Please enter a valid ' + name + ' link')
+            errorMessage.text('Please enter a valid ' + name + ' link');
 
             errorMessageDiv.removeClass('hidden');
         }
@@ -886,7 +886,7 @@
                         $('#repo-link-error-main-message').text('Internal server error, please try again later.');
                    }
                    else if (data.content.success === true) {
-                       $('#repo-link-error-main').addClass('hidden')
+                       $('#repo-link-error-main').addClass('hidden');
                        showSaveToast('Repository');
                    }
                    else {
@@ -895,8 +895,8 @@
                    }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#repo-link-error-main').removeClass('hidden')
-                    $('#repo-link-error-main-message').text(xhr.responseJSON.message);
+                    $('#repo-link-error-main').removeClass('hidden');
+                    $('#repo-link-error-main-message').text('An error has occurred, we are working to fix it.');
                 }
             });
     };
