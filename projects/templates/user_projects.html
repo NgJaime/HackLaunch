@@ -5,6 +5,10 @@
 
 {% block projects-nav %}active{% endblock %}
 
+{% block extra_css %}
+    <link href="{% static "css/project.css" %}" rel="stylesheet" media="screen">
+{% endblock %}
+
 {% block content %}
     <div class="row  margin-top-20">
         {% if project_creator.0.creator.get_full_name != '' %}
@@ -23,7 +27,7 @@
                     {% for creator in project_creator %}
                         {% if creator.project.title and creator.project.tag_line %}
                             <li onclick="location.href='/projects/{{ creator.project.slug }}'">
-                                <div class="thumbnail shadow" style="height: 330px; background-color: #333333">
+                                <div class="thumbnail shadow project-card">
                                     {% if creator.project.logo %}
                                         <img id='logo' class='logo white-border' src="{{ creator.project.logo.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
                                     {% else %}
@@ -58,7 +62,7 @@
                     {% for follower in following %}
                         {% if follower.project.title and follower.project.tag_line %}
                             <li onclick="location.href='/projects/{{ follower.project.slug }}'">
-                                <div class="thumbnail shadow" style="height: 330px; background-color: #333333">
+                                <div class="thumbnail shadow project-card">
                                     {% if follower.project.logo %}
                                         <img id='logo' class='logo white-border' src="{{ follower.project.logo.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
                                     {% else %}

@@ -27,3 +27,8 @@
     margin: 0px 0px 10px;
 }
 
+.project-card {
+    height: 380px;
+    background-color: #333333
+}
+
