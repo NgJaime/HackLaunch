@@ -82,7 +82,7 @@ class ProjectView(DetailView):
 
         # Add to the view count
         project_view, created = Views.objects.get_or_create(project=self.object, date=datetime.date(datetime.now()))
-        project_view.count +=  1
+        project_view.count += 1
         project_view.save()
 
         self.object.cumulative_view_count += 1
