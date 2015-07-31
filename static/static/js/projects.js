@@ -98,6 +98,8 @@
                 project: projectId,
             },
             imageDeleteURL: imageDeleteURL,
+            maxImageSize: 1024 * 1024 * 5,
+            imageLink: false
         })
 
         // Catch image remove
@@ -135,7 +137,9 @@
                 project: projectId,
             },
             placeholder: addALogoImage,
-            crossDomain: false
+            crossDomain: false,
+            maxImageSize: 1024 * 1024 * 5,
+            imageLink: false
         }).on('editable.beforeRemoveImage', function (e, editor, $img) {
             console.log('before');
             // Set the image source to the image delete params.
@@ -171,7 +175,9 @@
                 project: projectId,
             },
             placeholder: addALogoImage,
-            crossDomain: false
+            crossDomain: false,
+            maxImageSize: 1024 * 1024 * 5,
+            imageLink: false
         }).on('editable.beforeRemoveImage', function (e, editor, $img) {
             // Set the image source to the image delete params.
             editor.options.imageDeleteParams.src = $img.attr('src');
