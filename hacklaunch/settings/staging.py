@@ -45,3 +45,10 @@ MIDDLEWARE_CLASSES += (
     'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
 
 )
+
+#############################
+# django-haystack
+#############################
+# realtime update to the elastic search server
+# todo better to customise this to limit call to when they are needed
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

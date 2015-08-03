@@ -274,12 +274,8 @@ GRAVATAR_DEFAULT_IMAGE = 'identicon'
 #############################
 # django-haystack
 #############################
-# realtime update to the elastic search server
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 25
 
-#############################
-# Django Haystack
-#############################
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',

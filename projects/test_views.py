@@ -8,23 +8,107 @@ from freezegun import freeze_time
 from test_plus.test import TestCase
 from django.test import TestCase as StandardTestCase
 
-from projects.models import Project, ProjectCreator, Follower
-from users.models import Skill, User
-from projects.views import PostListView, get_project_context, project_ajax_request
+from datetime import datetime, timedelta
 
-class PostListViewTestCase(TestCase):
+from projects.models import Project, ProjectCreator, Follower, Views
+from users.models import Skill, User, UserProfile
+from projects.views import ProjectListView, get_project_context, project_ajax_request, UserProjectsListView
+
+
+class ProjectListViewTestCase(TestCase):
 
     def test_get_queryset(self):
         project = Project.objects.create(title='<p>title</p>')
-        project.save()
 
-        post_list = PostListView()
+        project_list = ProjectListView()
 
-        projects = post_list.get_queryset()
+        projects = project_list.get_queryset()
 
         self.assertEqual(len(projects), 1)
         self.assertEqual(projects[0], project)
 
+    def test_get_context_data(self):
+        project = Project.objects.create(title='<p>title</p>')
+        project_views_yesterday = Views.objects.create(project=project, count=10, date=datetime.now() - timedelta(hours=24))
+        project_views_today = Views.objects.create(project=project, count=20, date=datetime.now())
+        project_views_tomorrow = Views.objects.create(project=project, count=30, date=datetime.now() + timedelta(hours=24))
+
+        request = RequestFactory().get('/fake-path')
+        view = ProjectListView.as_view()
+        response = view(request)
+
+        self.assertEqual(len(response.context_data['popular_projects']), 1)
+        self.assertEqual(response.context_data['popular_projects'][0].project.id, project.id)
+        self.assertEqual(response.context_data['popular_projects'][0].count, project_views_yesterday.count)
+
+
+class UserProjectsListViewTestCase(TestCase):
+
+    def test_get_queryset_one_expected_object(self):
+        user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        user_profile = UserProfile.objects.create(user=user)
+        project = Project.objects.create(title='<p>title</p>')
+        project_creator = ProjectCreator.objects.create(creator=user, project=project)
+
+        url = self.reverse('user_projects', slug=user_profile.slug)
+        self.get(url)
+
+        self.response_200()
+
+        self.assertEqual(len(self.context['project_creator']), 1)
+        self.assertEqual(self.context['project_creator'][0], project_creator)
+
+    def test_get_queryset_non_query_match_in_db(self):
+        user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        user_profile = UserProfile.objects.create(user=user)
+        project = Project.objects.create(title='<p>title</p>')
+        project_creator = ProjectCreator.objects.create(creator=user, project=project)
+
+        user2 = User.objects.create_user('someone2', 'someone2@somewhere.com', 'password')
+        user_profile2 = UserProfile.objects.create(user=user2)
+        project2 = Project.objects.create(title='<p>title2</p>')
+
+        url = self.reverse('user_projects', slug=user_profile.slug)
+        self.get(url)
+
+        self.response_200()
+
+        self.assertEqual(len(self.context['project_creator']), 1)
+        self.assertEqual(self.context['project_creator'][0], project_creator)
+
+    def test_followers_in_context(self):
+        user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        user_profile = UserProfile.objects.create(user=user)
+        project = Project.objects.create(title='<p>title</p>')
+        project_creator = ProjectCreator.objects.create(creator=user, project=project)
+
+        user2 = User.objects.create_user('someone2', 'someone2@somewhere.com', 'password')
+        user_profile2 = UserProfile.objects.create(user=user2)
+        project2 = Project.objects.create(title='<p>title2</p>')
+
+        following = Follower.objects.create(project=project, user=user)
+        following_other = Follower.objects.create(project=project2, user=user2)
+
+        url = self.reverse('user_projects', slug=user_profile.slug)
+        self.get(url)
+
+        self.response_200()
+
+        self.assertEqual(len(self.context['following']), 1)
+        self.assertEqual(self.context['following'][0], following)
+
+    def test_user_in_context(self):
+        user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        user_profile = UserProfile.objects.create(user=user)
+        project = Project.objects.create(title='<p>title</p>')
+        project_creator = ProjectCreator.objects.create(creator=user, project=project)
+
+        url = self.reverse('user_projects', slug=user_profile.slug)
+        self.get(url)
+
+        self.response_200()
+
+        self.assertEqual(self.context['user'], user_profile.slug)
 
 class ProjectViewTestCase(TestCase):
     fixtures = ['initial_project_data.json', 'initial_user_data.json']
@@ -36,9 +120,65 @@ class ProjectViewTestCase(TestCase):
         self.response_200()
 
         self.assertFalse(self.context['follower'])
+        self.assertTrue(self.context['prior_creators'])
         self.assertEqual(self.context['project'].id, 59)
         self.assertEqual(len(self.context['technologies']), 2)
         self.assertEqual(len(self.context['posts']), 3)
+        self.assertEqual(len(self.context['creators']), 2)
+        self.assertFalse(self.context['project_admin'])
+
+        views = Views.objects.filter(project=self.context['project'], date=datetime.date(datetime.now()))
+        self.assertEqual(len(views), 1)
+
+    def test_get_context_data_user_following(self):
+        self.client = Client(enforce_csrf_checks=False)
+        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        self.client.login(username='someone', password='password')
+
+        project = Project.objects.get(slug='hacklaunch-2015')
+        follower = Follower.objects.create(user=self.user, project=project)
+
+        url = self.reverse('project_view', slug='hacklaunch-2015')
+        self.get(url)
+
+        self.response_200()
+
+        self.assertTrue(self.context['follower'])
+        self.assertTrue(self.context['prior_creators'])
+        self.assertEqual(self.context['project'].id, 59)
+        self.assertEqual(len(self.context['technologies']), 2)
+        self.assertEqual(len(self.context['posts']), 3)
+        self.assertEqual(len(self.context['creators']), 2)
+        self.assertFalse(self.context['project_admin'])
+
+        views = Views.objects.filter(project=self.context['project'], date=datetime.date(datetime.now()))
+        self.assertEqual(len(views), 1)
+
+    def test_get_context_data_user_is_admin(self):
+        self.client = Client(enforce_csrf_checks=False)
+        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        self.client.login(username='someone', password='password')
+
+        project = Project.objects.get(slug='hacklaunch-2015')
+
+        project_creator = ProjectCreator.objects.create(creator=self.user, project=project, is_active=True,
+                                                        is_admin=True, awaiting_confirmation=False)
+
+        url = self.reverse('project_view', slug='hacklaunch-2015')
+        self.get(url)
+
+        self.response_200()
+
+        self.assertFalse(self.context['follower'])
+        self.assertTrue(self.context['prior_creators'])
+        self.assertEqual(self.context['project'].id, 59)
+        self.assertEqual(len(self.context['technologies']), 2)
+        self.assertEqual(len(self.context['posts']), 3)
+        self.assertEqual(len(self.context['creators']), 3)
+        self.assertTrue(self.context['project_admin'])
+
+        views = Views.objects.filter(project=self.context['project'], date=datetime.date(datetime.now()))
+        self.assertEqual(len(views), 1)
 
 
 @freeze_time("2012-01-01")
@@ -89,7 +229,9 @@ class ProjectEditTestCase(TestCase):
 
     def tearDown(self):
         self.client.logout()
-        self.projectCreator.delete()
+
+        if self.projectCreator:
+            self.projectCreator.delete()
         self.user.delete()
         self.project.delete()
 
@@ -144,6 +286,16 @@ class ProjectEditTestCase(TestCase):
         self.get(url)
 
         self.response_404()
+
+    def test_invalid_creator(self):
+        self.projectCreator.delete()
+        self.projectCreator = None
+
+        url = self.reverse('project_edit', slug='awesome-project')
+        self.get(url)
+
+        self.response_302()
+        self.assertEqual(self.last_response.url, 'http://testserver/projects/awesome-project')
 
 
 class FollowProjectTestCase(TestCase):

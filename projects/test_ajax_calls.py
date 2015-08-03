@@ -12,7 +12,7 @@ from freezegun import freeze_time
 
 from projects.views import add_post, update_project, update_post, image_upload, add_creator, remove_creator, \
                            update_creator, add_technology, remove_technology, update_technology, add_tag, remove_tag, \
-                           project_ajax_request
+                           project_ajax_request, update_repo
 
 
 @freeze_time("2012-01-01")
@@ -45,6 +45,62 @@ class AddPostTestCase(TestCase):
         self.response_200(response=response)
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"post_id": 49, "month": "January", "success": true, "date_added": "01/01/2012"}}')
         self.assertEqual(start_post_count, end_post_count - 1)
+
+
+@freeze_time("2012-01-01")
+class UpdateRepoTestCase(TestCase):
+    fixtures = ['initial_project_data.json', 'initial_user_data.json']
+
+    def setUp(self):
+        # todo this ideally should be mocked by patching project_ajax_request
+        self.client = Client(enforce_csrf_checks=False)
+        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        self.client.login(username='someone', password='password')
+
+        self.project = Project.objects.get(id=59)
+        ProjectCreator.objects.create(project=self.project, creator=self.user, is_admin=True)
+
+        self.factory = RequestFactory()
+        self.request = self.factory.post('/test/', content_type='application/json')
+        self.request._dont_enforce_csrf_checks = True
+        self.request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+        self.request.POST = self.request.POST.copy()
+        self.request.user = self.user
+
+    def test_data_not_in_post(self):
+        self.request.POST = {'project': '59'}
+
+        response = update_repo(self.request)
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "No data in request", "success": false}}')
+
+    def test_field_not_in_post(self):
+        self.request.POST = {'project': '59', 'data': '{"somethign": "nothing"}'}
+
+        response = update_repo(self.request)
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "No repo in request", "success": false}}')
+
+    def test_update_valid_repo(self):
+        self.request.POST = {'project': '59', 'data': '{"field": "github", "value": "www.github.com/test"}'}
+
+        response = update_repo(self.request)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
+
+        project = Project.objects.get(id=59)
+        self.assertEqual(project.github_repo, 'http://www.github.com/test')
+
+    def test_update_invalid_repo(self):
+        self.request.POST = {'project': '59', 'data': '{"field": "github", "value": "www.somewhere.com/test"}'}
+
+        response = update_repo(self.request)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "Invalid github link", "success": false}}')
+
+        project = Project.objects.get(id=59)
 
 
 @freeze_time("2012-01-01")
