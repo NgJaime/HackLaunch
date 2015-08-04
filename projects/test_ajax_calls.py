@@ -580,6 +580,28 @@ class UpdateCreatorTestCase(TestCase):
         self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
         self.assertEqual(creator.is_admin, False)
 
+    def test_valid_set_active(self):
+        self.request.POST = {'project': '59', 'field': 'active', 'value': 'true', 'username': self.user.username}
+
+        response = update_creator(self.request)
+
+        creator = ProjectCreator.objects.get(project=self.project, creator=self.user)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
+        self.assertEqual(creator.is_active, True)
+
+    def test_valid_set_inactive(self):
+        self.request.POST = {'project': '59', 'field': 'active', 'value': 'false', 'username': self.user.username}
+
+        response = update_creator(self.request)
+
+        creator = ProjectCreator.objects.get(project=self.project, creator=self.user)
+
+        self.response_200(response=response)
+        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"success": true}}')
+        self.assertEqual(creator.is_active, False)
+
 
 class AddTechnologyTestCase(TestCase):
     fixtures = ['initial_project_data.json', 'initial_user_data.json']

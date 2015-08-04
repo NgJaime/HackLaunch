@@ -376,24 +376,21 @@ def add_creator(request, project, *args, **kwargs):
         creator, created = ProjectCreator.objects.get_or_create(project=project, creator=user)
 
         if created:
-            try:
-                creator_initialisation = ProjectCreatorInitialisation.initialise(creator)
+            creator_initialisation = ProjectCreatorInitialisation.initialise(creator)
 
-                verification_url = request.get_host() + reverse('validate_creator', kwargs={'code': creator_initialisation.code})
+            verification_url = request.get_host() + reverse('validate_creator', kwargs={'code': creator_initialisation.code})
 
-                context = {
-                    'verification_url': verification_url,
-                    'project_url': request.get_host() + reverse('project_view', kwargs={'slug': project.slug}),
-                    'project_title': project.get_title_text()
-                }
+            context = {
+                'verification_url': verification_url,
+                'project_url': request.get_host() + reverse('project_view', kwargs={'slug': project.slug}),
+                'project_title': project.get_title_text()
+            }
 
-                html_message = get_template('creator_verification_email.html').render(Context(context))
-                email = EmailMessage('You have been assigned to a project on Hacklaunch', html_message,
-                                     to=[user.email], from_email=settings.EMAIL_FROM)
-                email.content_subtype = 'html'
-                email.send()
-            except Exception as e:
-                pass
+            html_message = get_template('creator_verification_email.html').render(Context(context))
+            email = EmailMessage('You have been assigned to a project on Hacklaunch', html_message,
+                                 to=[user.email], from_email=settings.EMAIL_FROM)
+            email.content_subtype = 'html'
+            email.send()
 
         if created:
             return {'success': True}

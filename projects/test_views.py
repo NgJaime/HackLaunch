@@ -10,8 +10,9 @@ from django.test import TestCase as StandardTestCase
 
 from datetime import datetime, timedelta
 
-from projects.models import Project, ProjectCreator, Follower, Views
+from projects.models import Project, ProjectCreator, Follower, Views, ProjectCreatorInitialisation
 from users.models import Skill, User, UserProfile
+from users.user_activity_models import UserActivity
 from projects.views import ProjectListView, get_project_context, project_ajax_request, UserProjectsListView
 
 
@@ -376,3 +377,28 @@ class ProjectCreateTestCase(TestCase):
         self.assertEqual(response.context[0].dicts[2]['context']['date'], '01/01/2012')
         self.assertEqual(response.context[0].dicts[2]['project_tags'], [])
         self.assertEqual(response.context[0].dicts[2]['project_technologies'], [])
+
+
+class ProjectValidateCreatorTestCase(TestCase):
+
+    def test_post_request_request(self):
+        response = self.client.get(reverse('validate_creator', kwargs={'code': 'none'}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_request(self):
+        user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
+        project = Project.objects.create(title='<p>title</p>')
+        project_creator = ProjectCreator.objects.create(creator=user, project=project)
+
+        ProjectCreatorInitialisation.objects.create(code='1234', creator=project_creator, date_added=datetime.now())
+
+        response = self.client.get(reverse('validate_creator', kwargs={'code': '1234'}))
+
+        user_activity = UserActivity.objects.get(user=user,
+                                                 project=project,
+                                                 event_type=UserActivity.JOINED_PROJECT_EVENT)
+
+        initialisation = ProjectCreatorInitialisation.objects.filter(code='1234', creator=ProjectCreator)
+
+        self.assertIsNotNone(user_activity)
+        self.assertEqual(len(initialisation), 0)
