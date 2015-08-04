@@ -356,7 +356,11 @@
                     <div class="panel panel-default animated fadeInUp animation-delay-12">
                         <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
                         <div class="panel-body">
-                            <input id="tags-input" type="text" class="label-success" value={{ project_tags }} data-role="tagsinput"
+                            <input id="tags-input" type="text" class="label-success"
+                                   {% if project_tags %}
+                                        value="{{ project_tags }}"
+                                   {% endif %}
+                                   data-role="tagsinput"
                                    style="display: none;">
 
                             <p id="tags-error" class="hidden">
@@ -463,8 +467,12 @@
         $.Editable.DEFAULTS.key = '9uC-7G-7kmcvjfnD3kfg==';
 
         {% autoescape off %}
-            var availableTechnologies = {{ context.technologies }},
+            var availableTechnologies = {{ context.technologies }}
+                    tags = '';
+            {% if project_tags %}
                 tags = "{{ project_tags }}";
+            {% endif %}
+
         {% endautoescape %}
 
         var projectId = {{ context.projectId }},
