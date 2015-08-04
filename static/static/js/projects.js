@@ -347,7 +347,8 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $('#creator-error').removeClass('hidden');
-                    $('#creator-error-message').text('An error has occurred, we are working to fix it.');
+                    responseText = JSON.parse(xhr.responseText)
+                    $('#creator-error-message').text(responseText.message);
                 }
             });
         }
