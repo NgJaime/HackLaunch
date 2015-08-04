@@ -333,10 +333,10 @@
                         var new_creators = $('#add-creator');
 
                         new_creators.html('<div id="new-creator-div" style="margin-top: 15px;">' +
-                                            '<a class="pull-left" href="#">' +
+                                            '<a class="pull-left" href="">' +
                                                 '<img src="' + data.thumbnail + '" alt="' + data.full_name + '" class="img-circle" style="width: 50px">' +
                                             '</a>' +
-                                            '<h4 class="media-heading"><a href="#" style="color: white">' + data.full_name + '</a></h4>' +
+                                            '<h4 class="media-heading"><a href="" style="color: white">' + data.full_name + '</a></h4>' +
                                             '<a class="btn btn-default btn-sm" onClick="addCreator(&quot;' + data.username +'&quot;, &quot;' + data.thumbnail + '&quot;, &quot;' + data.full_name + '&quot;)" style="margin-top: 5px">Add Creator</a>' +
                                           '</div>');
                     }

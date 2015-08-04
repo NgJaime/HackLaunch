@@ -234,14 +234,14 @@
                                     <div id="creator-{{ creator.creator.username }}">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <a href="/users/{{ creator.creator.userprofile.slug }}">
+                                                <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}">
                                                     <img src="{{ creator.creator.userprofile.get_thumbnail }}"
                                                          alt="{{ creator.creator.get_full_name }}" class="img-circle" style="width: 50px; height: 50px;">
                                                 </a>
                                             </div>
                                             <div class="col-md-9" style="text-align: left;">
                                                 <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                                    <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                    <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">{{ creator.creator.get_full_name }}</a>
                                                     {% if not creator.is_owner %}
                                                         <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-minus-circle pull-right"
                                                            style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}')">
