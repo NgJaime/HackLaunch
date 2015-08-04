@@ -362,25 +362,6 @@ class DeleteUserTestCase(TestCase):
         else:
             self.assertFalse()
 
-class LogoutTestCase(TestCase):
-
-    def setUp(self):
-        self.factory = RequestFactory()
-
-    @patch('users.views.auth_logout')
-    def test_logout(self, mock_auth_logout):
-        request = self.factory.request()
-
-        mock_auth_logout = MagicMock()
-        mock_auth_logout(request).return_value = None
-
-        response = logout(request)
-
-        self.assertEqual(response.url, '/')
-        self.assertEqual(response.status_code, 302)
-        mock_auth_logout.assert_called_once_with(request)
-
-
 @patch('users.views.csrf_protect', MagicMock)
 class ProfileImageUploadTestCase(TestCase):
 

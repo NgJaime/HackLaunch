@@ -365,45 +365,6 @@ class UpdatePostTestCase(TestCase):
         post = Post.objects.get(id=46)
         self.assertEqual(post.author, self.user)
 
-class ImageUploadTestCase(TestCase):
-    fixtures = ['initial_project_data.json', 'initial_user_data.json']
-
-    def setUp(self):
-        # todo this ideally should be mocked by patching project_ajax_request
-        self.client = Client(enforce_csrf_checks=False)
-        self.user = User.objects.create_user('someone', 'someone@somewhere.com', 'password')
-        self.client.login(username='someone', password='password')
-
-        self.project = Project.objects.get(id=59)
-        ProjectCreator.objects.create(project=self.project, creator=self.user, is_admin=True)
-
-        self.factory = RequestFactory()
-        self.request = self.factory.post('/test/', content_type='application/json')
-        self.request._dont_enforce_csrf_checks = True
-        self.request.META['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
-        self.request.POST = self.request.POST.copy()
-        self.request.user = self.user
-
-    def test_no_file_in_request(self):
-        self.request.POST = {'project': '59', 'logo': 'true'}
-
-        response = image_upload(self.request)
-
-        self.response_200(response=response)
-        self.assertEqual(response.content, '{"status": 200, "statusText": "OK", "content": {"message": "No image in request", "success": false}}')
-
-    @patch('projects.models.Project.logo')
-    def test_upload_logo(self, mock_project_logo):
-        self.request.POST = {'project': '59', 'logo': 'true'}
-        file = SimpleUploadedFile("file.txt", "file_content")
-        self.request.FILES['file'] = file
-
-        response = image_upload(self.request)
-
-        self.response_200(response=response)
-
-# todo complete image upload delete
-
 
 class AddCreatorTestCase(TestCase):
     fixtures = ['initial_project_data.json', 'initial_user_data.json']

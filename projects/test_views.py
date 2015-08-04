@@ -338,12 +338,13 @@ class FollowProjectTestCase(TestCase):
 
     def test_login_required(self):
         self.client.logout()
+        project = Project.objects.get(id=59)
 
         url = self.reverse('follow_project')
         xml_response = self.post(url, extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'}, data={'project': '59', 'follow': 'false'})
 
-        self.response_302()
-        self.assertEqual(xml_response.url, 'http://testserver/login?next=/projects/followProject/')
+        self.response_200()
+        self.assertEqual(xml_response.content, '{"status": 401, "message": "Login required"}')
 
 
 

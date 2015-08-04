@@ -36,8 +36,11 @@ def ajax_login_required(view_func):
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated():
             return view_func(request, *args, **kwargs)
-
-        referer = urlparse(request.META['HTTP_REFERER'])
-        json_data = json.dumps({'status': 401, 'message': 'Login required', 'redirect': 'login/?next=' + referer.path})
-        return HttpResponse(json_data, content_type='application/json')
+        elif 'HTTP_REFERER' in request.META:
+            referer = urlparse(request.META['HTTP_REFERER'])
+            json_data = json.dumps({'status': 401, 'message': 'Login required', 'redirect': 'login/?next=' + referer.path})
+            return HttpResponse(json_data, content_type='application/json')
+        else:
+            json_data = json.dumps({'status': 401, 'message': 'Login required'})
+            return HttpResponse(json_data, content_type='application/json')
     return wrapper

@@ -44,7 +44,7 @@ def load_extra_data(backend, details, response, uid, user, *args, **kwargs):
 
 def set_extra_data(user, extra_data=None):
     if user is not None:
-        profile = UserProfile.objects.get_or_create(user_id=user.id)
+        profile, created = UserProfile.objects.get_or_create(user_id=user.id)
 
         if extra_data and 'location' in extra_data:
             if profile.location is None:

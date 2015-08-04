@@ -183,7 +183,7 @@ class SetExtraDataTestCase(TestCase):
         result = set_extra_data(self.user_no_profile, {'something': None})
 
         self.assertIsNone(result)
-        self.assertEqual(UserProfile.objects.count(), 2)
+        self.assertEqual(UserProfile.objects.count(), 3)
 
     def test_no_profile_location_available(self):
         extra_data = {'location': {'name': 'somewhere'}}
