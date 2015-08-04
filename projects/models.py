@@ -60,8 +60,9 @@ class Project(models.Model):
     def __unicode__(self):
         return self.get_title_text() + ' - ' + str(self.id)
 
+    @models.permalink
     def get_absolute_url(self):
-        return reverse('project_view', kwargs={'slug': self.slug})
+        return ("project_view", [self.slug])
 
     def get_slug_seed(self):
         if self.is_active:

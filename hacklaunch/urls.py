@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from base.sitemap import StaticViewSitemap, ProfileSitemap, EventsSitemap
+from base.sitemap import StaticViewSitemap, ProfileSitemap, EventsSitemap, ProjectSitemap
 from auth.views import Login, logout, PasswordChangedLogin
 
 admin.autodiscover()
@@ -12,6 +12,7 @@ sitemaps = {
     'static': StaticViewSitemap,
     'events': EventsSitemap,
     'profiles': ProfileSitemap,
+    'project': ProjectSitemap
 }
 
 urlpatterns = [

@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 
 from users.models import UserProfile
 from events.models import Event
+from projects.models import Project
+
 
 class StaticViewSitemap(Sitemap):
     priority = 0.5
@@ -10,7 +12,7 @@ class StaticViewSitemap(Sitemap):
     protocol = 'https'
 
     def items(self):
-        return ['home', 'terms', 'credits']
+        return ['home', 'terms', 'credits', 'project_list']
 
     def location(self, item):
         return reverse(item)
@@ -32,3 +34,12 @@ class EventsSitemap(Sitemap):
 
     def items(self):
         return Event.objects.all()
+
+
+class ProjectSitemap(Sitemap):
+    changefreq = "daily"
+    priority = 0.75
+    protocol = 'https'
+
+    def items(self):
+        return Project.objects.filter(is_active=True)
