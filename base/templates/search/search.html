@@ -42,6 +42,16 @@
                                 </div>
                                 {% autoescape off %} {{ result.object.summary }} {% endautoescape %}
                             </div>
+                        {% elif result.verbose_name == 'Post' %}
+                            <div>
+                                <div>
+                                    <h3 style="margin-bottom: 5px; display: inline-block;">
+                                        <a href="{% url 'project_post_view' post=result.object.slug slug=result.object.project.slug  %}">{{ result.object.project.get_title_text }} - {{ result.object.get_title_text }}</a>
+                                    </h3>
+                                    <p style="display: inline-block;"><i> - Post</i></p>
+                                </div>
+                                {% autoescape off %} {{ result.object.get_start_of_post }} {% endautoescape %}
+                            </div>
                         {% endif %}
                     {% empty %}
                         <p>No results found.</p>

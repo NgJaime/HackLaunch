@@ -100,7 +100,6 @@ class Follower(models.Model):
     def __unicode__(self):
         return self.project.title + ' - ' + self.user.get_full_name()
 
-
 class Post(models.Model):
     title = FroalaField(options={'inlineMode': True, 'placeholder': 'Add a title for your new post', 'colorGroups': {'text': 'Text', 'cmd': 'foreColor', 'colors': ['#FFFFFF' 'REMOVE']}})
     post = FroalaField(options={'placeholder': 'Create a post for your project it can include images, videos and embeded youtube content.'},
@@ -111,6 +110,7 @@ class Post(models.Model):
     last_updated = models.DateField(blank=True, null=True)
     author = models.ForeignKey(User)
     is_published = models.BooleanField(default=False)
+    slug = AutoSlugField(populate_from='get_slug_seed', always_update=True)
 
     def __unicode__(self):
         return self.title + ' [' + self.author.get_full_name() + ']'
@@ -122,6 +122,22 @@ class Post(models.Model):
         self.last_updated = datetime.now()
 
         super(Post, self).save(*args, **kw)
+
+    def get_title_text(self):
+        return self.title[3:-4]
+
+    def get_slug_seed(self):
+        if len(self.title) > 0:
+            return self.get_title_text()
+        else:
+            return "new-post"
+
+    def get_start_of_post(self):
+        length = len(self.post)
+        if length > 104:
+            return self.post[3:100]
+        else:
+            return self.post[3:length - 4]
 
 
 class ProjectImage(models.Model):

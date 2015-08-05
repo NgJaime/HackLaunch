@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}HackLaunch - Project Post{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static "css/project.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "froala_editor/css/froala_editor.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{% static "froala_editor/css/froala_style.min.css" %}" media="all" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding-top: 25px;">
+                <div class="title animated fadeInDown animation-delay-5" style="padding: 10px; margin: 0px;">
+                    {% if project.logo %}
+                        <img class='logo' src="{{ project.logo.url }}" alt="Logo" width="200"
+                             style="padding-bottom: 15px;"/>
+                    {% else  %}
+                        <img class='logo' src="{% static "images/add-a-logo.png" %}" alt="Logo" width="200"
+                             style="padding-bottom: 15px;"/>
+                    {% endif %}
+
+                    <div id="project-title" class="project-title">
+                        {% autoescape off %} {{ project.title }} {% endautoescape %}
+                    </div>
+
+                    <div id="project-tagline" class="slogan project-tag-line">
+                        {% autoescape off %} {{ project.tag_line }} {% endautoescape %}
+                    </div>
+            </div>
+
+            <div class="col-md-12 center">
+                <div class="slidebar-social-icons center small-margin-bottom fadeInDown animation-delay-3">
+                    {% if project.facebook %}
+                        <a href="{{ project.facebook }}" class="social-icon-ar facebook"><i
+                                class="fa fa-facebook"></i></a>
+                    {% endif %}
+                    {% if project.google_plus %}
+                        <a href="{{ project.google_plus }}" class="social-icon-ar google-plus"><i
+                                class="fa fa-google-plus"></i></a>
+                    {% endif %}
+                    {% if project.instagram %}
+                        <a href="{{ project.instagram }}" class="social-icon-ar instagram"><i
+                                class="fa fa-instagram"></i></a>
+                    {% endif %}
+                    {% if project.pinterest %}
+                        <a href="{{ project.pinterest }}" class="social-icon-ar pinterest"><i
+                                class="fa fa-pinterest"></i></a>
+                    {% endif %}
+                    {% if project.twitter %}
+                        <a href="{{ project.twitter }}" class="social-icon-ar twitter"><i
+                                class="fa fa-twitter"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div>
+                    <ul style="list-style-type: none;">
+                        {% for post in posts %}
+                            <br>
+                            {% if post.is_published %}
+                                <li class="animated fadeInRight animation-delay-2">
+                                    <div class="panel panel-default" style="padding-bottom: 0px;">
+                                        <div class="panel-heading" style="padding-bottom: 0px;">
+                                            {% autoescape off %} {{ post.title }} {% endautoescape %}
+                                        </div>
+
+                                        <div style="padding: 10px;">
+                                            {% autoescape off %} {{ post.post }} {% endautoescape %}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    </ul>
+                </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -91,6 +91,36 @@ class ProjectView(DetailView):
         return context
 
 
+class ProjectPostView(DetailView):
+    template_name = 'project_post.html'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectPostView, self).get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(project=self.object, slug=self.kwargs['post'])
+
+        if len(context['posts']) == 0:
+            raise Http404
+
+        try:
+            self.object.projectcreator_set.get(creator=self.request.user, is_active=True,
+                                               is_admin=True, awaiting_confirmation=False)
+        except Exception as e:
+            context['project_admin'] = False
+        else:
+            context['project_admin'] = True
+
+        # Add to the view count
+        project_view, created = Views.objects.get_or_create(project=self.object, date=datetime.date(datetime.now()))
+        project_view.count += 1
+        project_view.save()
+
+        self.object.cumulative_view_count += 1
+        self.object.save()
+
+        return context
+
+
 def get_project_context(project):
     date = datetime.now().strftime("%d/%m/%Y")
     month = datetime.now().strftime("%B")
