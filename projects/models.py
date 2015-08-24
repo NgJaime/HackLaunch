@@ -100,6 +100,7 @@ class Follower(models.Model):
     def __unicode__(self):
         return self.project.title + ' - ' + self.user.get_full_name()
 
+
 class Post(models.Model):
     title = FroalaField(options={'inlineMode': True, 'placeholder': 'Add a title for your new post', 'colorGroups': {'text': 'Text', 'cmd': 'foreColor', 'colors': ['#FFFFFF' 'REMOVE']}})
     post = FroalaField(options={'placeholder': 'Create a post for your project it can include images, videos and embeded youtube content.'},
