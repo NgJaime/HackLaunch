@@ -93,8 +93,9 @@
                         <span id="follow-error-message"></span>
                     </p>
                 </div>
-                {% autoescape off %} {{ project.pitch }} {% endautoescape %}
-
+                <div style="padding-top: 10px;">
+                    {% autoescape off %} {{ project.pitch }} {% endautoescape %}
+                </div>
                 {% if posts %}
                     <div class="margin-top-20">
                         <h2 class="section-title no-margin-top ">Time Line</h2>
@@ -107,7 +108,7 @@
                                         <i class="timeline-2-point"></i>
 
                                         <div class="panel panel-default">
-                                            <div class="panel-heading">
+                                            <div class="panel-heading" style="padding-bottom: 0px;">
                                                 {% autoescape off %} {{ post.title }} {% endautoescape %}
                                             </div>
 
