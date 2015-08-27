@@ -29,8 +29,17 @@
         <div class="container">
             <div class="col-lg-8 col-lg-push-4 col-md-7 col-md-push-5 col-sm-6 col-sm-push-6">
                 <ul class="profile-counters">
-                    <li><a href="{% url 'user_projects' slug=profile.user.username %}">{{ profile.user.projectcreator_set.count }} <span>My Projects</span></a></li>
-                    <li><a href="{% url 'user_projects' slug=profile.user.username %}">{{ profile.user.project_follower.count }} <span>Liked Projects</span></a></li>
+                    {% if profile.user.projectcreator_set.count > 0 %}
+                        <li><a href="{% url 'user_projects' slug=profile.user.username %}">{{ profile.user.projectcreator_set.count }} <span>My Projects</span></a></li>
+                    {% else %}
+                        <li><a href="#" onClick="return false;">0 <span>My Projects</span></a></li>
+                    {% endif %}
+
+                    {% if profile.user.project_follower.count > 0 %}
+                        <li><a href="{% url 'user_projects' slug=profile.user.username %}">{{ profile.user.project_follower.count }} <span>Liked Projects</span></a></li>
+                    {% else %}
+                        <li><a href="#" onClick="return false;">0 <span>Liked Projects</span></a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
