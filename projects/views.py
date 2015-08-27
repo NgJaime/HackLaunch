@@ -13,7 +13,7 @@ from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
 
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from urlparse import urlparse
 
 from projects.models import Project, ProjectCreator, Technologies, ProjectTechnologies, Post, ProjectImage, Follower,\
@@ -30,11 +30,15 @@ class ProjectListView(ListView):
     context_object_name = 'projects'
 
     def get_queryset(self):
-        return Project.objects.all()
+        return Project.objects.all()[:10]
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectListView, self).get_context_data(*args, **kwargs)
-        context['popular_projects'] = Views.objects.filter(date=datetime.now() - timedelta(hours=24)).order_by('count')[:10]
+        context['popular_projects'] = [view.project for view in Views.objects.filter(date=datetime.now() - timedelta(hours=24)).order_by('count')[:10]]
+
+        if len(context['popular_projects']) < 5:
+            context['popular_projects'] = list(set(context['popular_projects'] + list(context['object_list'])))
+
         return context
 
 

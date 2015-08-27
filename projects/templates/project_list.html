@@ -58,28 +58,28 @@
 
             <div class="row">
                 <ul class="bx-horizontal">
-                    {% for project_view in popular_projects %}
-                        {% if project_view.project.title and project_view.project.tag_line %}
-                            <li onclick="location.href='/projects/{{ project_view.project.slug }}'">
+                    {% for project in popular_projects %}
+                        {% if project.title and project.tag_line %}
+                            <li onclick="location.href='/projects/{{ project.slug }}'">
                                 <div class="thumbnail shadow project-card" >
-                                    {% if project_view.project.logo %}
-                                        <img id='logo' class='logo white-border' src="{{ project_view.project.logo.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
+                                    {% if project.logo %}
+                                        <img id='logo' class='logo white-border' src="{{ project.logo.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
                                     {% else %}
-                                        <img id='logo' class='logo white-border' src="{{ project_view.project.projectcreator_set.first.creator.userprofile.image.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
+                                        <img id='logo' class='logo white-border' src="{{ project.projectcreator_set.first.creator.userprofile.image.url }}" alt="Logo" style="width: 150px; height: 150px; background-color: white"/>
                                     {% endif %}
                                     <div class="caption" style="padding: 0px;">
                                         {% autoescape off %}
-                                            <h3 class="center" style="margin: 15px 0px 10px 0px; color: white;"><strong>{{ project_view.project.title }}</strong></h3>
+                                            <h3 class="center" style="margin: 15px 0px 10px 0px; color: white;"><strong>{{ project.title }}</strong></h3>
                                             <div class="center" style="margin: 15px 30px 0px 15px; padding: 0px 30px 0px 15px; color: white;">
-                                                {{ project_view.project.tag_line }}
+                                                {{ project.tag_line }}
                                             </div>
                                         {% endautoescape %}
                                     </div>
 
                                     <div class="center" style=" position: absolute; bottom: 0; left: 0; height: 25px; background-color: #F0EFED; color: #615F5A">
                                         <p style="font-size: 1.2em;">
-                                            <i class="fa fa-heart" style="color: #BFBEBA"></i> {{ project_view.project.cumulative_followers_count }}
-                                            <i class="fa fa-eye" style="padding-left: 10px; color: #BFBEBA"></i> {{ project_view.project.cumulative_view_count }}
+                                            <i class="fa fa-heart" style="color: #BFBEBA"></i> {{ project.cumulative_followers_count }}
+                                            <i class="fa fa-eye" style="padding-left: 10px; color: #BFBEBA"></i> {{ project.cumulative_view_count }}
                                         </p>
                                     </div>
                                 </div>
