@@ -95,31 +95,33 @@
                 </div>
                 {% autoescape off %} {{ project.pitch }} {% endautoescape %}
 
-                <div class="margin-top-20">
-                    <h2 class="section-title no-margin-top ">Time Line</h2>
-                    <ul class="timeline-2">
-                        {% for post in posts %}
-                            <br>
-                            {% if post.is_published %}
-                                <li class="animated fadeInRight animation-delay-2">
-                                    <time class="timeline-time" datetime="">{{ post.date_added }}</time>
-                                    <i class="timeline-2-point"></i>
+                {% if posts %}
+                    <div class="margin-top-20">
+                        <h2 class="section-title no-margin-top ">Time Line</h2>
+                        <ul class="timeline-2">
+                            {% for post in posts %}
+                                <br>
+                                {% if post.is_published %}
+                                    <li class="animated fadeInRight animation-delay-2">
+                                        <time class="timeline-time" datetime="">{{ post.date_added }}</time>
+                                        <i class="timeline-2-point"></i>
 
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            {% autoescape off %} {{ post.title }} {% endautoescape %}
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                {% autoescape off %} {{ post.title }} {% endautoescape %}
+                                            </div>
+
+                                            <div style="padding: 10px;">
+                                                {% autoescape off %} {{ post.post }} {% endautoescape %}
+                                            </div>
                                         </div>
+                                    </li>
+                                {% endif %}
 
-                                        <div style="padding: 10px;">
-                                            {% autoescape off %} {{ post.post }} {% endautoescape %}
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endif %}
-
-                        {% endfor %}
-                    </ul>
-                </div>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {%  endif %}
         </div>
         <div class="col-md-3">
 
@@ -201,39 +203,41 @@
                 </div>
             {% endif %}
 
+            {% if project.tags.all %}
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
+                    <div class="panel-body">
+                        <ul style="padding-left: 0px">
+                            {% for tag in project.tags.all %}
+                                <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
+                                    <div><span>{{ tag }}</span></div>
+                                </li>
+                            {% endfor %}
 
-            <div class="panel panel-default animated fadeInUp animation-delay-12">
-                <div class="panel-heading"><i class="fa fa-tags"></i>Tags</div>
-                <div class="panel-body">
-                    <ul style="padding-left: 0px">
-                        {% for tag in project.tags.all %}
-                            <li style="display: inline-block; background-color: #F3F3F3; padding-left: 7px; padding-right: 7px; margin-right: 5px; margin-top: 5px;">
-                                <div><span>{{ tag }}</span></div>
-                            </li>
-                        {% endfor %}
-
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
+            {% if technologies %}
+                <div class="panel panel-default animated fadeInUp animation-delay-12">
+                    <div class="panel-heading"><i class="fa fa-laptop"></i>Technologies Used</div>
+                    <div class="panel-body">
+                        <section>
+                            {% for technology in technologies %}
+                                <h5 class="no-margin">{{ technology.technology }}</h5>
 
-            <div class="panel panel-default animated fadeInUp animation-delay-12">
-                <div class="panel-heading"><i class="fa fa-laptop"></i>Technologies Used</div>
-                <div class="panel-body">
-                    <section>
-                        {% for technology in technologies %}
-                            <h5 class="no-margin">{{ technology.technology }}</h5>
-
-                            <div class="progress progress-sm">
-                                <div class="progress-bar progress-bar-success" role="progressbar"
-                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ technology.strength }}%;">
-                                    <span class="sr-only">{{ technology.strength }}%</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar progress-bar-success" role="progressbar"
+                                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ technology.strength }}%;">
+                                        <span class="sr-only">{{ technology.strength }}%</span>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    </section>
+                            {% endfor %}
+                        </section>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
             {% if project.github_repo %}
                 <div class="panel panel-default animated fadeInUp animation-delay-12">
