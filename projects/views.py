@@ -49,7 +49,7 @@ class UserProjectsListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserProjectsListView, self).get_context_data(*args, **kwargs)
         context['following'] = Follower.objects.filter(user__username=self.kwargs['slug'])
-        context['user'] = self.kwargs['slug']
+        context['user_slug'] = self.kwargs['slug']
         return context
 
 
