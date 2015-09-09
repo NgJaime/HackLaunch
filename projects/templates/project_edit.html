@@ -241,10 +241,14 @@
                                             </div>
                                             <div class="col-md-9" style="text-align: left;">
                                                 <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                                    <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                    {% if creator.creator.get_full_name %}
+                                                        <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                    {% else %}
+                                                        <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">@{{ creator.creator.username }}</a>
+                                                    {% endif %}
+
                                                     {% if not creator.is_owner %}
-                                                        <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-minus-circle pull-right"
-                                                           style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}')">
+                                                        <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}', '{{ creator.creator.userprofile.slug }}')">
                                                         </i>
                                                     {% endif %}
                                                 </h4>
@@ -321,7 +325,11 @@
                                                     </div>
                                                     <div class="col-md-9" style="text-align: left;">
                                                         <h4 id="{{ creator.creator.username }}" class="media-heading creator-name">
-                                                            <a href="/users/{{ creator.creator.userprofile.slug }}" style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                            {% if creator.creator.get_full_name %}
+                                                                <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">{{ creator.creator.get_full_name }}</a>
+                                                            {% else %}
+                                                                <a href="{% url 'profile_view' slug=creator.creator.userprofile.slug %}"  style="color: white">@{{ creator.creator.username }}</a>
+                                                            {% endif %}
                                                             <i id="creator-{{ creator.creator.username }}-icon" class="fa fa-plus-circle pull-right" style="color: white; padding-left: 5px;"
                                                                     onclick="reactivateCreator('{{ creator.creator.username }}', '{{ creator.creator.get_full_name }}', '{{ creator.creator.userprofile.get_thumbnail }}')">
                                                             </i>

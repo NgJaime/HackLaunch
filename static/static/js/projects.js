@@ -332,13 +332,23 @@
 
                         var new_creators = $('#add-creator');
 
-                        new_creators.html('<div id="new-creator-div" style="margin-top: 15px;">' +
+                        var html = '<div id="new-creator-div" style="margin-top: 15px;">' +
                                             '<a class="pull-left" href="">' +
                                                 '<img src="' + data.thumbnail + '" alt="' + data.full_name + '" class="img-circle" style="width: 50px">' +
-                                            '</a>' +
-                                            '<h4 class="media-heading"><a href="" style="color: white">' + data.full_name + '</a></h4>' +
-                                            '<a class="btn btn-default btn-sm" onClick="addCreator(&quot;' + data.username +'&quot;, &quot;' + data.thumbnail + '&quot;, &quot;' + data.full_name + '&quot;)" style="margin-top: 5px">Add Creator</a>' +
-                                          '</div>');
+                                            '</a>';
+
+                        if (data.full_name.length > 0) {
+                            html += '<h4 class="media-heading"><a href="/users/' + data.slug + '" style="color: white">' + data.full_name + '</a></h4>';
+
+                        }
+                        else {
+                            html += '<h4 class="media-heading"><a href="/users/' + data.slug + '" style="color: white">@' + data.username + '</a></h4>';
+                        }
+
+                        html += '<a class="btn btn-default btn-sm" onClick="addCreator(&quot;' + data.username +'&quot;, &quot;' + data.thumbnail + '&quot;, &quot;' + data.full_name + '&quot;, &quot;' + data.slug + '&quot;)" style="margin-top: 5px">Add Creator</a>' +
+                                          '</div>';
+
+                        new_creators.html(html);
                     }
                     else {
                         $('#creator-error').removeClass('hidden');
@@ -360,8 +370,8 @@
         $('#creatorInput').val('');
     };
 
-    var getNewCreatorElements = function(username, fullname, thumbnail, parentId) {
-         return '<div id="' + parentId + '" class="creator"> \
+    var getNewCreatorElements = function(username, fullname, thumbnail, parentId, slug) {
+        var html = '<div id="' + parentId + '" class="creator"> \
                      <div class="row"> \
                         <div class="col-md-3"> \
                             <a class="pull-left" href="#"> \
@@ -369,9 +379,18 @@
                             </a> \
                         </div> \
                         <div class="col-md-9" style="text-align: left;"> \
-                            <h4 id="' + username + '-heading" class="media-heading creator-name"><a href="#" style="color: white">' + fullname + '</a> \
-                            </h4> \
-                            <p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p> \
+                            <h4 id="' + fullname + '" class="media-heading creator-name">';
+
+
+        if (fullname.length > 0) {
+            html += '<a href="/users/' + slug + '"  style="color: white">' + fullname + '</a>';
+        }
+        else {
+            html += '<a href="/users/' + slug + '"  style="color: white">@' + username + '</a>';
+        }
+
+        html += '</h4> \
+                 <p style="margin-bottom: 0px;"><strong>Awaiting Confirmation</strong></p> \
                             <input type="checkbox" name="is-adimn" style="color: white; onchange="updateCreator(&apos;'+ username +'&apos;, &apos;admin&apos;, this.checked)"">Project administrator<br> \
                         </div> \
                      </div> \
@@ -380,6 +399,8 @@
                      </div> \
                      <hr style="margin: 10px 0px 0px 0px; color: white;"> \
                 </div> ';
+
+        return html;
     }
 
 
@@ -406,7 +427,7 @@
                         var summary = $('#creator-' + username + '-summary'),
                             creators = $('#creators');
 
-                        creators.append(getNewCreatorElements(username, fullname, thumbnail, 'creator-' + username));
+                        creators.append(getNewCreatorElements(username, fullname, thumbnail, 'creator-' + username, slug));
                         var header = $('#' + username + '-heading');
                         header.append('<i id="creator-' + username + '-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;, &apos;' + fullname + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
 
@@ -470,7 +491,7 @@
         });
     };
 
-    var removeCreator = function (username, fullname, thumbnail) {
+    var removeCreator = function (username, fullname, thumbnail, slug) {
         $.ajax({
                 url: removeCreatorURL,
                 type: 'POST',
@@ -493,7 +514,7 @@
                         var summary = $('#creator-' + username + '-summary'),
                             creators = $('#prior-creators');
 
-                        creators.append(getNewCreatorElements(username, fullname, thumbnail, 'prior-creator-' + username));
+                        creators.append(getNewCreatorElements(username, fullname, thumbnail, 'prior-creator-' + username, slug));
 
                         var newSummary = creators.find('#creator-' + username + '-summary');
                         newSummary.append(summary);
@@ -517,7 +538,7 @@
             });
     };
 
-    var addCreator = function (username, thumbnail, fullName) {
+    var addCreator = function (username, thumbnail, fullName, slug) {
         if (username.length > 0) {
             $.ajax({
                 url: addCreatorURL,
@@ -539,7 +560,7 @@
 
                         var creators = $('#creators');
 
-                        creators.append(getNewCreatorElements(username, fullName, thumbnail, 'creator-' + username));
+                        creators.append(getNewCreatorElements(username, fullName, thumbnail, 'creator-' + username, slug));
 
                         var header = $('#' + username + '-heading');
                         header.append('<i id="creator-' + username + '-icon" class="fa fa-minus-circle pull-right" style="color: white; padding-left: 5px;" onclick="removeCreator(&apos;' + username + '&apos;, &apos;' + fullName + '&apos;, &apos;' + thumbnail + '&apos;)"> </i>')
